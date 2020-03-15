@@ -7,10 +7,3 @@
 
 -  不可变性：不能有状态，只能有函数和变量
 -  函数只能有一个参数
-
-Go 语言不是正统
-
-.. figure:: C:\Users\wangbm\AppData\Roaming\Typora\typora-user-images\image-20200131160151750.png
-   :alt: image-20200131160151750
-
-   image-20200131160151750
