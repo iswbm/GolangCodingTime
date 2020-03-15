@@ -1,0 +1,235 @@
+1.7 数据类型：数组与切片
+========================
+
+1. 数组
+-------
+
+数组是一个由固定长度的特定类型元素组成的序列，一个数组可以由零个或多个元素组成。因为数组的长度是固定的，所以在Go语言中很少直接使用数组。
+
+声明数组，并给该数组里的每个元素赋值（索引值的最小有效值和其他大多数语言一样是
+0，不是1）
+
+.. code:: go
+
+   // [3] 里的3 表示该数组的元素个数 
+   var arr [3]int
+   arr[0] = 1
+   arr[1] = 2
+   arr[2] = 3
+
+声明并直接初始化数组
+
+.. code:: go
+
+   // 第一种方法
+   var arr [3]int = [3]int{1,2,3}
+
+   // 第二种方法
+   arr := [3]int{1,2,3}
+
+上面的 3 表示数组的元素个数
+，万一你哪天想往该数组中增加元素，你得对应修改这个数字，为了避免这种硬编码，你可以这样写，使用
+``...`` 让Go语言自己根据实际情况来分配空间。
+
+.. code:: go
+
+   arr := [...]int{1,2,3}
+
+``[3]int`` 和 ``[4]int`` 虽然都是数组，但他们却是不同的类型，使用 fmt 的
+``%T`` 可以查得。
+
+.. code:: go
+
+   import (
+       "fmt"
+   )
+
+   func main() {
+       arr01 := [...]int{1, 2, 3}
+       arr02 := [...]int{1, 2, 3, 4}
+       fmt.Printf("%d 的类型是: %T\n", arr01, arr01)
+       fmt.Printf("%d 的类型是: %T", arr02, arr02)
+   }
+
+输出 如下
+
+::
+
+   [1 2 3] 的类型是: [3]int
+   [1 2 3 4] 的类型是: [4]int
+
+如果你觉得每次写 ``[3]int`` 有点麻烦，你可以为 ``[3]int``
+定义一个类型字面量，也就是别名类型。
+
+使用 ``type``
+关键字可以定义一个类型字面量，后面只要你想定义一个容器大小为3，元素类型为int的数组
+，都可以使用这个别名类型。
+
+.. code:: go
+
+   import (
+       "fmt"
+   )
+
+   func main() {
+       type arr3 [3]int
+
+       myarr := arr3{1,2,3}
+       fmt.Printf("%d 的类型是: %T", myarr, myarr)
+   }
+
+输出 如下
+
+::
+
+   [1 2 3] 的类型是: main.arr3
+
+2. 切片
+-------
+
+切片（Slice）与数组一样，也是可以容纳若干类型相同的元素的容器。与数组不同的是，无法通过切片类型来确定其值的长度。每个切片值都会将数组作为其底层数据结构。我们也把这样的数组称为切片的底层数组。
+
+切片是对数组的一个连续片段的引用，所以切片是一个引用类型，这个片段可以是整个数组，也可以是由起始和终止索引标识的一些项的子集，需要注意的是，终止索引标识的项不包括在切片内（意思是这是个左闭右开的区间）
+
+.. code:: go
+
+   import (
+       "fmt"
+   )
+
+   func main() {
+       myarr := [...]int{1, 2, 3}
+       fmt.Printf("%d 的类型是: %T", myarr[0:2], myarr[0:2])
+   }
+
+输出 如下
+
+::
+
+   [1 2] 的类型是: []int
+
+切片的构造，有三种方式
+
+1. 对数组进行片段截取（上面例子已经展示：myarr[0:2]，0是索引起始值，2是索引终止值，区间左半右开）
+
+2. 从头声明赋值（例子如下）
+
+   .. code:: go
+
+      // 声明字符串切片
+      var strList []string
+
+      // 声明整型切片
+      var numList []int
+
+      // 声明一个空切片
+      var numListEmpty = []int{}
+
+3. 使用 make 函数构造，make 函数的格式：\ ``make( []Type, size, cap )``
+
+   这个函数刚好指出了，一个切片具备的三个要素：类型（Type），长度（size），容量（cap）
+
+   .. code:: go
+
+      import (
+       "fmt"
+      )
+
+      func main() {
+       a := make([]int, 2)
+       b := make([]int, 2, 10)
+       fmt.Println(a, b)
+       fmt.Println(len(a), len(b))
+       fmt.Println(cap(a), cap(b))
+      }
+
+   输出 如下
+
+   ::
+
+      [0 0] [0 0]
+      2 2
+      2 10
+
+关于 len 和 cap 的概念，可能不好理解 ，这里举个例子：
+
+-  公司名，相当于字面量，也就是变量名。
+
+-  公司里的所有工位，相当于已分配到的内存空间
+
+-  公司里的员工，相当于元素。
+
+-  cap 代表你这个公司最多可以容纳多少员工
+
+-  len 代表你这个公司当前有多少个员工
+
+由于 切片是引用类型，所以你不对它进行赋值的话，它的零值（默认值）是 nil
+
+.. code:: go
+
+   var myarr []int
+   fmt.Println(myarr == nil)
+   // true
+
+数组 与 切片 有相同点，它们都是可以容纳若干类型相同的元素的容器
+
+也有不同点，数组的容器大小固定，而切片本身是引用类型，它更像是 Python
+中的 list ，我们可以对它 append 进行元素的添加。
+
+.. code:: go
+
+   import (
+       "fmt"
+   )
+
+   func main() {
+       myarr := []int{1}
+       // 追加一个元素
+       myarr = append(myarr, 2)
+       // 追加多个元素
+       myarr = append(myarr, 3, 4)
+       // 追加一个切片, ... 表示解包，不能省略
+       myarr = append(myarr, []int{7, 8}...)
+       // 在第一个位置插入元素
+       myarr = append([]int{0}, myarr...)
+       // 在中间插入一个切片(两个元素)
+       myarr = append(myarr[:5], append([]int{5,6}, myarr[5:]...)...)
+       fmt.Println(myarr)
+   }
+
+输出 如下
+
+::
+
+   [0 1 2 3 4 5 6 7 8]
+
+最后，给你留一道思考题，如下 这段代码
+
+.. code:: go
+
+   import (
+       "fmt"
+   )
+
+   func main() {
+       var numbers4 = [...]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+       myslice := numbers4[4:6:8]
+       fmt.Printf("myslice为 %d, 其长度为: %d\n", myslice, len(myslice))
+
+       myslice = myslice[:cap(myslice)]
+       fmt.Printf("myslice的第四个元素为: %d", myslice[3])
+   }
+
+为什么 myslice 的长度为2，却能访问到第四个元素
+
+::
+
+   myslice为 [5 6], 其长度为: 2
+   myslice的第四个元素为: 8
+
+--------------
+
+|image0|
+
+.. |image0| image:: http://image.python-online.cn/20200315144434.png
+

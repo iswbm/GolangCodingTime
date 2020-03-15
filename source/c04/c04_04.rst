@@ -1,0 +1,182 @@
+4.4 几个信道死锁经典错误案例详解
+================================
+
+刚接触 Go
+语言的信道的时候，经常会遇到死锁的错误，而导致这个错误的原因有很多种，这里整理了几种常见的。
+
+::
+
+   fatal error: all goroutines are asleep - deadlock!
+
+错误示例一
+----------
+
+看下面这段代码
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func main() {
+       pipline := make(chan string)
+       pipline <- "hello world"
+       fmt.Println(<-pipline)
+   } 
+
+运行会抛出错误，如下
+
+::
+
+   fatal error: all goroutines are asleep - deadlock!
+
+看起来好像没有什么问题？先往信道中存入数据，再从信道中读取数据。
+
+回顾前面的基础，我们知道使用 make
+创建信道的时候，若不传递第二个参数，则你定义的是无缓冲信道，而对于无缓冲信道，在接收者未准备好之前，发送操作是阻塞的.
+
+因此，对于解决此问题有两种方法：
+
+1. 使接收者代码在发送者之前执行
+2. 使用缓冲信道，而不使用无缓冲信道
+
+**第一种方法**\ ：
+
+若要程序正常执行，需要保证接收者程序在发送数据到信道前就进行阻塞状态，修改代码如下
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func main() {
+       pipline := make(chan string)
+       fmt.Println(<-pipline)
+       pipline <- "hello world"
+   } 
+
+运行的时候还是报同样的错误。问题出在哪里呢？
+
+原来我们将发送者和接收者写在了同一协程中，虽然保证了接收者代码在发送者之前执行，但是由于前面接收者一直在等待数据
+而处于阻塞状态，所以无法执行到后面的发送数据。还是一样造成了死锁。
+
+有了前面的经验，我们将接收者代码写在另一个协程里，并保证在发送者之前执行，就像这样的代码
+
+.. code:: go
+
+   package main
+
+   func hello(pipline chan string)  {
+       <-pipline
+   }
+
+   func main()  {
+       pipline := make(chan string)
+       go hello(pipline)
+       pipline <- "hello world"
+   }
+
+运行之后 ，一切正常。
+
+**第二种方法**\ ：
+
+接收者代码必须在发送者代码之前 执行，这是针对无缓冲信道才有的约束。
+
+既然这样，我们改使用可缓冲信道不就OK了吗？
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func main() {
+       pipline := make(chan string, 1)
+       pipline <- "hello world"
+       fmt.Println(<-pipline)
+   } 
+
+运行之后，一切正常。
+
+错误示例二
+----------
+
+每个缓冲信道，都有容量，当信道里的数据量等于信道的容量后，此时再往信道里发送数据，就失造成阻塞，必须等到有人从信道中消费数据后，程序才会往下进行。
+
+比如这段代码，信道容量为
+1，但是往信道中写入两条数据，对于一个协程来说就会造成死锁。
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func main() {
+       ch1 := make(chan string, 1)
+
+       ch1 <- "hello world"
+       ch1 <- "hello China"
+
+       fmt.Println(<-ch1)
+   }
+
+错误示例三
+----------
+
+当程序一直在等待从信道里读取数据，而此时并没有人会往信道中写入数据。此时程序就会陷入死循环，造成死锁。
+
+比如这段代码，for 循环接收了两次消息（“hello world”和“hello
+China”）后，再也没有人发送数据了，接收者就会处于一个等待永远接收不到数据的囧境。陷入死循环，造成死锁。
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func main() {
+       pipline := make(chan string)
+       go func() {
+           pipline <- "hello world"
+           pipline <- "hello China"
+           // close(pipline)
+       }()
+       for data := range pipline{
+           fmt.Println(data)
+       }
+   }
+
+包子铺里的包子已经卖完了，可还有人在排队等着买，如果不再做包子，就要告诉排队的人：不用等了，今天的包子已经卖完了，明日请早呀。
+
+不能让人家死等呀，不跟客人说明一下，人家还以为你们店后面还在蒸包子呢。
+
+所以这个问题，解决方法很简单，只要在发送完数据后，手动关闭信道，告诉
+range 信道已经关闭，无需等待就行。
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func main() {
+       pipline := make(chan string)
+       go func() {
+           pipline <- "hello world"
+           pipline <- "hello China"
+           close(pipline)
+       }()
+       for data := range pipline{
+           fmt.Println(data)
+       }
+   }
+
+--------------
+
+|image0|
+
+.. |image0| image:: http://image.python-online.cn/20200315144434.png
+

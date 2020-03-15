@@ -1,0 +1,271 @@
+2.1 面向对象编程：结构体与继承
+==============================
+
+0. 什么是结构体？
+-----------------
+
+在之前学过的数据类型中，数组与切片，只能存储同一类型的变量。若要存储多个类型的变量，就需要用到结构体，它是将多个容易类型的命令变量组合在一起的聚合数据类型。
+
+每个变量都成为该结构体的成员变量。
+
+可以理解为 Go语言
+的结构体struct和其他语言的class有相等的地位，但是Go语言放弃大量面向对象的特性，所有的Go语言类型除了指针类型外，都可以有自己的方法,提高了可扩展性。
+
+在 Go 语言中没有没有 class 类的概念，只有 struct
+结构体的概念，因此也没有继承，本篇文章，带你学习一下结构体相关的内容。
+
+1. 定义结构体
+-------------
+
+声明结构体
+
+.. code:: go
+
+   type 结构体名 struct {
+       属性名   属性类型
+       属性名   属性类型
+       ...
+   }
+
+比如我要定义一个可以存储个人资料名为 Profile 的结构体，可以这么写
+
+.. code:: go
+
+   type Profile struct {
+       name   string
+       age    int
+       gender string
+       mother *Profile // 指针
+       father *Profile // 指针
+   }
+
+2. 定义方法
+-----------
+
+在 Go
+语言中，我们无法在结构体内定义方法，那如何给一个结构体定义方法呢，答案是可以使用组合函数的方式来定义结构体方法。它和普通函数的定义方式有些不一样，比如下面这个方法
+
+.. code:: go
+
+   func (person Profile) FmtProfile() {
+       fmt.Printf("名字：%s\n", person.name)
+       fmt.Printf("年龄：%d\n", person.age)
+       fmt.Printf("性别：%s\n", person.gender)
+   }
+
+其中\ ``fmt_profile`` 是方法名，而\ ``(person Profile)`` ：表示将
+fmt_profile 方法与 Profile 的实例绑定。我们把 Profile
+称为方法的接收者，而 person 表示实例本身，它相当于 Python 中的
+self，在方法内可以使用 ``person.属性名`` 的方法来访问实例属性。
+
+完整代码如下：
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   // 定义一个名为Profile 的结构体
+   type Profile struct {
+       name   string
+       age    int
+       gender string
+       mother *Profile // 指针
+       father *Profile // 指针
+   }
+
+   // 定义一个与 Profile 的绑定的方法
+   func (person Profile) FmtProfile() {
+       fmt.Printf("名字：%s\n", person.name)
+       fmt.Printf("年龄：%d\n", person.age)
+       fmt.Printf("性别：%s\n", person.gender)
+   }
+
+   func main() {
+       // 实例化
+       myself := Profile{name: "小明", age: 24, gender: "male"}
+       // 调用函数
+       myself.FmtProfile()
+   }
+
+输出如下
+
+::
+
+   名字：小明
+   年龄：24
+   性别：male
+
+3. 方法的参数传递方式
+---------------------
+
+上面定义方法的方式叫当你想要在方法内改变实例的属性的时候，必须使用指针做为方法的接收者。
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   // 声明一个 Profile 的结构体
+   type Profile struct {
+       name   string
+       age    int
+       gender string
+       mother *Profile // 指针
+       father *Profile // 指针
+   }
+
+   // 重点在于这个星号: *
+   func (person *Profile) increase_age() {
+       person.age += 1
+   }
+
+   func main() {
+       myself := Profile{name: "小明", age: 24, gender: "male"}
+       fmt.Printf("当前年龄：%d\n", myself.age)
+       myself.increase_age()
+       fmt.Printf("当前年龄：%d", myself.age)
+   }
+
+输出结果 如下，可以看到在方法内部对 age 的修改已经生效。你可以尝试去掉
+``*``\ ，使用值做为方法接收者，看看age是否会发生改变。
+
+::
+
+   当前年龄：24
+   当前年龄：25
+
+至此，我们知道了两种定义方法的方式：
+
+-  以值做为方法接收者
+-  以指针做为方法接收者
+
+那我们如何进行选择呢？以下几种情况，应当直接使用指针做为方法的接收者。
+
+1. 你需要在方法内部改变结构体内容的时候
+2. 出于性能的问题，当结构体过大的时候
+
+有些情况下，以值或指针做为接收者都可以，但是考虑到代码一致性，建议都使用指针做为接收者。
+
+不管你使用哪种方法定义方法，指针实例对象、值实例对象都可以直接调用，而没有什么约束。这一点Go语言做得非常好。
+
+4. 结构体实现 “继承”
+--------------------
+
+为什么标题的继承，加了双引号，因为Go 语言本身并不支持继承。
+
+但我们可以使用组合的方法，实现类似继承的效果。
+
+在生活中，组合的例子非常多，比如一台电脑，是由机身外壳，主板，CPU，内存等零部件组合在一起，最后才有了我们用的电脑。
+
+同样的，在 Go 语言中，把一个结构体嵌入到另一个结构体的方法，称之为组合。
+
+现在这里有一个表示公司（company）的结构体，还有一个表示公司职员（staff）的结构体。
+
+.. code:: go
+
+   type company struct {
+       companyName string
+       companyAddr string
+   }
+
+   type staff struct {
+       name string
+       age int
+       gender string
+       position string
+   }
+
+若要将公司信息与公司职员关联起来，一般都会想到将 company
+结构体的内容照抄到 staff 里。
+
+.. code:: go
+
+   type staff struct {
+       name string
+       age int
+       gender string
+       companyName string
+       companyAddr string
+       position string
+   }
+
+虽然在实现上并没有什么问题，但在你对同一公司的多个staff初始化的时候，都得重复初始化相同的公司信息，这做得并不好，借鉴继承的思想，我们可以将公司的属性都“继承”过来。
+
+但是在 Go 中没有类的概念，只有组合，你可以将 company 这个 结构体嵌入到
+staff 中，做为 staff 的一个匿名字段，staff 就直接拥有了 company
+的所有属性了。
+
+.. code:: go
+
+   type staff struct {
+       name string
+       age int
+       gender string
+       position string
+       company   // 匿名字段 
+   }
+
+来写个完整的程序验证一下。
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   type company struct {
+       companyName string
+       companyAddr string
+   }
+
+   type staff struct {
+       name string
+       age int
+       gender string
+       position string
+       company
+   }
+
+   func main()  {
+       myCom := company{
+           companyName: "Tencent",
+           companyAddr: "深圳市南山区",
+       }
+       staffInfo := staff{
+           name:     "小明",
+           age:      28,
+           gender:   "男",
+           position: "云计算开发工程师",
+           company: myCom,
+       }
+
+       fmt.Printf("%s 在 %s 工作\n", staffInfo.name, staffInfo.companyName)
+       fmt.Printf("%s 在 %s 工作\n", staffInfo.name, staffInfo.company.companyName)
+   }
+
+输出结果如下，可见\ ``staffInfo.companyName`` 和
+``staffInfo.company.companyName`` 的效果是一样的。
+
+::
+
+   小明 在 Tencent 工作
+   小明 在 Tencent 工作
+
+5. 内部方法与外部方法
+---------------------
+
+在 Go
+语言中，函数名的首字母大小写非常重要，它被来实现控制对方法的访问权限。
+
+-  当方法的首字母为大写时，这个方法对于所有包都是Public，其他包可以随意调用
+-  当方法的首字母为小写时，这个方法是Private，其他包是无法访问的。
+
+--------------
+
+|image0|
+
+.. |image0| image:: http://image.python-online.cn/20200315144434.png
+
