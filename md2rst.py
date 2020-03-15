@@ -24,9 +24,9 @@ if not repo.is_dirty():
     # 没有文件变更
     os._exit(0)
 
-base_link = "http://golang.python-online.cn/zh_CN/latest/"
+base_link = "http://golang.iswbm.com/en/latest/"
 readme_header = '''
-这是我的个人博客（ [Go编程时光](http:/golang.python-online.cn/) ），主要写关于Go的一些思考总结。
+这是我的个人博客（ [Go编程时光](http:/golang.iswbm.con/) ），主要写关于Go的一些思考总结。
 '''
 readme_tooter = '''
 ---
