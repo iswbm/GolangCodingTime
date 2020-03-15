@@ -1,3 +1,6 @@
 build/
 *.pyc
 .idea/
+Makefile
+Pipfile
+test*
