@@ -21,7 +21,7 @@ Go 语言诞生于 2009 年，经过 11 年的发展，Golang 不仅没有被各
 
 ------------------------------
 
-.. figure:: http://image.python-online.cn/20200315144434.png
+.. figure:: http://image.python-online.cn/image-20200320125724880.png
    :alt: 关注公众号，获取最新文章
 
 

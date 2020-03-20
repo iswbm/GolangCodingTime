@@ -305,5 +305,5 @@ Code，其记录的GOPATH始终指向%USERPROFILE%:raw-latex:`\go`），
 .. |image23| image:: http://image.python-online.cn/20200109213056.png
 .. |image24| image:: http://image.python-online.cn/20200109214117.png
 .. |image25| image:: http://image.python-online.cn/20200109154657.png
-.. |image26| image:: http://image.python-online.cn/20200315144434.png
+.. |image26| image:: http://image.python-online.cn/image-20200320125724880.png
 

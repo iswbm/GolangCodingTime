@@ -173,7 +173,7 @@ MyBlog的入口应当为 myblog.go
 
 特别注释
 
--  TODE：提醒维护人员此部分代码待完成
+-  TODO：提醒维护人员此部分代码待完成
 -  FIXME：提醒维护人员此处有BUG待修复
 -  NOTE：维护人员要关注的一些问题说明
 
@@ -181,5 +181,5 @@ MyBlog的入口应当为 myblog.go
 
 |image0|
 
-.. |image0| image:: http://image.python-online.cn/20200315144434.png
+.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
 

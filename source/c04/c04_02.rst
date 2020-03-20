@@ -145,5 +145,5 @@ main 的地位相当于主线程，当 main
 
 |image0|
 
-.. |image0| image:: http://image.python-online.cn/20200315144434.png
+.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
 

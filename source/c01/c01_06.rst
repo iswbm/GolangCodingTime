@@ -291,5 +291,5 @@ Go 中确实不如 Python 那样灵活，bool 与 int
 |image1|
 
 .. |image0| image:: http://image.python-online.cn/20200106201856.png
-.. |image1| image:: http://image.python-online.cn/20200315144434.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

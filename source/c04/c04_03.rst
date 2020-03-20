@@ -331,5 +331,5 @@ range关键字，在range时，要确保信道是处于关闭状态，否则循�
 
 |image0|
 
-.. |image0| image:: http://image.python-online.cn/20200315144434.png
+.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
 

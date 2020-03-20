@@ -25,6 +25,7 @@
 - 3.1 [超详细解读 Go Modules 前世今生及入门使用](http://golang.iswbm.com/en/latest/c03/c03_01.html)
 - 3.2 [Go语言命名编码规范](http://golang.iswbm.com/en/latest/c03/c03_02.html)
 - 3.3 [go 命令详解](http://golang.iswbm.com/en/latest/c03/c03_03.html)
+- 3.4 [Go 语言中关于包导入必学的 8 个知识点](http://golang.iswbm.com/en/latest/c03/c03_04.html)
 
 ## 第四章：并发编程
 - 4.1 [一篇文章理解 Go 里的函数](http://golang.iswbm.com/en/latest/c04/c04_01.html)
@@ -42,5 +43,5 @@
 
 
 ---
-![关注公众号，获取最新干货！](http://image.python-online.cn/20200315144434.png)
+![关注公众号，获取最新干货！](http://image.python-online.cn/image-20200320125724880.png)
 

@@ -206,5 +206,5 @@ float64，但是很多情况下，我们并不需要这么高的精度（占用�
 
 |image0|
 
-.. |image0| image:: http://image.python-online.cn/20200315144434.png
+.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
 

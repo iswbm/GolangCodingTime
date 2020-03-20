@@ -100,5 +100,5 @@ make：只能为 slice，map，chan 分配内存，并初始化，返回的是�
 
 |image0|
 
-.. |image0| image:: http://image.python-online.cn/20200315144434.png
+.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
 

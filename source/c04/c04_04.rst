@@ -178,5 +178,5 @@ range 信道已经关闭，无需等待就行。
 
 |image0|
 
-.. |image0| image:: http://image.python-online.cn/20200315144434.png
+.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
 
