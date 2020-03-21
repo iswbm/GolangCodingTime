@@ -302,6 +302,8 @@ go vender 械管理，除此之外，任何 Gopher 应该从此刻就投入 go m
 -  `Go Modules
    终极入门 <https://mp.weixin.qq.com/s/fNMXfpBhBC3UWTbYCnwIMg>`__
    （强烈推荐煎鱼大佬的文章）
+-  `何处安放我们的 Go
+   代码 <https://liujiacai.net/blog/2019/10/24/go-modules/>`__
 
 --------------
 

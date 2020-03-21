@@ -101,6 +101,12 @@ Go运行器。
 
 |image14|
 
+可先的代理有如下（注意后面的 direct 不要删除）
+
+-  ``https://goproxy.io``
+-  ``https://goproxy.cn``
+-  ``https://mirrors.aliyun.com/goproxy/``
+
 设置 goimports（自动格式化插件），如果 你之前 没有安装 ，会提示你点击
 ``yes`` 下载安装 。
 
@@ -116,6 +122,8 @@ Go运行器。
 点击运行按钮，在控制台我们看到了熟悉的 ``Hello, World!``
 
 |image17|
+
+另：有关 Golang 最新版的破解教程，请关注这个博客：https://zhile.io
 
 3. 配置 VS Code 环境
 --------------------
