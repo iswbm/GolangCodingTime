@@ -26,6 +26,7 @@
 - 3.2 [Go语言命名编码规范](http://golang.iswbm.com/en/latest/c03/c03_02.html)
 - 3.3 [go 命令详解](http://golang.iswbm.com/en/latest/c03/c03_03.html)
 - 3.4 [Go 语言中关于包导入必学的 8 个知识点](http://golang.iswbm.com/en/latest/c03/c03_04.html)
+- 3.5 [如何开源自己写的包给别人用?](http://golang.iswbm.com/en/latest/c03/c03_05.html)
 
 ## 第四章：并发编程
 - 4.1 [一篇文章理解 Go 里的函数](http://golang.iswbm.com/en/latest/c04/c04_01.html)
@@ -34,12 +35,11 @@
 - 4.4 [几个信道死锁经典错误案例详解](http://golang.iswbm.com/en/latest/c04/c04_04.html)
 - 4.5 [学习 Go 协程：WaitGroup](http://golang.iswbm.com/en/latest/c04/c04_05.html)
 - 4.6 [学习 Go 协程：互斥锁和读写锁](http://golang.iswbm.com/en/latest/c04/c04_06.html)
-- 4.7 [如何把自己写的包上传到github给别人用](http://golang.iswbm.com/en/latest/c04/c04_07.html)
 - 4.8 [学习一些常见的并发模型](http://golang.iswbm.com/en/latest/c04/c04_08.html)
 - 4.9 [函数式编程](http://golang.iswbm.com/en/latest/c04/c04_09.html)
 
 ## 第五章：暂未分类
-- 3.10 [推荐几个Go学习网站](http://golang.iswbm.com/en/latest/c05/c01_01.html)
+- 5.1 [推荐几个Go学习网站](http://golang.iswbm.com/en/latest/c05/c01_01.html)
 
 
 ---
