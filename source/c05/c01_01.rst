@@ -38,6 +38,10 @@ https://liujiacai.net/
 
 https://hyper0x.github.io/go_command_tutorial/#/
 
-如何使用 go modules 导入本地包
+8、Go入门指南（The Way to Go）
 
-https://mp.weixin.qq.com/s/jvqjIzfBlGh3vty_qHl50w
+https://learnku.com/docs/the-way-to-go
+
+9、Go语言圣经
+
+https://go.wuhaolin.cn/gopl/

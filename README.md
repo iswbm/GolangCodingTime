@@ -24,7 +24,7 @@
 ## 第三章：项目管理
 - 3.1 [超详细解读 Go Modules 前世今生及入门使用](http://golang.iswbm.com/en/latest/c03/c03_01.html)
 - 3.2 [Go语言命名编码规范](http://golang.iswbm.com/en/latest/c03/c03_02.html)
-- 3.3 [go 命令详解](http://golang.iswbm.com/en/latest/c03/c03_03.html)
+- 3.3 [最全的 Go 命令指南](http://golang.iswbm.com/en/latest/c03/c03_03.html)
 - 3.4 [Go 语言中关于包导入必学的 8 个知识点](http://golang.iswbm.com/en/latest/c03/c03_04.html)
 - 3.5 [如何开源自己写的包给别人用?](http://golang.iswbm.com/en/latest/c03/c03_05.html)
 
