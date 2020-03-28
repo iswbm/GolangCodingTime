@@ -14,6 +14,8 @@
 - 1.11 [流程控制：goto 无条件跳转](http://golang.iswbm.com/en/latest/c01/c01_11.html)
 - 1.12 [流程控制：defer 延迟语句](http://golang.iswbm.com/en/latest/c01/c01_12.html)
 - 1.13 [异常机制：panic 和 recover](http://golang.iswbm.com/en/latest/c01/c01_13.html)
+- 1.14 [Type Assertion 与 Type Switch](http://golang.iswbm.com/en/latest/c01/c01_14.html)
+- 1.15 [信道里使用 select](http://golang.iswbm.com/en/latest/c01/c01_15.html)
 
 ## 第二章：面向对象
 - 2.1 [面向对象编程：结构体与继承](http://golang.iswbm.com/en/latest/c02/c02_01.html)
@@ -38,8 +40,11 @@
 - 4.8 [学习一些常见的并发模型](http://golang.iswbm.com/en/latest/c04/c04_08.html)
 - 4.9 [函数式编程](http://golang.iswbm.com/en/latest/c04/c04_09.html)
 
-## 第五章：暂未分类
-- 5.1 [推荐几个Go学习网站](http://golang.iswbm.com/en/latest/c05/c01_01.html)
+## 第五章：Web实战
+- 6.1 [Gin 实战：Hello World](http://golang.iswbm.com/en/latest/c05/c05_01.html)
+
+## 第六章：暂未分类
+- 6.1 [推荐几个Go学习网站](http://golang.iswbm.com/en/latest/c06/c06_01.html)
 
 
 ---

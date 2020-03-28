@@ -1,0 +1,212 @@
+6.1 Gin 实战：Hello World
+=========================
+
+1. 最简单的web示例
+------------------
+
+新建一个项目目录，比如我使用 Goland ，那我的项目目录就为
+``~/GolandProjects/gin-web-example``
+
+然后使用 go mod 命令初始化
+
+.. code:: shell
+
+   $ go mod init github.com/iswbm/gin-web-example
+   go: creating new go.mod: module github.com/iswbm/gin-web-example
+
+按照之前讲过的，此时会生成 ``go.mod`` 文件。
+
+接着，还是在这个目录下，新建一个 ``main.go`` 的文件
+
+.. code:: go
+
+   package main
+
+   import (
+       "github.com/gin-gonic/gin"
+   )
+
+
+   func main(){
+       r :=gin.Default()
+       r.GET("/ping", func(c *gin.Context) {
+           c.JSON(200, gin.H{
+               "message": "pong",
+           })
+       })
+
+       // 默认在监听 0.0.0.0:8080
+       r.Run()
+   }
+
+一切准备好后，就可以运行了，
+
+::
+
+   $ go run main.go
+
+从输出来看，它提示我们监听端口是 8080
+
+|image0|
+
+我们可以使用浏览器试着访问一下
+``0.0.0.0:8080/ping``\ ，如下图所示，访问成功。
+
+|image1|
+
+2. 项目结构及依赖管理
+---------------------
+
+以之前创建的项目目录为根目录，继续创建如下目录
+
+-  conf：用于存储配置文件
+-  middleware：应用中间件
+-  models：应用数据库模型
+-  pkg：第三方包
+-  routers 路由逻辑处理
+-  runtime：应用运行时数据
+
+最终效果如下
+
+::
+
+   $ tree
+   .
+   ├── conf
+   ├── go.mod
+   ├── go.sum
+   ├── main.go
+   ├── middleware
+   ├── models
+   ├── pkg
+   ├── routes
+   └── runtime
+
+在这个目录下，每个文件夹下都是一个模块。
+
+由于最开始我们定义了模块名为 ``github.com/iswbm/gin-web-example``
+，所以当我们在一个模块中引用另一个模块的内容，也必须会从这里\ ``github.com/iswbm/gin-web-example``
+导入，但是当我们还在开发阶段时，这段模块还未上传至 github
+仓库，导入时肯定会失败。
+
+也就是说，你的每次调试都必须先将你的代码全部上传至 github
+，项目才能运行。
+
+那有什么办法可以解决这种低效的开发模式呢？
+
+这时候，就要提到之前提过的 go.mod 里的 replace 关键字。
+
+比如 ``github.com/iswbm/gin-web-example/routers => ./routers``
+这句话后，当我们在项目中导入
+``github.com/iswbm/gin-web-example/routers`` 时，它不会去 github
+上查找拉取包，而是会从本地的 ``./routes`` 查找。
+
+::
+
+   module github.com/iswbm/gin-web-example
+
+   go 1.14
+
+   require github.com/gin-gonic/gin v1.6.1
+
+   replace (
+       github.com/iswbm/gin-web-example/conf => ./pkg/conf
+       github.com/iswbm/gin-web-example/middleware => ./middleware
+       github.com/iswbm/gin-web-example/models => ./models
+       github.com/iswbm/gin-web-example/pkg/setting => ./pkg/setting
+       github.com/iswbm/gin-web-example/routers => ./routers
+   )
+
+3. 数据库创建
+-------------
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200325203348548.png
+   :alt: image-20200325203348548
+
+   image-20200325203348548
+
+使用这段 SQL 命令，创建标签表
+
+.. code:: sql
+
+   CREATE TABLE `blog_tag` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `name` varchar(100) DEFAULT '' COMMENT '标签名称',
+     `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+     `created_by` varchar(100) DEFAULT '' COMMENT '创建人',
+     `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
+     `modified_by` varchar(100) DEFAULT '' COMMENT '修改人',
+     `deleted_on` int(10) unsigned DEFAULT '0',
+     `state` tinyint(3) unsigned DEFAULT '1' COMMENT '状态 0为禁用、1为启用',
+     PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标签管理';
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200325203447004.png
+   :alt: image-20200325203447004
+
+   image-20200325203447004
+
+使用这段 SQL 命令，创建文章表
+
+.. code:: sql
+
+   CREATE TABLE `blog_article` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `tag_id` int(10) unsigned DEFAULT '0' COMMENT '标签ID',
+     `title` varchar(100) DEFAULT '' COMMENT '文章标题',
+     `desc` varchar(255) DEFAULT '' COMMENT '简述',
+     `content` text,
+     `created_on` int(11) DEFAULT NULL,
+     `created_by` varchar(100) DEFAULT '' COMMENT '创建人',
+     `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
+     `modified_by` varchar(255) DEFAULT '' COMMENT '修改人',
+     `deleted_on` int(10) unsigned DEFAULT '0',
+     `state` tinyint(3) unsigned DEFAULT '1' COMMENT '状态 0为禁用1为启用',
+     PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章管理';
+   3、 认证表
+
+使用这段 SQL 命令，创建认证表
+
+.. code:: sql
+
+   CREATE TABLE `blog_auth` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `username` varchar(50) DEFAULT '' COMMENT '账号',
+     `password` varchar(50) DEFAULT '' COMMENT '密码',
+     PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+   INSERT INTO `blog`.`blog_auth` (`id`, `username`, `password`) VALUES (null, 'test', 'test123456');
+
+4. 配置文件
+-----------
+
+在 conf 目录下新建 app.ini 文件，内容如下
+
+.. code:: ini
+
+   #debug or release
+   RUN_MODE = debug
+
+   [app]
+   PAGE_SIZE = 10
+   JWT_SECRET = 23347$040412
+
+   [server]
+   HTTP_PORT = 8000
+   READ_TIMEOUT = 60
+   WRITE_TIMEOUT = 60
+
+   [database]
+   TYPE = mysql
+   USER = 数据库账号
+   PASSWORD = 数据库密码
+   #127.0.0.1:3306
+   HOST = 数据库IP:数据库端口号
+   NAME = blog
+   TABLE_PREFIX = blog_
+
+.. |image0| image:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200324211928616.png
+.. |image1| image:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200324205302201.png
+

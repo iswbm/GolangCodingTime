@@ -1,4 +1,5 @@
-# 5.1 推荐几个Go学习网站
+6.1 推荐几个Go学习网站
+======================
 
 1、用小例子来学习 Go 语言
 
@@ -20,15 +21,18 @@ http://www.topgoer.com/
 
 https://liujiacai.net/
 
-[写给新手的 Go 开发指南](https://liujiacai.net/blog/2019/07/17/hello-golang/)
+`写给新手的 Go
+开发指南 <https://liujiacai.net/blog/2019/07/17/hello-golang/>`__
 
-[何处安放我们的 Go 代码](https://liujiacai.net/blog/2019/10/24/go-modules/)
+`何处安放我们的 Go
+代码 <https://liujiacai.net/blog/2019/10/24/go-modules/>`__
 
-[Go struct/interface 最佳实践](https://liujiacai.net/blog/2020/03/14/go-struct-interface/)
+`Go struct/interface
+最佳实践 <https://liujiacai.net/blog/2020/03/14/go-struct-interface/>`__
 
 6、Go 语言入门教程
 
-[Go语言入门教程](http://c.biancheng.net/golang/)
+`Go语言入门教程 <http://c.biancheng.net/golang/>`__
 
 7、Go命令教程（赫林）
 
