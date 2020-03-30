@@ -323,4 +323,3 @@ go vender 械管理，除此之外，任何 Gopher 应该从此刻就投入 go m
 .. |image11| image:: http://image.python-online.cn/image-20200314005924877.png
 .. |image12| image:: http://image.python-online.cn/image-20200314005217447.png
 .. |image13| image:: http://image.python-online.cn/image-20200320125724880.png
-

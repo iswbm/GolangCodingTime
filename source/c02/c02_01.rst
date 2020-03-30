@@ -268,4 +268,3 @@ staff 中，做为 staff 的一个匿名字段，staff 就直接拥有了 compan
 |image0|
 
 .. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
-

@@ -150,4 +150,3 @@ release 发布一个版本
 .. |image8| image:: http://image.python-online.cn/image-20200321132052173.png
 .. |image9| image:: http://image.python-online.cn/image-20200321133247067.png
 .. |image10| image:: http://image.python-online.cn/image-20200320125724880.png
-

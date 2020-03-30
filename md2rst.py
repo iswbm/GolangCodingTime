@@ -10,9 +10,9 @@ from git import Repo
 osName = platform.system()
 repo_path ='.'
 if (osName == 'Windows'):
-    repo_path = 'E:\\MING-Git\\07. GolangCodingTime'
-    blog_path = 'E:\\MING-Git\\07. GolangCodingTime\\source'
-    index_path = 'E:\\MING-Git\\07. GolangCodingTime\\README.md'
+    repo_path = 'E:\\MING-Git\\GolangCodingTime'
+    blog_path = 'E:\\MING-Git\GolangCodingTime\\source'
+    index_path = 'E:\\MING-Git\\GolangCodingTime\\README.md'
 elif (osName == 'Darwin'):
     repo_path = '/Users/MING/Github/GolangCodingTime/'
     blog_path = '/Users/MING/Github/GolangCodingTime/source'

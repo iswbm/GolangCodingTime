@@ -14,7 +14,7 @@
 - 1.11 [流程控制：goto 无条件跳转](http://golang.iswbm.com/en/latest/c01/c01_11.html)
 - 1.12 [流程控制：defer 延迟语句](http://golang.iswbm.com/en/latest/c01/c01_12.html)
 - 1.13 [异常机制：panic 和 recover](http://golang.iswbm.com/en/latest/c01/c01_13.html)
-- 1.14 [Type Assertion 与 Type Switch](http://golang.iswbm.com/en/latest/c01/c01_14.html)
+- 1.14 [Go 语言中的类型断言？](http://golang.iswbm.com/en/latest/c01/c01_14.html)
 - 1.15 [信道里使用 select](http://golang.iswbm.com/en/latest/c01/c01_15.html)
 
 ## 第二章：面向对象

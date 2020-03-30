@@ -182,4 +182,3 @@ MyBlog的入口应当为 myblog.go
 |image0|
 
 .. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
-
