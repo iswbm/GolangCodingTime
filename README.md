@@ -16,6 +16,7 @@
 - 1.13 [异常机制：panic 和 recover](http://golang.iswbm.com/en/latest/c01/c01_13.html)
 - 1.14 [Go 语言中的类型断言？](http://golang.iswbm.com/en/latest/c01/c01_14.html)
 - 1.15 [这五点带你理解 select 用法](http://golang.iswbm.com/en/latest/c01/c01_15.html)
+- 1.16 [深入理解Go语言中里反射](http://golang.iswbm.com/en/latest/c01/c01_16.html)
 
 ## 第二章：面向对象
 - 2.1 [面向对象编程：结构体与继承](http://golang.iswbm.com/en/latest/c02/c02_01.html)
@@ -25,7 +26,7 @@
 
 ## 第三章：项目管理
 - 3.1 [超详细解读 Go Modules 前世今生及入门使用](http://golang.iswbm.com/en/latest/c03/c03_01.html)
-- 3.2 [Go语言命名编码规范](http://golang.iswbm.com/en/latest/c03/c03_02.html)
+- 3.2 [一文搞懂Go语言中编码规范](http://golang.iswbm.com/en/latest/c03/c03_02.html)
 - 3.3 [最全的 Go 命令指南](http://golang.iswbm.com/en/latest/c03/c03_03.html)
 - 3.4 [Go 语言中关于包导入必学的 8 个知识点](http://golang.iswbm.com/en/latest/c03/c03_04.html)
 - 3.5 [如何开源自己写的包给别人用?](http://golang.iswbm.com/en/latest/c03/c03_05.html)
@@ -41,10 +42,12 @@
 - 4.9 [函数式编程](http://golang.iswbm.com/en/latest/c04/c04_09.html)
 
 ## 第五章：Web实战
-- 6.1 [Gin 实战：Hello World](http://golang.iswbm.com/en/latest/c05/c05_01.html)
+- 5.1 [Gin 实战：Hello World](http://golang.iswbm.com/en/latest/c05/c05_01.html)
+- 5.2 [学 gin 需要了解哪些库](http://golang.iswbm.com/en/latest/c05/c05_02.html)
 
 ## 第六章：暂未分类
 - 6.1 [推荐几个Go学习网站](http://golang.iswbm.com/en/latest/c06/c06_01.html)
+- 6.2 [配置高颜值 IDE：Goland](http://golang.iswbm.com/en/latest/c06/c06_02.html)
 
 
 ---
