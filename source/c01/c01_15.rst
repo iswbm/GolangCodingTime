@@ -271,5 +271,8 @@ select 与 switch
 4. select 里没有类似 switch 里的 fallthrough 的用法；
 5. select 不能像 switch 一样接函数或其他表达式。
 
+|image1|
+
 .. |image0| image:: http://image.iswbm.com/20200402215126.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

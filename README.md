@@ -5,7 +5,7 @@
 - 1.2 [五种变量创建的方法](http://golang.iswbm.com/en/latest/c01/c01_02.html)
 - 1.3 [数据类型：整型与浮点型](http://golang.iswbm.com/en/latest/c01/c01_03.html)
 - 1.4 [数据类型：byte、rune与字符串](http://golang.iswbm.com/en/latest/c01/c01_04.html)
-- 1.7 [数据类型：数组与切片](http://golang.iswbm.com/en/latest/c01/c01_05.html)
+- 1.5 [数据类型：数组与切片](http://golang.iswbm.com/en/latest/c01/c01_05.html)
 - 1.6 [数据类型：字典与布尔类型](http://golang.iswbm.com/en/latest/c01/c01_06.html)
 - 1.7 [数据类型：指针](http://golang.iswbm.com/en/latest/c01/c01_07.html)
 - 1.8 [流程控制：if-else](http://golang.iswbm.com/en/latest/c01/c01_08.html)
@@ -26,7 +26,7 @@
 
 ## 第三章：项目管理
 - 3.1 [超详细解读 Go Modules 前世今生及入门使用](http://golang.iswbm.com/en/latest/c03/c03_01.html)
-- 3.2 [一文搞懂Go语言中编码规范](http://golang.iswbm.com/en/latest/c03/c03_02.html)
+- 3.2 [一文了解Go语言中编码规范](http://golang.iswbm.com/en/latest/c03/c03_02.html)
 - 3.3 [最全的 Go 命令指南](http://golang.iswbm.com/en/latest/c03/c03_03.html)
 - 3.4 [Go 语言中关于包导入必学的 8 个知识点](http://golang.iswbm.com/en/latest/c03/c03_04.html)
 - 3.5 [如何开源自己写的包给别人用?](http://golang.iswbm.com/en/latest/c03/c03_05.html)
@@ -44,6 +44,7 @@
 ## 第五章：Web实战
 - 5.1 [Gin 实战：Hello World](http://golang.iswbm.com/en/latest/c05/c05_01.html)
 - 5.2 [学 gin 需要了解哪些库](http://golang.iswbm.com/en/latest/c05/c05_02.html)
+- 2. [项目结构及依赖管理](http://golang.iswbm.com/en/latest/c05/c05_03.html)
 
 ## 第六章：暂未分类
 - 6.1 [推荐几个Go学习网站](http://golang.iswbm.com/en/latest/c06/c06_01.html)

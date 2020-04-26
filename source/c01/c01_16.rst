@@ -1,0 +1,407 @@
+1.16 深入理解Go语言中里反射
+===========================
+
+反射是指一类应用，它们能够自描述和自控制。也就是说，这类应用通过采用某种机制来实现对自己行为的描述（self-representation）和监测（examination），并能根据自身行为的状态和结果，调整或修改应用所描述行为的状态和相关的语义。
+
+每种语言的反射模型都不同，并且有些语言根本不支持反射。Golang语言实现了反射，反射机制就是在运行时动态的调用对象的方法和属性，官方自带的reflect包就是反射相关的，只要包含这个包就可以使用。
+
+什么是反射？
+------------
+
+在 wiki 百科上，关于反射的定义是这样的
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200405172350326.png
+   :alt: image-20200405172350326
+
+   image-20200405172350326
+
+说实话，这段定义对于新人来说还是有点难以理解。
+
+Golang
+是静态语言，很多变量的类型在编译时，就能确定。但是有一些却不行，它们的类型和值只有在运行时（runtime）才能知道。
+
+这里从 「\ `Go 系列教程 ——第 34
+篇：反射 <https://mp.weixin.qq.com/s/dkgJ_fA0smvpv69t5Nv-7A>`__\ 」摘一个例子过来
+
+优点
+~~~~
+
+支持反射的语言提供了一些在早期高级语言中难以实现的运行时特性。
+
+-  可以在一定程度上避免硬编码，提供灵活性和通用性。
+-  可以作为一个\ `第一类对象 <https://zh.wikipedia.org/wiki/第一類物件>`__\ 发现并修改源代码的结构（如代码块、类、方法、协议等）。
+-  可以在运行时像对待源代码语句一样动态解析字符串中可执行的代码（类似JavaScript的eval()函数），进而可将跟class或function匹配的字符串转换成class或function的调用或引用。
+-  可以创建一个新的语言字节码解释器来给编程结构一个新的意义或用途。
+
+劣势
+~~~~
+
+-  此技术的学习成本高。面向反射的编程需要较多的高级知识，包括框架、关系映射和对象交互，以实现更通用的代码执行。
+-  同样因为反射的概念和语法都比较抽象，过多地滥用反射技术会使得代码难以被其他人读懂，不利于合作与交流。
+-  由于将部分信息检查工作从编译期推迟到了运行期，此举在提高了代码灵活性的同时，牺牲了一点点运行效率。
+
+通过深入学习反射的特性和技巧，它的劣势可以尽量避免，但这需要许多时间和经验的积累。
+
+1. 静态类型和动态类型
+---------------------
+
+静态类型（也即 static type）是你在编码是看见的类型(如int、string)，如
+
+.. code:: go
+
+   var age int   // int 是静态类型
+
+   type MyInt int  // int 是静态类型
+
+   name := "Go编程时光"   // string 是静态类型
+
+动态类型（也即 concrete type）是 runtime 系统才能看见的类型，主要和
+interface 有关，如
+
+.. code:: go
+
+   var i interface{}   // 静态类型就是 interface{}
+
+   i = 18  // 静态类型为interface{}  动态为int
+   i = "Go编程时光"  // 静态类型为interface{}  动态为string
+
+2. Type 与 Value
+-----------------
+
+在 Go 语言中，每个接口变量都有一个对应的 pair，pair
+中记录着实际变量的值和类型。
+
+::
+
+   (value, type)
+
+比如 ``var age : 25`` ，value 就是25，type 就是 int
+
+pair 的存在，是Golang中实现反射的前提，理解了pair，就更容易理解反射。
+
+若要从一个接口值里取得 value 和 type，那就不得不说到 reflect
+这个内置包。
+
+这个包有两个方法：
+
+1. reflect.TypeOf(i) ：获得接口值的类型
+2. Reflect.ValueOf(i)：获得接口值的值
+
+这两个方法返回的对象，我们称之为反射对象：Type object 和 Value object。
+
+.. code:: go
+
+   // TypeOf returns the reflection Type of the value in the interface{}.TypeOf returns nil.
+   func TypeOf(i interface{}) Type
+
+   // ValueOf returns a new Value initialized to the concrete value stored in the interface i. ValueOf(nil) returns the zero Value.
+   func ValueOf(i interface{}) Value
+
+举个例子，看下这两个方法是如何使用的？
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   func main() {
+       var x interface{}
+       x = 3.4
+
+       fmt.Println("type:",reflect.TypeOf(x))
+       fmt.Println("value:",reflect.ValueOf(x))
+
+       x = "Go编程时光"
+       fmt.Println("type:",reflect.TypeOf(x))
+       fmt.Println("value:",reflect.ValueOf(x))
+   }
+
+输出如下
+
+::
+
+   type: float64
+   value: 3.4
+   type: string
+   value: Go编程时光
+
+3. Kind 与 Type
+---------------
+
+``reflect`` 包中还有一个重要的类型：\ ``Kind``\ 。
+
+在反射包中，\ ``Kind`` 和 ``Type``
+的类型可能看起来很相似，但在下面代码中，可以很清楚地看出它们的不同之处。
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type profile struct {
+       name string
+       age int
+       gender string
+   }
+
+   func main() {
+       //反射操作：通过反射，可以获取一个接口类型变量的 类型和数值
+       m := profile{
+           name: "wangbm",
+           age: 27,
+           gender: "male",
+       }
+
+       fmt.Println("type:",reflect.TypeOf(m))
+       fmt.Println("kind:",reflect.TypeOf(m).Kind())
+   }
+
+输出如下
+
+::
+
+   type: main.profile
+   kind: struct
+
+相较于 Type 而言，Kind 所表示的范畴更大。
+
+Kind 是类别，而 Type 是类型，用一个例子来生动描述来类比：Kind
+是电子产品，而 Type 是手机。
+
+对于 Kind 的获取，你可以通过 Type ，也可以通过 Value。
+
+.. code:: go
+
+   reflect.TypeOf(m).Kind()
+   reflect.ValueOf(m).Kind()
+
+Kind 有哪些呢？
+
+.. code:: go
+
+   type Kind uint
+
+   const (
+       Invalid Kind = iota
+       Bool
+       Int
+       Int8
+       Int16
+       Int32
+       Int64
+       Uint
+       Uint8
+       Uint16
+       Uint32
+       Uint64
+       Uintptr
+       Float32
+       Float64
+       Complex64
+       Complex128
+       Array
+       Chan
+       Func
+       Interface
+       Map
+       Ptr
+       Slice
+       String
+       Struct
+       UnsafePointer
+   )
+
+4. reflect 其他方法
+-------------------
+
+上面说的 Kind 只是 Type 和 Value
+众多方法中的一个，其他的方法还有很多，比如 Int 、String
+
+5. 使用场景
+-----------
+
+1、动态调用函数（无参数）
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type T struct {}
+
+   func main() {
+       name := "Do"
+       t := &T{}
+       reflect.ValueOf(t).MethodByName(name).Call(nil)
+   }
+
+   func (t *T) Do() {
+       fmt.Println("hello")
+   }
+
+2、动态调用函数（有参数）
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type T struct{}
+
+   func main() {
+       name := "Do"
+       t := &T{}
+       a := reflect.ValueOf(1111)
+       b := reflect.ValueOf("world")
+       in := []reflect.Value{a, b}
+       reflect.ValueOf(t).MethodByName(name).Call(in)
+   }
+
+   func (t *T) Do(a int, b string) {
+       fmt.Println("hello" + b, a)
+   }
+
+反射的定律三
+------------
+
+只有当值是可设置时，才可修改反射对象。
+
+Value 类型有一个方法，叫 ``CanSet()``
+
+通过它，能知道这个 Value 可否设置一个新的值
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   func main() {
+       var x float64 = 3.4
+       v := reflect.ValueOf(x)
+       fmt.Println("settability of v:", v.CanSet())
+   }
+
+输出如下，false 表示，不可设置
+
+::
+
+   settability of v: false
+
+这时，如果你强行设置新值
+
+.. code:: go
+
+   package main
+
+   import (
+       "reflect"
+   )
+
+
+   func main() {
+       var x float64 = 3.4
+       v := reflect.ValueOf(x)
+       v.SetFloat(6.8)
+   }
+
+就会触发 panic
+
+::
+
+   panic: reflect: reflect.flag.mustBeAssignable using unaddressable value
+
+   goroutine 1 [running]:
+   reflect.flag.mustBeAssignableSlow(0x8e)
+           /usr/local/go/src/reflect/value.go:247 +0x138
+   reflect.flag.mustBeAssignable(...)
+           /usr/local/go/src/reflect/value.go:234
+   reflect.Value.SetFloat(0x1082e20, 0xc00001a068, 0x8e, 0x401b333333333333)
+           /usr/local/go/src/reflect/value.go:1587 +0x37
+   main.main()
+           /Users/MING/GolandProjects/golang-test/main.go:11 +0xb3
+
+   Process finished with exit code 2
+
+为什么会这样呢？
+
+因为当我们使用 ``reflect.ValueOf(x)`` 传递进去的实际是 x 的副本，而不是
+x 本身，只有将参数改为指针类型，才是传递 x 本身。
+
+因此可以把上面的代码修改一下
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+
+   func main() {
+       var x float64 = 3.4
+       p := reflect.ValueOf(&x)
+       v := p.Elem()
+       v.SetFloat(6.8)
+       fmt.Println("settability of v:", v.CanSet())
+       fmt.Println("value of x:", x)
+       fmt.Println("value of v:", v)
+   }
+
+输出如下
+
+::
+
+   settability of v: true
+   value of x: 6.8
+   value of v: 6.8
+
+几点说明
+--------
+
+1. 有 reflect 的代码一般都较难理解，使用时请注意适当。
+2. Golang 的反射很慢，这个和它的 API 设计有关
+3. 反射是一个高级知识点，内容很多，不容易掌握，应该小心谨慎的使用它
+4. 不到不得不用的地步，能避免使用反射就不用。
+
+参考文章
+--------
+
+`Go 系列教程 ——第 34
+篇：反射 <https://mp.weixin.qq.com/s/dkgJ_fA0smvpv69t5Nv-7A>`__
+
+`第001节：反射reflect <https://www.qfgolang.com/?special=fanshejizhi>`__
+
+https://golang.org/pkg/reflect/
+
+https://segmentfault.com/a/1190000016230264
+
+https://studygolang.com/articles/12348?fr=sidebar
+
+https://blog.golang.org/laws-of-reflection
+
+|image0|
+
+.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+
