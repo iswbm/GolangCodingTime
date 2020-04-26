@@ -1,22 +1,43 @@
-6.1 Gin 实战：Hello World
+5.1 Gin 实战：Hello World
 =========================
 
-1. 最简单的web示例
-------------------
+1. Go 环境的准备
+----------------
 
-新建一个项目目录，比如我使用 Goland ，那我的项目目录就为
-``~/GolandProjects/gin-web-example``
+打开你的 Goland，设置好 GOPATH，我这里设置的是
+``/Users/MING/Code/Golang``
 
-然后使用 go mod 命令初始化
+设置 GOPATH
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200419171345699.png
+   :alt: image-20200419171345699
+
+   image-20200419171345699
+
+开启 GO MODULES，并设置代理
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200419165821668.png
+   :alt: image-20200419165821668
+
+   image-20200419165821668
+
+然后在终端下，使用 ``go get`` 下载安装 gin 框架
 
 .. code:: shell
 
-   $ go mod init github.com/iswbm/gin-web-example
-   go: creating new go.mod: module github.com/iswbm/gin-web-example
+   $ go get -u github.com/gin-gonic/gin
 
-按照之前讲过的，此时会生成 ``go.mod`` 文件。
+进入 ``gin-example`` 目录，使用 ``go mod init`` 命令进行项目的初始化。
 
-接着，还是在这个目录下，新建一个 ``main.go`` 的文件
+.. code:: shell
+
+   $ go mod init github.com/iswbm/gin-example
+   go: creating new go.mod: module github.com/iswbm/gin-example
+
+2. 简单的示例
+-------------
+
+在 gin-example 根目录下，新建一个 ``main.go`` 的文件
 
 .. code:: go
 
@@ -35,11 +56,26 @@
            })
        })
 
-       // 默认在监听 0.0.0.0:8080
-       r.Run()
+       r.Run("localhost:8080")
    }
 
-一切准备好后，就可以运行了，
+将上面这段代码放入 Goland
+中后，如果碰到和我一样的情况（如下图），请将光标放在导入的这行，并使用快捷键
+``Option + Enter`` （Mac OS）同步包的信息。
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200419173514746.png
+   :alt: image-20200419173514746
+
+   image-20200419173514746
+
+确保在 Goland 中没有红色字体后，点击那个运行按钮启动程序
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200419174031233.png
+   :alt: image-20200419174031233
+
+   image-20200419174031233
+
+或者你也可以使用 ``go run`` 命令来启动
 
 ::
 
@@ -47,166 +83,394 @@
 
 从输出来看，它提示我们监听端口是 8080
 
-|image0|
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200419174203094.png
+   :alt: image-20200419174203094
 
-我们可以使用浏览器试着访问一下
-``0.0.0.0:8080/ping``\ ，如下图所示，访问成功。
+   image-20200419174203094
 
-|image1|
+接下来我们就可以测试一下刚刚写的HTTP接口是否可通。
 
-2. 项目结构及依赖管理
----------------------
+方法有很多种
+
+1. 直接浏览器访问：http://localhost:8080/ping
+2. 使用 PostMan 发送请求
+3. 直接使用 Goland 中自带的 HTTP 客户端工具进行请求
+
+这里为了方便，我使用第三种方法，步骤如下：
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200419174858761.png
+   :alt: image-20200419174858761
+
+   image-20200419174858761
+
+填写请求信息后，点击运行，效果如下：
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200419175221473.png
+   :alt: image-20200419175221473
+
+   image-20200419175221473
+
+4. 表的设计
+-----------
+
+用户(users)
+~~~~~~~~~~~
+
++-----------------+--------------+--------------+------+
+| 字段            | 类型         | 说明         | 角色 |
++=================+==============+==============+======+
+| id              | int(10)      |              | 主键 |
++-----------------+--------------+--------------+------+
+| name            | varchar(100) | 用户名       |      |
++-----------------+--------------+--------------+------+
+| passwd          | varchar(100) | 密码         |      |
++-----------------+--------------+--------------+------+
+| email           | varchar(100) | 邮箱         |      |
++-----------------+--------------+--------------+------+
+| profile_picture | varchar(100) | 头像路径     |      |
++-----------------+--------------+--------------+------+
+| last_login      | timestamp    | 最后登陆时间 |      |
++-----------------+--------------+--------------+------+
+| create_time     | timestamp    | 创建时间     |      |
++-----------------+--------------+--------------+------+
+| update_times    | timestamp    | 更新时间     |      |
++-----------------+--------------+--------------+------+
+| delete_times    | timestamp    | 删除时间     |      |
++-----------------+--------------+--------------+------+
+
+.. code:: mysql
+
+   CREATE TABLE `users` (
+       `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+       `name` varchar(100) NOT NULL COMMENT '用户名',
+       `passwd` VARCHAR(100) NOT NULL COMMENT '密码',
+       `email` VARCHAR(100) DEFAULT '' COMMENT '邮箱',
+       `profile_picture` VARCHAR(10) COMMENT '头像路径',
+       `last_login` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '最后登陆时间',
+       `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+       `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+       `delete_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '删除时间',
+       
+       PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户管理';
+
+标签(tags)
+~~~~~~~~~~
+
++-------------+--------------+----------+------+
+| 字段        | 类型         | 说明     | 属性 |
++=============+==============+==========+======+
+| id          | int(10)      |          | 主键 |
++-------------+--------------+----------+------+
+| name        | varchar(100) | 标签名   |      |
++-------------+--------------+----------+------+
+| count       | int(10)      | 文章数量 |      |
++-------------+--------------+----------+------+
+| create_time | timestamp    | 创建时间 |      |
++-------------+--------------+----------+------+
+| update_time | timestamp    | 更新时间 |      |
++-------------+--------------+----------+------+
+
+.. code:: mysql
+
+   CREATE TABLE `tags` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `name` varchar(100) DEFAULT '' COMMENT '标签名称',
+     `count` int(4) DEFAULT '0' COMMENT '文章数量',
+     `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+     `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+     `delete_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '删除时间',
+     PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标签管理';
+
+分类(categories)
+~~~~~~~~~~~~~~~~
+
++-------------+--------------+----------+------+
+| 字段        | 类型         | 说明     | 属性 |
++=============+==============+==========+======+
+| id          | int(10)      |          | 主键 |
++-------------+--------------+----------+------+
+| name        | varchar(100) | 分类名   |      |
++-------------+--------------+----------+------+
+| count       | int(10)      | 文章数量 |      |
++-------------+--------------+----------+------+
+| create_time | timestamp    | 创建时间 |      |
++-------------+--------------+----------+------+
+| update_time | timestamp    | 更新时间 |      |
++-------------+--------------+----------+------+
+
+.. code:: mysql
+
+   CREATE TABLE `categories` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `name` varchar(100) DEFAULT '' COMMENT '分类名称',
+     `count` int(4) DEFAULT '0' COMMENT '文章数量',
+     `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+     `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+     `delete_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '删除时间',
+     PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章分类管理';
+
+文章(articles)
+~~~~~~~~~~~~~~
+
++-------------+-----------+----------------+------+
+| 字段        | 类型      | 说明           | 属性 |
++=============+===========+================+======+
+| id          | int       | 不为空，自增长 | 主键 |
++-------------+-----------+----------------+------+
+| title       | varchar   | 标题           |      |
++-------------+-----------+----------------+------+
+| tag_id      | int(10)   | 标签           | 外键 |
++-------------+-----------+----------------+------+
+| category_id | int(10)   | 类别           | 外键 |
++-------------+-----------+----------------+------+
+| author_id   | int(10)   | 作者           | 外键 |
++-------------+-----------+----------------+------+
+| content     | text      | 正文           |      |
++-------------+-----------+----------------+------+
+| update_time | timestamp | 更新时间       |      |
++-------------+-----------+----------------+------+
+| create_time | timestamp | 发布时间       |      |
++-------------+-----------+----------------+------+
+| delete_time | timestamp | 发布时间       |      |
++-------------+-----------+----------------+------+
+| page_view   | int(10)   | 浏览量         |      |
++-------------+-----------+----------------+------+
+| like_count  | int(10)   | 点赞数         |      |
++-------------+-----------+----------------+------+
+
+.. code:: mysql
+
+   CREATE TABLE `articles` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `tag_id` int(10) unsigned COMMENT '标签ID',
+     `category_id` int(10) unsigned COMMENT '文章分类id',
+     `author_id` int(10) unsigned COMMENT '作者id',
+     `title` varchar(100) DEFAULT '' COMMENT '文章标题',
+     `content` text COMMENT '文章正文',
+     `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+     `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+     `delete_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '删除时间',
+     `page_view` int(10) unsigned DEFAULT '0' COMMENT '文章浏览量',
+     `like_count` int(10) unsigned DEFAULT '0' COMMENT '文章点赞数',
+     PRIMARY KEY (`id`),
+       FOREIGN KEY(category_id) references categories(id),
+     FOREIGN KEY(tag_id) references tags(id),
+       FOREIGN KEY(author_id) references users(id)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章管理';
+
+由于有外键的约束，所以请先创建标签表和分类表后再执行文章表的创建
+
+.. code:: mysql
+
+
+   CREATE TABLE `categories` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `name` varchar(100) DEFAULT '' COMMENT '分类名称',
+     `count` int(4) DEFAULT '0' COMMENT '文章数量',
+     `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+     `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+     `delete_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '删除时间',
+     PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章分类管理';
+
+   CREATE TABLE `tags` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `name` varchar(100) DEFAULT '' COMMENT '标签名称',
+     `count` int(4) DEFAULT '0' COMMENT '文章数量',
+     `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+     `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+     `delete_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '删除时间',
+     PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标签管理';
+
+
+   CREATE TABLE `users` (
+       `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+       `name` varchar(100) NOT NULL COMMENT '用户名',
+       `passwd` VARCHAR(100) NOT NULL COMMENT '密码',
+       `email` VARCHAR(100) DEFAULT '' COMMENT '邮箱',
+       `profile_picture` VARCHAR(10) COMMENT '头像路径',
+       `last_login` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '最后登陆时间',
+       `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+       `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+       `delete_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '删除时间',
+       
+       PRIMARY KEY (`id`)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户管理';
+
+
+   CREATE TABLE `articles` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `tag_id` int(10) unsigned COMMENT '标签ID',
+     `category_id` int(10) unsigned COMMENT '文章分类id',
+     `author_id` int(10) unsigned COMMENT '作者id',
+     `title` varchar(100) DEFAULT '' COMMENT '文章标题',
+     `content` text COMMENT '文章正文',
+     `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+     `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+     `delete_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '删除时间',
+     `page_view` int(10) unsigned DEFAULT '0' COMMENT '文章浏览量',
+     `like_count` int(10) unsigned DEFAULT '0' COMMENT '文章点赞数',
+     PRIMARY KEY (`id`),
+       FOREIGN KEY(category_id) references categories(id),
+     FOREIGN KEY(tag_id) references tags(id),
+       FOREIGN KEY(author_id) references users(id)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章管理';
+
+以下两个表，以后有需求再加入，现在暂不考虑
+
+评论(comments)
+~~~~~~~~~~~~~~
+
++-------------+-----------+----------+------+
+| 字段        | 类型      | 说明     | 角色 |
++=============+===========+==========+======+
+| id          | int(10)   |          | 主键 |
++-------------+-----------+----------+------+
+| post_in     | int(10)   |          | 外键 |
++-------------+-----------+----------+------+
+| created_by  | int(10)   |          | 外键 |
++-------------+-----------+----------+------+
+| comment     | text      | 评论     |      |
++-------------+-----------+----------+------+
+| create_time | timestamp | 创建时间 |      |
++-------------+-----------+----------+------+
+| update_time | timestamp | 更新时间 |      |
++-------------+-----------+----------+------+
+
+.. code:: mysql
+
+   CREATE TABLE `comments` (
+     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+       `post_in` int(10) UNSIGNED COMMENT '文章id',
+     `created_by` int(10) UNSIGNED COMMENT '评论者id',
+     `comment` text COMMENT '评论内容',
+     `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+     `delete_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '删除时间',
+     PRIMARY KEY (`id`),
+       FOREIGN KEY (`created_by`) REFERENCES users(id),
+       FOREIGN KEY (`post_in`) REFERENCES articles(id)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='评论管理';
+
+5. 接口整理
+-----------
+
+文章
+~~~~
+
+新增文章
+^^^^^^^^
+
+Request
+'''''''
+
+-  Method: POST
+-  URL: /v1.0/article
+-  Headers: Content-Type:application/json
+-  Body:
+
+.. code:: json
+
+   {
+     "title": "如何从零开始学习 Golang ?",
+     "tag": "Golang",
+     "category": "Golang 学习",
+     "author": "王炳明",
+     "content": "正文"
+   }
+
+Response
+''''''''
+
+-  Body
+
+.. code:: json
+
+   {
+     "code": 200,
+     "message": "OK"
+   }
+
+删除文章
+^^^^^^^^
+
+.. _request-1:
+
+Request
+'''''''
+
+-  Method: DELETE
+-  URL: /v1.0/article
+-  Headers: Content-Type:application/json
+
+-  Body:
+
+.. code:: json
+
+   {
+     "id": "0001"
+   }
+
+.. _response-1:
+
+Response
+''''''''
+
+.. code:: json
+
+   {
+     "code": 200,
+     "message": "OK"
+   }
+
+更新文章
+^^^^^^^^
+
+.. _request-2:
+
+Request
+'''''''
+
+-  Method: UPDATE
+-  URL: /v1.0/article
+-  Headers: Content-Type:application/json
+
+-  Body:
+
+.. code:: json
+
+   {
+     "id": "0001",
+     "title": "如何从零开始学习 Golang ?",
+     "tag": "Golang",
+     "category": "Golang 学习",
+     "author": "王炳明",
+     "content": "正文",
+   }
+
+.. _response-2:
+
+Response
+''''''''
+
+.. code:: json
+
+   {
+     "code": 200,
+     "message": "OK"
+   }
+
+6. 项目结构解析
+---------------
 
 以之前创建的项目目录为根目录，继续创建如下目录
 
 -  conf：用于存储配置文件
 -  middleware：应用中间件
 -  models：应用数据库模型
--  pkg：第三方包
--  routers 路由逻辑处理
--  runtime：应用运行时数据
-
-最终效果如下
-
-::
-
-   $ tree
-   .
-   ├── conf
-   ├── go.mod
-   ├── go.sum
-   ├── main.go
-   ├── middleware
-   ├── models
-   ├── pkg
-   ├── routes
-   └── runtime
-
-在这个目录下，每个文件夹下都是一个模块。
-
-由于最开始我们定义了模块名为 ``github.com/iswbm/gin-web-example``
-，所以当我们在一个模块中引用另一个模块的内容，也必须会从这里\ ``github.com/iswbm/gin-web-example``
-导入，但是当我们还在开发阶段时，这段模块还未上传至 github
-仓库，导入时肯定会失败。
-
-也就是说，你的每次调试都必须先将你的代码全部上传至 github
-，项目才能运行。
-
-那有什么办法可以解决这种低效的开发模式呢？
-
-这时候，就要提到之前提过的 go.mod 里的 replace 关键字。
-
-比如 ``github.com/iswbm/gin-web-example/routers => ./routers``
-这句话后，当我们在项目中导入
-``github.com/iswbm/gin-web-example/routers`` 时，它不会去 github
-上查找拉取包，而是会从本地的 ``./routes`` 查找。
-
-::
-
-   module github.com/iswbm/gin-web-example
-
-   go 1.14
-
-   require github.com/gin-gonic/gin v1.6.1
-
-   replace (
-       github.com/iswbm/gin-web-example/conf => ./pkg/conf
-       github.com/iswbm/gin-web-example/middleware => ./middleware
-       github.com/iswbm/gin-web-example/models => ./models
-       github.com/iswbm/gin-web-example/pkg/setting => ./pkg/setting
-       github.com/iswbm/gin-web-example/routers => ./routers
-   )
-
-3. 数据库创建
--------------
-
-.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200325203348548.png
-   :alt: image-20200325203348548
-
-   image-20200325203348548
-
-使用这段 SQL 命令，创建标签表
-
-.. code:: sql
-
-   CREATE TABLE `blog_tag` (
-     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-     `name` varchar(100) DEFAULT '' COMMENT '标签名称',
-     `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
-     `created_by` varchar(100) DEFAULT '' COMMENT '创建人',
-     `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
-     `modified_by` varchar(100) DEFAULT '' COMMENT '修改人',
-     `deleted_on` int(10) unsigned DEFAULT '0',
-     `state` tinyint(3) unsigned DEFAULT '1' COMMENT '状态 0为禁用、1为启用',
-     PRIMARY KEY (`id`)
-   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标签管理';
-
-.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200325203447004.png
-   :alt: image-20200325203447004
-
-   image-20200325203447004
-
-使用这段 SQL 命令，创建文章表
-
-.. code:: sql
-
-   CREATE TABLE `blog_article` (
-     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-     `tag_id` int(10) unsigned DEFAULT '0' COMMENT '标签ID',
-     `title` varchar(100) DEFAULT '' COMMENT '文章标题',
-     `desc` varchar(255) DEFAULT '' COMMENT '简述',
-     `content` text,
-     `created_on` int(11) DEFAULT NULL,
-     `created_by` varchar(100) DEFAULT '' COMMENT '创建人',
-     `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
-     `modified_by` varchar(255) DEFAULT '' COMMENT '修改人',
-     `deleted_on` int(10) unsigned DEFAULT '0',
-     `state` tinyint(3) unsigned DEFAULT '1' COMMENT '状态 0为禁用1为启用',
-     PRIMARY KEY (`id`)
-   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章管理';
-   3、 认证表
-
-使用这段 SQL 命令，创建认证表
-
-.. code:: sql
-
-   CREATE TABLE `blog_auth` (
-     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-     `username` varchar(50) DEFAULT '' COMMENT '账号',
-     `password` varchar(50) DEFAULT '' COMMENT '密码',
-     PRIMARY KEY (`id`)
-   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-   INSERT INTO `blog`.`blog_auth` (`id`, `username`, `password`) VALUES (null, 'test', 'test123456');
-
-4. 配置文件
------------
-
-在 conf 目录下新建 app.ini 文件，内容如下
-
-.. code:: ini
-
-   #debug or release
-   RUN_MODE = debug
-
-   [app]
-   PAGE_SIZE = 10
-   JWT_SECRET = 23347$040412
-
-   [server]
-   HTTP_PORT = 8000
-   READ_TIMEOUT = 60
-   WRITE_TIMEOUT = 60
-
-   [database]
-   TYPE = mysql
-   USER = 数据库账号
-   PASSWORD = 数据库密码
-   #127.0.0.1:3306
-   HOST = 数据库IP:数据库端口号
-   NAME = blog
-   TABLE_PREFIX = blog_
-
-.. |image0| image:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200324211928616.png
-.. |image1| image:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200324205302201.png
-
+-  pkg：存放各种代码包
+-  routers：路由逻辑处理
+-  runtimestamp：应用运行时数据
