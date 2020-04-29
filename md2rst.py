@@ -26,7 +26,7 @@ if not repo.is_dirty():
 
 base_link = "http://golang.iswbm.com/en/latest/"
 readme_header = '''
-这是我的个人博客（ [Go编程时光](http:/golang.iswbm.con/) ），主要写关于Go的一些思考总结。
+这是我的个人博客（ [Go编程时光](http:/golang.iswbm.com/) ），主要写关于Go的一些思考总结。
 '''
 readme_tooter = '''
 ---
