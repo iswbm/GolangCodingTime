@@ -1,5 +1,5 @@
 
-这是我的个人博客（ [Go编程时光](http:/golang.iswbm.con/) ），主要写关于Go的一些思考总结。
+这是我的个人博客（ [Go编程时光](http:/golang.iswbm.com/) ），主要写关于Go的一些思考总结。
 ## 第一章：基础知识
 - 1.1 [一文搞定开发环境的搭建](http://golang.iswbm.com/en/latest/c01/c01_01.html)
 - 1.2 [五种变量创建的方法](http://golang.iswbm.com/en/latest/c01/c01_02.html)
@@ -24,6 +24,8 @@
 - 2.2 [面向对象编程：接口与多态](http://golang.iswbm.com/en/latest/c02/c02_02.html)
 - 2.3 [关键字：make 和 new 的区别？](http://golang.iswbm.com/en/latest/c02/c02_03.html)
 - 2.4 [理解语句块与作用域](http://golang.iswbm.com/en/latest/c02/c02_04.html)
+- 2.5 [说说 Go 语言中的空接口](http://golang.iswbm.com/en/latest/c02/c02_05.html)
+- 2.6 [动态类型与静态类型](http://golang.iswbm.com/en/latest/c02/c02_06.html)
 
 ## 第三章：项目管理
 - 3.1 [超详细解读 Go Modules 前世今生及入门使用](http://golang.iswbm.com/en/latest/c03/c03_01.html)
