@@ -17,6 +17,7 @@
 - 1.14 [Go 语言中的类型断言？](http://golang.iswbm.com/en/latest/c01/c01_14.html)
 - 1.15 [这五点带你理解 select 用法](http://golang.iswbm.com/en/latest/c01/c01_15.html)
 - 1.16 [深入理解Go语言中里反射](http://golang.iswbm.com/en/latest/c01/c01_16.html)
+- 1.17 [如何使用 GDB 调试 Go 程序？](http://golang.iswbm.com/en/latest/c01/c01_17.html)
 
 ## 第二章：面向对象
 - 2.1 [面向对象编程：结构体与继承](http://golang.iswbm.com/en/latest/c02/c02_01.html)
