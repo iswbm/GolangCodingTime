@@ -110,7 +110,7 @@
 
    image-20200419175221473
 
-4. 表的设计
+3. 表的设计
 -----------
 
 用户(users)
@@ -355,7 +355,7 @@
        FOREIGN KEY (`post_in`) REFERENCES articles(id)
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='评论管理';
 
-5. 接口整理
+4. 接口整理
 -----------
 
 文章
@@ -463,7 +463,7 @@ Response
      "message": "OK"
    }
 
-6. 项目结构解析
+5. 项目结构解析
 ---------------
 
 以之前创建的项目目录为根目录，继续创建如下目录
