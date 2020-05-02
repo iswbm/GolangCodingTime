@@ -1,55 +1,238 @@
-6.1 推荐几个Go学习网站
-======================
+6.1 整理了 20 个学习 Go 语言的精品网站
+======================================
 
-1、用小例子来学习 Go 语言
+1. Go 编程时光
+--------------
 
-https://gobyexample-cn.github.io/
+这是我的个人网站，我在公众号《Go编程时光》发表的所有文章都会同步到该网站上。
 
-2、跟煎鱼学Go
+公众号的文章发表后，有且仅有一次修改的机会，而且最多只能修改 20
+个字，相当于只能应付错别字，如果观点表述或者个人理解有误，是无法大篇幅修改的。
 
-https://eddycjy.gitbook.io/golang/
+因此，我会将这勘误部分更新至这个网站，确保文章的准确无误，目前网站的内容也会随着公众号的文章的发布而逐渐丰富起来。
 
-3、Go 命令教程
+所以推荐你里把我的个人网站收藏一下，完全可以当做 wiki 使用。
 
-https://wiki.jikexueyuan.com/project/go-command-tutorial/0.0.html
+**网站链接**\ ：http://golang.iswbm.com/
 
-4、topgoer
+|image0|
 
-http://www.topgoer.com/
+2. Go 语言入门教程
+------------------
 
-5、Keep Coding 有几篇非常不错的文章
+C语言中文网的系列教程，对新手非常友好的一个入门教程，很多内容我也是从这里学习的，推荐大家看看。
 
-https://liujiacai.net/
+**网站链接**\ ：http://c.biancheng.net/golang/
 
-`写给新手的 Go
-开发指南 <https://liujiacai.net/blog/2019/07/17/hello-golang/>`__
+|image1|
 
-`何处安放我们的 Go
-代码 <https://liujiacai.net/blog/2019/10/24/go-modules/>`__
+3. 菜鸟教程
+-----------
 
-`Go struct/interface
-最佳实践 <https://liujiacai.net/blog/2020/03/14/go-struct-interface/>`__
+菜鸟教程（RUNOOB）是一个一站式编程入门学习网站，想当年我学习 Python
+时也经常 在这里同样也有 Go 语言的系列。
 
-6、Go 语言入门教程
+**网站链接**\ ：https://www.runoob.com/go/go-tutorial.html
 
-`Go语言入门教程 <http://c.biancheng.net/golang/>`__
+|image2|
 
-7、Go命令教程（赫林）
+4. W3Cschool
+------------
 
-https://hyper0x.github.io/go_command_tutorial/#/
+W3Cschool
+也是一个专业的编程入门学习及技术文档查询应用，提供包括\ `HTML <https://baike.baidu.com/item/HTML>`__\ ，\ `CSS <https://baike.baidu.com/item/CSS/5457>`__\ ，\ `Javascript <https://baike.baidu.com/item/Javascript>`__\ ，\ `jQuery <https://baike.baidu.com/item/jQuery>`__\ ，\ `C <https://baike.baidu.com/item/C/7252092>`__\ ，\ `PHP <https://baike.baidu.com/item/PHP/9337>`__\ ，\ `Java <https://baike.baidu.com/item/Java/85979>`__\ ，\ `Python <https://baike.baidu.com/item/Python>`__\ ，\ `Sql <https://baike.baidu.com/item/Sql>`__\ ，MySQL，Golang
+等编程语言和开源技术的在线教程及使用手册，是类似国外w3schools的学习社区及菜鸟编程平台。
 
-8、Go入门指南（The Way to Go）
+**网站链接**\ ：https://www.w3cschool.cn/go/
 
-https://learnku.com/docs/the-way-to-go
+|image3|
 
-9、Go语言圣经
+5. 易百教程
+-----------
 
-https://go.wuhaolin.cn/gopl/
+和菜鸟教程，W3Cschool一样，易百教程也是一个一站式的编程语言入门教程网站，目前为止，共发布了
+157 个系列教程，每个教程都很适合新手学习。
 
-10、mojotv
+**网站链接**\ ：https://www.yiibai.com/go/
 
-https://mojotv.cn/404#Golang
+|image4|
 
-11、cyent的 Golang 笔记
+6. Go by Example
+----------------
 
-https://cyent.github.io/golang/
+这个网站的 idea 非常好，网站里收集了很多的小例子，来帮助你快速了解 Go
+语言里那些基础的知识点。不过要深入理解这些知识，还是需要你学习更多的资料，并加以练习。
+
+**网站链接**\ ：https://gobyexample-cn.github.io/
+
+|image5|
+
+7. TopGoer 教程
+---------------
+
+这个网站是我在搜索资料的时候偶然发现的，从目录可以看出内容非常多，网络编程、并发编程，很多主流的
+Web 框架都有。
+
+**网站链接**\ ：http://www.topgoer.com/
+
+|image6|
+
+8. Go命令教程
+-------------
+
+go 的命令非常多，如果想系统的学习，推荐郝林的 Go 命令教程，非常的全。
+
+**网站链接**\ ：
+
+1、 https://hyper0x.github.io/go_command_tutorial/#/
+
+2、https://wiki.jikexueyuan.com/project/go-command-tutorial/0.0.html
+
+|image7|
+
+9. Uber 编程规范
+----------------
+
+Uber 开源了其公司内部使用的《\ `Go
+语言编程规范 <https://github.com/uber-go/guide/blob/master/style.md>`__\ 》。该指南是为了使代码库更易于管理，同时让工程师有效地使用
+Go 语言特性。文档中详细描述了在 Uber 编写 Go
+代码的各种注意事项，包括具体的“Dos and Don’ts of writing Go code at
+Uber”，也就是 Go 代码应该怎样写、不该怎样写。
+
+**网站链接**
+
+英文原文：https://github.com/uber-go/guide/blob/master/style.md
+
+中文译文：https://www.infoq.cn/article/G6c95VyU5telNXXCC9yO
+
+|image8|
+
+10. Go Walker
+-------------
+
+Go Walker 是一个可以在线生成并浏览 `Go <https://golang.org/>`__ 项目 API
+文档的 Web 服务器，目前已支持包括 **GitHub** 等代码托管平台。
+
+|image9|
+
+11. The Way to Go
+-----------------
+
+《the way to go》的
+中文版本，目前还在持续更新中，截止今天（2020/04/30）翻译进度已经达到
+96.92%。
+
+**网站链接**\ ：https://learnku.com/docs/the-way-to-go
+
+|image10|
+
+12. Go语言圣经
+--------------
+
+本书由《C程序设计语言》
+的作者Kernighan和谷歌公司Go团队合作编写而成，是关于Go语言编程的权威著作。
+
+**网站链接**\ ：https://books.studygolang.com/gopl-zh/
+
+|image11|
+
+13. 跟煎鱼学Go
+--------------
+
+煎鱼大佬的博客，跟着学习了很多的干货。良心推荐一波。
+
+**网站链接**\ ：https://eddycjy.gitbook.io/golang/
+
+|image12|
+
+14. mojotv 进阶系列
+-------------------
+
+一个致力于 Go 语言编程知识分享的高质量网站，里面有大量关于 Go
+进阶的文章，此外还有 Python、 Docker ，K8S
+，算法的文章。我试图在网站上找出作者的相关信息，不过并没有什么收获。
+
+**网站链接**\ ：https://mojotv.cn/404#Golang
+
+|image13|
+
+15. 极客学院
+------------
+
+极客学院，这个网站里收集了很多领域的编程语言相关的教程，在这里依然可以找到不少
+Go 的教程。
+
+我不知道这些内容是否获得授权，但对于要学习需求的同学来说，确实是一个不错的网站。
+
+**网站链接**\ ：https://wiki.jikexueyuan.com/list/go/
+
+|image14|
+
+16. Go 夜读
+-----------
+
+这是一个由众多资深 Gopher 组织的开源项目，主要是对 Go
+源码进行解读，并约定每周四晚上进行技术分享。
+
+**网站链接**\ ：https://talkgo.org/
+
+|image15|
+
+17. CTOLib 码库
+---------------
+
+**网站链接**\ ：https://www.ctolib.com/go/categories/go-guide.html
+
+|image16|
+
+--------------
+
+18. Go 语言简明教程
+-------------------
+
+**网站链接**\ ：https://geektutu.com/post/quick-golang.html
+
+|image17|
+
+19. Go 语言高级编程
+-------------------
+
+**网站链接**\ ：https://chai2010.gitbooks.io/advanced-go-programming-book/content/
+
+|image18|
+
+20. Go 语言中文网
+-----------------
+
+Go 语言爱好者的聚集地，是目前最大的Go 语言中文社区，关于 Go 语言
+你所需要的，不需要的，都可以在这里找得到，包括
+Go历史版本的下载，各种高质量的电子书资源，各种大牛写的高质量文章等。
+
+**网站链接**\ ：https://studygolang.com/
+
+|image19|
+
+|image20|
+
+.. |image0| image:: http://image.iswbm.com/20200430112024.png
+.. |image1| image:: http://image.iswbm.com/20200430102243.png
+.. |image2| image:: http://image.iswbm.com/20200430170656.png
+.. |image3| image:: http://image.iswbm.com/20200430171029.png
+.. |image4| image:: http://image.iswbm.com/20200430172511.png
+.. |image5| image:: http://image.iswbm.com/20200430112319.png
+.. |image6| image:: http://image.iswbm.com/20200430102508.png
+.. |image7| image:: http://image.iswbm.com/20200430102821.png
+.. |image8| image:: http://image.iswbm.com/20200430113756.png
+.. |image9| image:: http://image.iswbm.com/20200430170054.png
+.. |image10| image:: http://image.iswbm.com/20200430165344.png
+.. |image11| image:: http://image.iswbm.com/20200430100755.png
+.. |image12| image:: http://image.iswbm.com/20200430105116.png
+.. |image13| image:: http://image.iswbm.com/20200430095544.png
+.. |image14| image:: http://image.iswbm.com/20200430104324.png
+.. |image15| image:: http://image.iswbm.com/20200430174216.png
+.. |image16| image:: http://image.iswbm.com/20200430174109.png
+.. |image17| image:: http://image.iswbm.com/20200430174507.png
+.. |image18| image:: http://image.iswbm.com/20200430175818.png
+.. |image19| image:: http://image.iswbm.com/20200430134207.png
+.. |image20| image:: http://image.python-online.cn/image-20200320125724880.png
+

@@ -50,7 +50,7 @@
 - 2. [项目结构及依赖管理](http://golang.iswbm.com/en/latest/c05/c05_03.html)
 
 ## 第六章：暂未分类
-- 6.1 [推荐几个Go学习网站](http://golang.iswbm.com/en/latest/c06/c06_01.html)
+- 6.1 [整理了 20 个学习 Go 语言的精品网站](http://golang.iswbm.com/en/latest/c06/c06_01.html)
 - 6.2 [配置高颜值 IDE：Goland](http://golang.iswbm.com/en/latest/c06/c06_02.html)
 
 
