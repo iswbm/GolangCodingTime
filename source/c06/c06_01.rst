@@ -212,7 +212,14 @@ Go历史版本的下载，各种高质量的电子书资源，各种大牛写的
 
 |image19|
 
+21. Go 语言设计与实现
+---------------------
+
+**网站链接**\ ：https://draveness.me/golang/
+
 |image20|
+
+|image21|
 
 .. |image0| image:: http://image.iswbm.com/20200430112024.png
 .. |image1| image:: http://image.iswbm.com/20200430102243.png
@@ -234,5 +241,6 @@ Go历史版本的下载，各种高质量的电子书资源，各种大牛写的
 .. |image17| image:: http://image.iswbm.com/20200430174507.png
 .. |image18| image:: http://image.iswbm.com/20200430175818.png
 .. |image19| image:: http://image.iswbm.com/20200430134207.png
-.. |image20| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image20| image:: http://image.iswbm.com/20200502110042.png
+.. |image21| image:: http://image.python-online.cn/image-20200320125724880.png
 
