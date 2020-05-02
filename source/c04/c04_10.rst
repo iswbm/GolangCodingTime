@@ -1,9 +1,39 @@
-4.10 函数式编程
-===============
+4.10 如何实现一个协程池？
+=========================
 
-函数是一等公民，它可以做为参数进行传递，可以做为函数返回值，也可以做为接收者。所以后来才有了高阶函数，闭包。
+协程池的实现
 
-正统的函数式编程
+.. code:: go
 
--  不可变性：不能有状态，只能有函数和变量
--  函数只能有一个参数
+   type Pool struct {
+     work chan func() // 任务  sem  chan struct{} // 数量
+   }
+   func New(size int) *Pool {
+       return &Pool{
+           work: make(chan func()),
+           sem:  make(chan struct{}, size),
+       }
+   }
+   func (p *Pool) Schedule(task func()) error { // 任务调度
+       select {
+       case p.work <- task:
+       case p.sem <- struct{}{}:
+           go p.worker(task)
+       }
+   }
+   func (p *Pool) worker(task func()) { // 任务执行
+       defer func() { <-p.sem }
+       for {
+           task()
+           task = <-p.work
+       }
+   }
+
+协程池的调用
+
+.. code:: go
+
+   pool := gopool.New(128)
+   pool.Schedule(func(){
+     fmt.println("task run")
+   })

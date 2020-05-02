@@ -43,7 +43,7 @@
 - 4.6 [学习 Go 协程：互斥锁和读写锁](http://golang.iswbm.com/en/latest/c04/c04_06.html)
 - 4.8 [学习一些常见的并发模型](http://golang.iswbm.com/en/latest/c04/c04_08.html)
 - 4.9 [理解 Go 语言中的 Context](http://golang.iswbm.com/en/latest/c04/c04_09.html)
-- 4.10 [函数式编程](http://golang.iswbm.com/en/latest/c04/c04_10.html)
+- 4.10 [如何实现一个协程池？](http://golang.iswbm.com/en/latest/c04/c04_10.html)
 
 ## 第五章：Web实战
 - 5.1 [Gin 实战：Hello World](http://golang.iswbm.com/en/latest/c05/c05_01.html)
