@@ -163,7 +163,7 @@ Go 语言中没有提供类似 Python 的 keys() 和 values()
        scores := map[string]int{"english": 80, "chinese": 85}
 
        for subject, score := range scores {
-           fmt.Printf("key: %s, value: %d\n", subject, scores)
+           fmt.Printf("key: %s, value: %d\n", subject, score)
        }
    }
 
