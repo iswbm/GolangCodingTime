@@ -280,7 +280,7 @@ Go 中确实不如 Python 那样灵活，bool 与 int
        //  && 两边的表达式都会执行
        fmt.Println( age > 18 && gender == "male")
        // gender == "male" 并不会执行
-       fmt.Println( age > 18 || gender == "male")
+       fmt.Println( age < 18 || gender == "male")
    }
 
    // output: false
