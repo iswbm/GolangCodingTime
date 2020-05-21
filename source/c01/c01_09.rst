@@ -214,7 +214,7 @@ default 的代码块。
 
 .. code:: go
 
-   s ：= "hello"
+   s := "hello"
    switch {
    case s == "hello":
        fmt.Println("hello")
