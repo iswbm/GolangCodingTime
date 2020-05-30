@@ -50,9 +50,13 @@
 - 5.2 [学 gin 需要了解哪些库](http://golang.iswbm.com/en/latest/c05/c05_02.html)
 - 2. [项目结构及依赖管理](http://golang.iswbm.com/en/latest/c05/c05_03.html)
 
-## 第六章：暂未分类
-- 6.1 [整理了 20 个学习 Go 语言的精品网站](http://golang.iswbm.com/en/latest/c06/c06_01.html)
-- 6.2 [配置高颜值 IDE：Goland](http://golang.iswbm.com/en/latest/c06/c06_02.html)
+## 第六章：测试专题
+- 6.1 [go test 工具命令详解](http://golang.iswbm.com/en/latest/c06/c06_01.html)
+- 6.2 [如何进行单元测试？](http://golang.iswbm.com/en/latest/c06/c06_02.html)
+
+## 第七章：暂未分类
+- 6.1 [整理了 20 个学习 Go 语言的精品网站](http://golang.iswbm.com/en/latest/c07/c07_01.html)
+- 6.2 [配置高颜值 IDE：Goland](http://golang.iswbm.com/en/latest/c07/c07_02.html)
 
 
 ---

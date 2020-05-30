@@ -169,6 +169,27 @@ range 后可接数组、切片，字符串等
    hello, python
    hello, go
 
+如果你用一个变量来接收的话，接收到的是索引
+
+.. code:: go
+
+   import "fmt"
+
+   func main() {
+       myarr := [...]string{"world", "python", "go"}
+       for i := range myarr {
+           fmt.Printf("hello, %v\n", i)
+       }
+   }
+
+输出如下
+
+::
+
+   hello, 0
+   hello, 1
+   hello, 2
+
 --------------
 
 |image0|
