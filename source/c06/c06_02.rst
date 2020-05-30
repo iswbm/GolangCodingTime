@@ -1,0 +1,152 @@
+6.2 如何进行单元测试？
+======================
+
+在计算机编程中，单元测试（英语：Unit
+Testing）又称为模块测试，是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。
+
+程序单元是应用的最小可测试部件，一般来说都是对某一个函数方法进行测试，以尽可能的保证没有问题或者问题可被我们预知。为了达到这个目的，我们可以使用各种手段、逻辑，模拟不同的场景进行测试。
+
+那么我们如何在写 Golang 代码时，进行单元测试呢？
+
+由于实在是太简单了，我这里直接上例子吧
+
+1. 单元测试
+-----------
+
+准备两个 Go 文件
+
+**math.go**
+
+.. code:: go
+
+   package math
+
+   func Add(x,y int) int {
+       return x+y
+   }
+
+**math_test.go**
+
+.. code:: go
+
+   package math
+
+   import "testing"
+
+   func TestAdd(t *testing.T) {
+       t.Log(Add(1, 2))
+   }
+
+然后使用 ``go test`` 工具去执行
+
+.. code:: shell
+
+   $ go test .
+   ok      _/home/wangbm/golang/math   0.003s
+
+从上面这个例子中，可以总结中几点 Go 语言测试框架要遵循的规则
+
+1. 单元测试代码的
+   go文件必须以\ ``_test.go``\ 结尾，而前面最好是被测试的文件名（不过并不是强制的），比如要测试
+   math.go 测试文件名就为 math_test.go
+2. 单元测试的函数名必须以\ ``Test``\ 开头，后面直接跟要测试的函数名，比如要测试
+   Add函数，单元测试的函数名就得是 TestAdd
+3. 单元测试的函数必须接收一个指向\ ``testing.T``\ 类型的指针，并且不能返回任何值。
+
+2. 表组测试
+-----------
+
+Add(1, 2) 是一次单元测试的场景，而 Add(2, 4) ，Add(3, 6)
+又是另外两种单元测试的场景。
+
+对于多种输入场景的测试，我们可以同时放在 TestAdd
+里进行测试，这种测试方法就是表组测试。
+
+修改 **math_test.go** 如下
+
+.. code:: go
+
+   package math
+
+   import "testing"
+
+   func TestAdd(t *testing.T) {
+       sum:=Add(1,2)
+       if sum == 3 {
+           t.Log("the result is ok")
+       } else {
+           t.Fatal("the result is wrong")
+       }
+       
+       sum=Add(2,4)
+       if sum == 6 {
+           t.Log("the result is ok")
+       } else {
+           t.Fatal("the result is wrong")
+       }
+   }
+
+执行 ``go test``
+
+.. code:: shell
+
+   $ go test . -v
+   === RUN   TestAdd
+       TestAdd: math_test.go:8: the result is ok
+       TestAdd: math_test.go:15: the result is ok
+   --- PASS: TestAdd (0.00s)
+   PASS
+   ok      _/home/wangbm/golang/math   0.003s
+
+稍微如果输入的场景实在太多（比如下面用的五组输入），用上面的方法，可能需要写很多重复的代码，这时候可以利用
+**表格测试法**
+
+.. code:: go
+
+   package math
+
+   import "testing"
+
+   type TestTable struct {
+       xarg int
+       yarg int
+   }
+
+   func TestAdd(t *testing.T){
+       tables := []TestTable{
+           {1,2},
+           {2,4},
+           {4,8},
+           {5,10},
+           {6,12},
+       }
+       
+       for _, table := range tables{
+           result := Add(table.xarg, table.yarg)
+           if result == (table.xarg + table.yarg){
+               t.Log("the result is ok")
+           } else {
+               t.Fatal("the result is wrong")
+           }
+       }
+   }
+
+执行 ``go test``
+
+.. code:: shell
+
+   $ go test . -v
+   === RUN   TestAdd
+       TestAdd: math_test.go:22: the result is ok
+       TestAdd: math_test.go:22: the result is ok
+       TestAdd: math_test.go:22: the result is ok
+       TestAdd: math_test.go:22: the result is ok
+       TestAdd: math_test.go:22: the result is ok
+   --- PASS: TestAdd (0.00s)
+   PASS
+   ok      _/home/wangbm/golang/math   0.002s
+
+|image0|
+
+.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+
