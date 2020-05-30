@@ -53,8 +53,8 @@
        fmt.Printf("性别：%s\n", person.gender)
    }
 
-其中\ ``fmt_profile`` 是方法名，而\ ``(person Profile)`` ：表示将
-fmt_profile 方法与 Profile 的实例绑定。我们把 Profile
+其中\ ``FmtProfile`` 是方法名，而\ ``(person Profile)`` ：表示将
+FmtProfile 方法与 Profile 的实例绑定。我们把 Profile
 称为方法的接收者，而 person 表示实例本身，它相当于 Python 中的
 self，在方法内可以使用 ``person.属性名`` 的方法来访问实例属性。
 
