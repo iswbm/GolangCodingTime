@@ -26,7 +26,26 @@ if not repo.is_dirty():
 
 base_link = "http://golang.iswbm.com/en/latest/"
 readme_header = '''
-这是我的个人博客（ [Go编程时光](http:/golang.iswbm.com/) ），主要写关于Go的一些思考总结。
+![](http://image.iswbm.com/20200607120940.png)
+
+<p align="center">
+    <img src='https://img.shields.io/badge/language-Python-blue.svg' alt="Build Status">
+    <img src='https://img.shields.io/badge/framwork-Sphinx-green.svg'>
+  	<a href='https://www.zhihu.com/people/wongbingming'><img src='https://img.shields.io/badge/dynamic/json?color=0084ff&logo=zhihu&label=%E7%8E%8B%E7%82%B3%E6%98%8E&query=%24.data.totalSubs&url=https%3A%2F%2Fapi.spencerwoo.com%2Fsubstats%2F%3Fsource%3Dzhihu%26queryKey%3Dwongbingming'></a>
+    <a href='https://juejin.im/user/5b08d982f265da0db3502c55'><img src='https://img.shields.io/badge/掘金-2481-blue'></a>
+    <a href='http://image.iswbm.com/20200607114246.png'><img src='http://img.shields.io/badge/%E5%85%AC%E4%BC%97%E5%8F%B7-30k+-brightgreen'></a>
+</p>
+
+## [项目主页](http://python.iswbm.com/)
+
+在线阅读：[Python 编程时光](http://python.iswbm.com/)
+
+![](http://image.iswbm.com/20200607130051.png)
+
+## 文章结构
+
+![](http://image.iswbm.com/20200607131339.png)
+
 '''
 readme_tooter = '''
 ---
@@ -126,5 +145,5 @@ def main(index_info):
 if __name__ == '__main__':
     index_info = init_index_info()
     main(index_info)
-    render_index_page(index_info)
+    # render_index_page(index_info)
     print("OK")
