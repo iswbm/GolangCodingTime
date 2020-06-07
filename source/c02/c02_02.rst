@@ -244,5 +244,5 @@ typing）的定义是，只要你长得像鸭子，叫起来也像鸭子，那�
 |image1|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image1| image:: http://image.iswbm.com/20200607174235.png
 

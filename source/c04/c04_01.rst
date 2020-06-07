@@ -273,5 +273,5 @@ Go语言中的函数，在你定义的时候，就规定了此函数
 |image1|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image1| image:: http://image.iswbm.com/20200607174235.png
 

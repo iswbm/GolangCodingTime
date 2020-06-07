@@ -151,5 +151,5 @@ Add(1, 2) 是一次单元测试的场景，而 Add(2, 4) ，Add(3, 6)
 |image1|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image1| image:: http://image.iswbm.com/20200607174235.png
 

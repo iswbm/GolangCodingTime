@@ -49,7 +49,7 @@ readme_header = '''
 '''
 readme_tooter = '''
 ---
-![关注公众号，获取最新干货！](http://image.python-online.cn/image-20200320125724880.png)
+![](http://image.iswbm.com/20200607174235.png)
 
 '''
 

@@ -178,5 +178,5 @@ goto语句与标签之间不能有变量声明，否则编译错误。
 |image1|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image1| image:: http://image.iswbm.com/20200607174235.png
 
