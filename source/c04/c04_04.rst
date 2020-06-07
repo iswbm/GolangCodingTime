@@ -1,6 +1,8 @@
 4.4 几个信道死锁经典错误案例详解
 ================================
 
+|image0|
+
 刚接触 Go
 语言的信道的时候，经常会遇到死锁的错误，而导致这个错误的原因有很多种，这里整理了几种常见的。
 
@@ -176,7 +178,8 @@ range 信道已经关闭，无需等待就行。
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

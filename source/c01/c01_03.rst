@@ -1,13 +1,15 @@
 1.3 数据类型：整型与浮点型
 ==========================
 
+|image0|
+
 1. 整型
 -------
 
 Go
 语言中，整数类型可以再细分成10个类型，为了方便大家学习，我将这些类型整理成一张表格。
 
-|image0|
+|image1|
 
 int 和 uint 的区别就在于一个 ``u``\ ，有 ``u`` 说明是无符号，没有 ``u``
 代表有符号。
@@ -229,8 +231,9 @@ https://www.zhihu.com/question/26022206
 
 --------------
 
-|image1|
+|image2|
 
-.. |image0| image:: http://image.python-online.cn/20200120204329.png
-.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/20200120204329.png
+.. |image2| image:: http://image.python-online.cn/image-20200320125724880.png
 

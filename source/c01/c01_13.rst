@@ -1,6 +1,8 @@
 1.13 异常机制：panic 和 recover
 ===============================
 
+|image0|
+
 编程语言一般都会有异常捕获机制，在 Python 中 是使用\ ``raise`` 和
 ``try-except`` 语句来实现的异常抛出和异常捕获的。
 
@@ -148,7 +150,8 @@ recover，并不能任意使用，它有强制要求，必须得在 defer 下才
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

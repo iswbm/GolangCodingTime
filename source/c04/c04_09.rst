@@ -1,6 +1,8 @@
 4.9 理解 Go 语言中的 Context
 ============================
 
+|image0|
+
 1. 什么是 Context？
 -------------------
 
@@ -565,7 +567,8 @@ WithDeadline 传入的第二个参数是 time.Time
 
 -  `飞雪无情的博客 <https://www.flysnow.org/2017/05/12/go-in-action-go-context.html>`__
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

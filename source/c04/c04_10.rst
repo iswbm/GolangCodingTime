@@ -1,6 +1,8 @@
 4.10 如何实现一个协程池？
 =========================
 
+|image0|
+
 在 Golang
 中要创建一个协程是一件无比简单的事情，你只要定义一个函数，并使用 go
 关键字去执行它就行了。
@@ -134,7 +136,8 @@ NewTask 传入 task ，这两个 case
    2020-05-24 23:18:04.019755 +0800 CST m=+4.010435443
    2020-05-24 23:18:04.019819 +0800 CST m=+4.010499440
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

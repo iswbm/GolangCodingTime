@@ -1,6 +1,8 @@
 6.1 整理了 20 个学习 Go 语言的精品网站
 ======================================
 
+|image0|
+
 本文写自我的知乎回答：https://www.zhihu.com/question/23486344/answer/1204644361
 
 --------------
@@ -22,7 +24,7 @@ Web 开发，爬虫程序的编写等**\ ，敬请期待。
 如果你还在入门阶段，或者准备入门，那么建议把我的个人网站收藏一下，完全可以当做
 wiki 查阅。对于基础知识我讲的还是比较全面，细致的。
 
-|image0|
+|image1|
 
 写 《\ `Go
 编程时光 <https://golang.iswbm.com/>`__\ 》这个系列教程，为了让文章出错的概率降到最低，我如履薄冰，我每写一个知识点，就要翻阅大量的其他人的教程、博客，以及官方文档。
@@ -44,7 +46,7 @@ wiki 查阅。对于基础知识我讲的还是比较全面，细致的。
 
 另外，为了方便大家，我制作了张思维导图，这下清晰多了吧（hhhhh
 
-|image1|
+|image2|
 
 1. 入门阶段
 -----------
@@ -56,7 +58,7 @@ C语言中文网的系列教程，对新手非常友好的一个入门教程，�
 
 **网站链接**\ ：http://c.biancheng.net/golang/
 
-|image2|
+|image3|
 
 菜鸟教程 - Go 系列
 ~~~~~~~~~~~~~~~~~~
@@ -66,7 +68,7 @@ C语言中文网的系列教程，对新手非常友好的一个入门教程，�
 
 **网站链接**\ ：https://www.runoob.com/go/go-tutorial.html
 
-|image3|
+|image4|
 
 易百教程 - Go 系列
 ~~~~~~~~~~~~~~~~~~
@@ -76,7 +78,7 @@ C语言中文网的系列教程，对新手非常友好的一个入门教程，�
 
 **网站链接**\ ：https://www.yiibai.com/go/
 
-|image4|
+|image5|
 
 W3Cshcool - Go 系列
 ~~~~~~~~~~~~~~~~~~~
@@ -87,7 +89,7 @@ W3Cschool
 
 **网站链接**\ ：https://www.w3cschool.cn/go/
 
-|image5|
+|image6|
 
 TopGoer 教程
 ~~~~~~~~~~~~
@@ -97,7 +99,7 @@ Web 框架都有。
 
 **网站链接**\ ：http://www.topgoer.com/
 
-|image6|
+|image7|
 
 The Way to Go
 ~~~~~~~~~~~~~
@@ -108,7 +110,7 @@ The Way to Go
 
 **网站链接**\ ：https://learnku.com/docs/the-way-to-go
 
-|image7|
+|image8|
 
 极客学院（Go 教程）
 ~~~~~~~~~~~~~~~~~~~
@@ -120,14 +122,14 @@ Go 的教程。
 
 **网站链接**\ ：https://wiki.jikexueyuan.com/list/go/
 
-|image8|
+|image9|
 
 Go 语言简明教程
 ~~~~~~~~~~~~~~~
 
 **网站链接**\ ：https://geektutu.com/post/quick-golang.html
 
-|image9|
+|image10|
 
 Go by Example
 ~~~~~~~~~~~~~
@@ -137,7 +139,7 @@ Go by Example
 
 **网站链接**\ ：https://gobyexample-cn.github.io/
 
-|image10|
+|image11|
 
 2. Web开发
 ----------
@@ -182,7 +184,7 @@ Revel 中文文档
 
 **网站链接**\ ：https://eddycjy.gitbook.io/golang/
 
-|image11|
+|image12|
 
 Go语言圣经
 ~~~~~~~~~~
@@ -192,7 +194,7 @@ Go语言圣经
 
 **网站链接**\ ：https://books.studygolang.com/gopl-zh/
 
-|image12|
+|image13|
 
 mojotv 进阶系列
 ~~~~~~~~~~~~~~~
@@ -203,14 +205,14 @@ mojotv 进阶系列
 
 **网站链接**\ ：https://mojotv.cn/404#Golang
 
-|image13|
+|image14|
 
 Go 语言高级编程
 ~~~~~~~~~~~~~~~
 
 **网站链接**\ ：https://chai2010.gitbooks.io/advanced-go-programming-book/content/
 
-|image14|
+|image15|
 
 4. 工具使用
 -----------
@@ -226,7 +228,7 @@ go 的命令非常多，如果想系统的学习，推荐郝林的 Go 命令教�
 
 2、https://wiki.jikexueyuan.com/project/go-command-tutorial/0.0.html
 
-|image15|
+|image16|
 
 Uber 编程规范
 ~~~~~~~~~~~~~
@@ -243,7 +245,7 @@ Uber”，也就是 Go 代码应该怎样写、不该怎样写。
 
 中文译文：https://www.infoq.cn/article/G6c95VyU5telNXXCC9yO
 
-|image16|
+|image17|
 
 Go Walker
 ~~~~~~~~~
@@ -251,7 +253,7 @@ Go Walker
 Go Walker 是一个可以在线生成并浏览 `Go <https://golang.org/>`__ 项目 API
 文档的 Web 服务器，目前已支持包括 **GitHub** 等代码托管平台。
 
-|image17|
+|image18|
 
 CTOLib 码库
 ~~~~~~~~~~~
@@ -261,7 +263,7 @@ CTOLib 码库
 
 **网站链接**\ ：https://www.ctolib.com/go/categories/go-guide.html
 
-|image18|
+|image19|
 
 5. 技术社区
 -----------
@@ -271,7 +273,7 @@ GoCN
 
 **网站链接**\ ：https://gocn.vip/
 
-|image19|
+|image20|
 
 Go 语言中文网
 ~~~~~~~~~~~~~
@@ -282,7 +284,7 @@ Go历史版本的下载，各种高质量的电子书资源，各种大牛写的
 
 **网站链接**\ ：https://studygolang.com/
 
-|image20|
+|image21|
 
 6. 源码学习
 -----------
@@ -295,14 +297,14 @@ Go 夜读
 
 **网站链接**\ ：https://talkgo.org/
 
-|image21|
+|image22|
 
 Go 语言原本
 ~~~~~~~~~~~
 
 **网站链接**\ ：https://changkun.de/golang/
 
-|image22|
+|image23|
 
 Go 语言设计与实现
 ~~~~~~~~~~~~~~~~~
@@ -311,38 +313,39 @@ Go 语言设计与实现
 
 **网站链接**\ ：https://draveness.me/golang/
 
-|image23|
+|image24|
 
 能翻到这里的，一定是真爱了，本以为 Go
 语言还处于不温不火的状态，没想到收集整理一下，资料还挺多的。
 
 --------------
 
-|image24|
+|image25|
 
-.. |image0| image:: http://image.iswbm.com/20200430112024.png
-.. |image1| image:: http://image.iswbm.com/20200506192746.png
-.. |image2| image:: http://image.iswbm.com/20200430102243.png
-.. |image3| image:: http://image.iswbm.com/20200430170656.png
-.. |image4| image:: http://image.iswbm.com/20200430172511.png
-.. |image5| image:: http://image.iswbm.com/20200430171029.png
-.. |image6| image:: http://image.iswbm.com/20200430102508.png
-.. |image7| image:: http://image.iswbm.com/20200430165344.png
-.. |image8| image:: http://image.iswbm.com/20200430104324.png
-.. |image9| image:: http://image.iswbm.com/20200430174507.png
-.. |image10| image:: http://image.iswbm.com/20200430112319.png
-.. |image11| image:: http://image.iswbm.com/20200430105116.png
-.. |image12| image:: http://image.iswbm.com/20200430100755.png
-.. |image13| image:: http://image.iswbm.com/20200430095544.png
-.. |image14| image:: http://image.iswbm.com/20200430175818.png
-.. |image15| image:: http://image.iswbm.com/20200430102821.png
-.. |image16| image:: http://image.iswbm.com/20200430113756.png
-.. |image17| image:: http://image.iswbm.com/20200430170054.png
-.. |image18| image:: http://image.iswbm.com/20200430174109.png
-.. |image19| image:: http://image.iswbm.com/20200506192127.png
-.. |image20| image:: http://image.iswbm.com/20200430134207.png
-.. |image21| image:: http://image.iswbm.com/20200430174216.png
-.. |image22| image:: http://image.iswbm.com/20200506191803.png
-.. |image23| image:: http://image.iswbm.com/20200506191632.png
-.. |image24| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.iswbm.com/20200430112024.png
+.. |image2| image:: http://image.iswbm.com/20200506192746.png
+.. |image3| image:: http://image.iswbm.com/20200430102243.png
+.. |image4| image:: http://image.iswbm.com/20200430170656.png
+.. |image5| image:: http://image.iswbm.com/20200430172511.png
+.. |image6| image:: http://image.iswbm.com/20200430171029.png
+.. |image7| image:: http://image.iswbm.com/20200430102508.png
+.. |image8| image:: http://image.iswbm.com/20200430165344.png
+.. |image9| image:: http://image.iswbm.com/20200430104324.png
+.. |image10| image:: http://image.iswbm.com/20200430174507.png
+.. |image11| image:: http://image.iswbm.com/20200430112319.png
+.. |image12| image:: http://image.iswbm.com/20200430105116.png
+.. |image13| image:: http://image.iswbm.com/20200430100755.png
+.. |image14| image:: http://image.iswbm.com/20200430095544.png
+.. |image15| image:: http://image.iswbm.com/20200430175818.png
+.. |image16| image:: http://image.iswbm.com/20200430102821.png
+.. |image17| image:: http://image.iswbm.com/20200430113756.png
+.. |image18| image:: http://image.iswbm.com/20200430170054.png
+.. |image19| image:: http://image.iswbm.com/20200430174109.png
+.. |image20| image:: http://image.iswbm.com/20200506192127.png
+.. |image21| image:: http://image.iswbm.com/20200430134207.png
+.. |image22| image:: http://image.iswbm.com/20200430174216.png
+.. |image23| image:: http://image.iswbm.com/20200506191803.png
+.. |image24| image:: http://image.iswbm.com/20200506191632.png
+.. |image25| image:: http://image.python-online.cn/image-20200320125724880.png
 

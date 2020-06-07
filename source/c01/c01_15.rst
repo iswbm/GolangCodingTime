@@ -1,6 +1,8 @@
 1.15 这五点带你理解 select 用法
 ===============================
 
+|image0|
+
 前面写过两节关于 ``switch-case`` 的文章，分别是：
 
 `流程控制：switch-case <http://golang.iswbm.com/en/latest/c01/c01_09.html>`__
@@ -179,7 +181,7 @@ select 里却不是。
 
 通过下面这个例子的执行结果就可以看出
 
-|image0|
+|image1|
 
 4. select 的超时
 ----------------
@@ -271,8 +273,9 @@ select 与 switch
 4. select 里没有类似 switch 里的 fallthrough 的用法；
 5. select 不能像 switch 一样接函数或其他表达式。
 
-|image1|
+|image2|
 
-.. |image0| image:: http://image.iswbm.com/20200402215126.png
-.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.iswbm.com/20200402215126.png
+.. |image2| image:: http://image.python-online.cn/image-20200320125724880.png
 

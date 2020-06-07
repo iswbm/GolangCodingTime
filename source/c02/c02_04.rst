@@ -1,6 +1,8 @@
 2.4 理解语句块与作用域
 ======================
 
+|image0|
+
 由于 Go
 使用的是词法作用域，而词法作用域依赖于语句块。所以在讲作用域时，需要先了解一下
 Go 中的语句块是怎么一回事？
@@ -155,7 +157,8 @@ name
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

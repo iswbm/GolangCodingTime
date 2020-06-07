@@ -1,6 +1,8 @@
 4.2 理解 Go 协程：goroutine
 ===========================
 
+|image0|
+
 说到Go语言，很多没接触过它的人，对它的第一印象，一定是它从语言层面天生支持并发，非常方便，让开发者能快速写出高性能且易于理解的程序。
 
 在 Python
@@ -143,7 +145,8 @@ main 的地位相当于主线程，当 main
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

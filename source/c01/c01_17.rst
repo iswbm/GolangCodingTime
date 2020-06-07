@@ -1,6 +1,8 @@
 1.17 如何使用 GDB 调试 Go 程序？
 ================================
 
+|image0|
+
 做为新手，熟练掌握一个好的调试工具，对于我们学习语言或者排查问题的时候，非常有帮助。
 
 你如果使用 VS Code 或者 Goland
@@ -26,7 +28,7 @@
 首先在 go
 下载页面上（https://golang.org/dl/），查看并复制源码包的的下载地址
 
-|image0|
+|image1|
 
 登陆 linux 机器 ，使用 wget 下载
 
@@ -34,7 +36,7 @@
 
    $ wget https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
 
-|image1|
+|image2|
 
 将下载的源码包解压到 ``/usr/local`` 目录下，并设置环境变量
 
@@ -96,7 +98,7 @@
 
 完整操作如下：
 
-|image2|
+|image3|
 
 进入 GDB
 调试界面后，并不是立即可用，你先需要回车，然后再你敲入几行命令，调试窗口就会出现代码。
@@ -110,7 +112,7 @@
    Breakpoint 1, main.main () at /home/wangbm/code/demo.go:5
    (gdb) 
 
-|image3|
+|image4|
 
 3. 详解调试指令
 ---------------
@@ -202,11 +204,12 @@
 -  `Mac 调试 golang
    程序 <%5Bhttps://www.do1618.com/archives/771/mac-gdb-%E8%B0%83%E8%AF%95-golang-%E7%A8%8B%E5%BA%8F/%5D(https://www.do1618.com/archives/771/mac-gdb-调试-golang-程序/)>`__
 
-|image4|
+|image5|
 
-.. |image0| image:: http://image.iswbm.com/20200428180632.png
-.. |image1| image:: http://image.iswbm.com/20200428180713.png
-.. |image2| image:: http://image.iswbm.com/20200428181902.png
-.. |image3| image:: http://image.iswbm.com/20200428182620.png
-.. |image4| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.iswbm.com/20200428180632.png
+.. |image2| image:: http://image.iswbm.com/20200428180713.png
+.. |image3| image:: http://image.iswbm.com/20200428181902.png
+.. |image4| image:: http://image.iswbm.com/20200428182620.png
+.. |image5| image:: http://image.python-online.cn/image-20200320125724880.png
 

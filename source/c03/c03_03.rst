@@ -1,6 +1,8 @@
 3.3 最全的 Go 命令指南
 ======================
 
+|image0|
+
 1. 基本命令
 -----------
 
@@ -31,12 +33,12 @@
 
 1. 先使用 go build 编译成二进制文件，再执行这个二进制文件
 
-   |image0|
+   |image1|
 
 2. 使用 go run
    “直接”运行，这个命令还是会去编译，但是不会在当前目录下生成二进制文件，而是编译成临时文件后直接运行。
 
-   |image1|
+   |image2|
 
 3. 编译文件
 -----------
@@ -49,15 +51,15 @@
 当使用 ``go build``
 可指定包里所有的文件，就你下面这样，默认会以第一个文件（main.go）名生成可执行文件（main）。
 
-|image2|
+|image3|
 
 当然，你也可以不指定，此时生成的可执行文件是以 文件夹名命名
 
-|image3|
+|image4|
 
 当然你也可以手动指定这个可执行文件名
 
-|image4|
+|image5|
 
 以上是编译单个文件，当然也可以编译多个文件
 
@@ -70,7 +72,7 @@
 ，\ ``.6``\ ，\ ``.8``\ ，如果要手动一个一个去清理他们，可以说是相当麻烦的，这里你可以通过使用
 ``go clean`` 一键清理。
 
-|image5|
+|image6|
 
 实际开发中\ ``go clean``\ 命令使用的可能不是很多，一般都是利用\ ``go clean``\ 命令清除编译文件，然后再将源码递交到
 github 上，方便对于源码的管理。
@@ -161,22 +163,22 @@ install）合并起来，当然你也可以通过参数指定将拆散它们。
 
 指定 ``-d``\ ，只下载源码包而不进行安装
 
-|image6|
+|image7|
 
 由于此时，我们已经下载了 logging 包，当你再次执行 go get
 时，并不会重复下载，只有当你指定 ``-u``
 时，不管你需不需要更新，都会触发重新下载强制更新。
 
-|image7|
+|image8|
 
 如果你想看，下载这个过程用到了哪几个命令，可以指定 ``-x`` 参数
 
-|image8|
+|image9|
 
 最后，你可能想说，为什么 golang
 里的包含这么长，好难记呀，其实这个路径是有讲究的
 
-|image9|
+|image10|
 
 这样不同的人开发的包即使使用同一个名，也不会冲突了。
 
@@ -210,12 +212,12 @@ main），它会生成可执行文件到 bin 目录下。这点和 ``go build``
 很相似，不同的是，\ ``go build`` 编译生成的可执行文件放在当前目录，而
 ``go install`` 会将可执行文件统一放至 ``$GOPATH/bin`` 目录下。
 
-|image10|
+|image11|
 
 如果你安装的是一个库，它会将这个库安装到 pkg 目录下，生成 ``.a``
 为后缀的文件。
 
-|image11|
+|image12|
 
 7. 格式化 go 文件
 -----------------
@@ -238,19 +240,20 @@ https://juejin.im/post/5d0b865c6fb9a07f050a6f45
 
 --------------
 
-|image12|
+|image13|
 
-.. |image0| image:: http://image.python-online.cn/image-20200313222620374.png
-.. |image1| image:: http://image.python-online.cn/image-20200313222710998.png
-.. |image2| image:: http://image.python-online.cn/image-20200312201759541.png
-.. |image3| image:: http://image.python-online.cn/image-20200312202032363.png
-.. |image4| image:: http://image.python-online.cn/image-20200312202520902.png
-.. |image5| image:: http://image.python-online.cn/image-20200313224148510.png
-.. |image6| image:: http://image.python-online.cn/image-20200312204335687.png
-.. |image7| image:: http://image.python-online.cn/image-20200312204746007.png
-.. |image8| image:: http://image.python-online.cn/image-20200312205001161.png
-.. |image9| image:: http://image.python-online.cn/image-20200312210557326.png
-.. |image10| image:: http://image.python-online.cn/image-20200312221011685.png
-.. |image11| image:: http://image.python-online.cn/image-20200312221141028.png
-.. |image12| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200313222620374.png
+.. |image2| image:: http://image.python-online.cn/image-20200313222710998.png
+.. |image3| image:: http://image.python-online.cn/image-20200312201759541.png
+.. |image4| image:: http://image.python-online.cn/image-20200312202032363.png
+.. |image5| image:: http://image.python-online.cn/image-20200312202520902.png
+.. |image6| image:: http://image.python-online.cn/image-20200313224148510.png
+.. |image7| image:: http://image.python-online.cn/image-20200312204335687.png
+.. |image8| image:: http://image.python-online.cn/image-20200312204746007.png
+.. |image9| image:: http://image.python-online.cn/image-20200312205001161.png
+.. |image10| image:: http://image.python-online.cn/image-20200312210557326.png
+.. |image11| image:: http://image.python-online.cn/image-20200312221011685.png
+.. |image12| image:: http://image.python-online.cn/image-20200312221141028.png
+.. |image13| image:: http://image.python-online.cn/image-20200320125724880.png
 

@@ -1,6 +1,8 @@
 1.9 流程控制：switch-case
 =========================
 
+|image0|
+
 Go里的流程控制方法还是挺丰富，整理了下有如下这么多种：
 
 -  if - else 条件语句
@@ -255,7 +257,8 @@ default 的代码块。
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

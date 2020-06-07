@@ -1,6 +1,8 @@
 1.5 数据类型：数组与切片
 ========================
 
+|image0|
+
 1. 数组
 -------
 
@@ -264,7 +266,8 @@
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

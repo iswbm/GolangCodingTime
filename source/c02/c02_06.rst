@@ -1,6 +1,11 @@
 2.6 动态类型与静态类型
 ======================
 
+|image0|
+
 https://studygolang.com/articles/13042
 
 https://blog.csdn.net/stpeace/article/details/84037370
+
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+

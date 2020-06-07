@@ -1,21 +1,23 @@
 1.1 一文搞定开发环境的搭建
 ==========================
 
+|image0|
+
 1. 下载安装 Go语言
 ------------------
 
 下载地址：https://golang.google.cn/dl/
 
-|image0|
+|image1|
 
 下载完成后，直接双击 msi 文件进行安装，我习惯将软件安装在我的 E 盘下的
 ``Program Files`` 目录下
 
-|image1|
+|image2|
 
 后面就是一路点击 ``Next`` 即可，直到出现如下界面，安装完成。
 
-|image2|
+|image3|
 
 2. 配置 Goland 环境
 -------------------
@@ -32,16 +34,16 @@ Goland 下载地址：https://download.jetbrains.com/go/goland-2019.2.3.exe
 盘之外，一路选择 ``Next`` ，
 直到如下界面，根据你的需要全选中（推荐全选）
 
-|image3|
+|image4|
 
 接着一路 ``Next``\ ，直到出现如下界面，安装完成，选择 ``Run Gogland``
 立即运行。
 
-|image4|
+|image5|
 
 此时如果你若没有购买 JetBrains 的激活码，此时是无法使用 Goland 的。
 
-|image5|
+|image6|
 
 为了让我们的学习更加顺畅，这里会教大家使用 破解的方式获得 Goland
 的使用权。
@@ -50,7 +52,7 @@ Goland 下载地址：https://download.jetbrains.com/go/goland-2019.2.3.exe
 
 下载的 zip 包里包含三个文件
 
-|image6|
+|image7|
 
 -  jetbrains-agent.jar：破解补丁
 -  resources_cn.jar：汉化补丁
@@ -61,7 +63,7 @@ Goland 下载地址：https://download.jetbrains.com/go/goland-2019.2.3.exe
 
 然后用编辑器打开这两个文件
 
-|image7|
+|image8|
 
 在最后一行添加如下一行，你要根据自己路径对应修改后面的值
 
@@ -72,34 +74,34 @@ Goland 下载地址：https://download.jetbrains.com/go/goland-2019.2.3.exe
 接着打开回到你的 Goland 启动界面，点击 ``Activation code``\ ，复制
 ``激活码.txt`` 中的激活码，填入再点击 OK
 
-|image8|
+|image9|
 
 此时你的 Goland 已经可以正常使用了，创建我的项目目录，顺便设置好 GOROOT
 。
 
-|image9|
+|image10|
 
 创建好Project后，再点击
 Files->Settings->GOPATH，添加我们的项目目录\ ``F:\Go-Player``
 
-|image10|
+|image11|
 
 随便点击一个go文件，就能在下图箭头处看到配置入口，点击进入配置一下
 Go运行器。
 
-|image11|
+|image12|
 
 按照如下指示进行配置。
 
-|image12|
+|image13|
 
 去掉参数提示
 
-|image13|
+|image14|
 
 设置 goproxy
 
-|image14|
+|image15|
 
 可先的代理有如下（注意后面的 direct 不要删除）
 
@@ -110,18 +112,18 @@ Go运行器。
 设置 goimports（自动格式化插件），如果 你之前 没有安装 ，会提示你点击
 ``yes`` 下载安装 。
 
-|image15|
+|image16|
 
 至此，环境配置完成。
 
 在项目根目录下，创建如下三个文件夹，并在 src 目录下创建一个hello.go
 的文件。
 
-|image16|
+|image17|
 
 点击运行按钮，在控制台我们看到了熟悉的 ``Hello, World!``
 
-|image17|
+|image18|
 
 另：有关 Golang 最新版的破解教程，请关注这个博客：https://zhile.io
 
@@ -164,7 +166,7 @@ Go的工作目录，这个目录指定了需要从哪个地方寻找GO的包、�
 打开你的 VS Code软件，先确认你设置的环境变量已经生效，点击 ``Terminal``
 -> ``New Terminal``\ ，使用 cmd 命令查看环境变量。
 
-|image18|
+|image19|
 
 如上图所求，我的环境变量是OK的，如果你的输出是指向你的用户目录：\ ``%USERPROFILE%\go``
 建议你不要折腾（因为我无论重启多少次 VS
@@ -185,11 +187,11 @@ Code，其记录的GOPATH始终指向%USERPROFILE%:raw-latex:`\go`），
 
 第一个是：Go 语言的扩展插件
 
-|image19|
+|image20|
 
 第二个是：Code Runner，让你的 VS Code 能够编译运行 Go 的程序。
 
-|image20|
+|image21|
 
 随便点开一个 go
 文件，在你的右下角会提示要你安装一些工具，安装的包有些由于墙的原因，无法下载，为了保证下载顺利，可以设置一下代理。
@@ -200,23 +202,23 @@ Code，其记录的GOPATH始终指向%USERPROFILE%:raw-latex:`\go`），
 
 然后再点击 ``Install All``
 
-|image21|
+|image22|
 
 然后你在 OUTPUT 就能看到安装进度
 
-|image22|
+|image23|
 
 安装的 exe 文件会放在 %GOPATH%/bin 下，也就是 ``F:\Go-Player\bin``
 
-|image23|
+|image24|
 
 而此的 src 目录结构是这样的
 
-|image24|
+|image25|
 
 到这时环境配置完成，编写 HelloWorld，并运行查看输出，一切完成。
 
-|image25|
+|image26|
 
 4. 配置环境变量
 ---------------
@@ -285,33 +287,34 @@ Code，其记录的GOPATH始终指向%USERPROFILE%:raw-latex:`\go`），
 
 --------------
 
-|image26|
+|image27|
 
-.. |image0| image:: http://image.python-online.cn/20200102220841.png
-.. |image1| image:: http://image.python-online.cn/20200102221555.png
-.. |image2| image:: http://image.python-online.cn/20200102221840.png
-.. |image3| image:: http://image.python-online.cn/20200102221932.png
-.. |image4| image:: http://image.python-online.cn/20200102222123.png
-.. |image5| image:: http://image.python-online.cn/20200102222635.png
-.. |image6| image:: http://image.python-online.cn/20200102222907.png
-.. |image7| image:: http://image.python-online.cn/20200102223113.png
-.. |image8| image:: http://image.python-online.cn/20200102223451.png
-.. |image9| image:: http://image.python-online.cn/20200102223946.png
-.. |image10| image:: http://image.python-online.cn/20200102224643.png
-.. |image11| image:: http://image.python-online.cn/20200102225750.png
-.. |image12| image:: http://image.python-online.cn/20200102225349.png
-.. |image13| image:: http://image.python-online.cn/20200127192147.png
-.. |image14| image:: http://image.python-online.cn/20200127192512.png
-.. |image15| image:: http://image.python-online.cn/20200127192748.png
-.. |image16| image:: http://image.python-online.cn/20200102224417.png
-.. |image17| image:: http://image.python-online.cn/20200102225550.png
-.. |image18| image:: http://image.python-online.cn/20200109210630.png
-.. |image19| image:: http://image.python-online.cn/20200108202934.png
-.. |image20| image:: http://image.python-online.cn/20200109153948.png
-.. |image21| image:: http://image.python-online.cn/20200109210654.png
-.. |image22| image:: http://image.python-online.cn/20200109211543.png
-.. |image23| image:: http://image.python-online.cn/20200109213056.png
-.. |image24| image:: http://image.python-online.cn/20200109214117.png
-.. |image25| image:: http://image.python-online.cn/20200109154657.png
-.. |image26| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/20200102220841.png
+.. |image2| image:: http://image.python-online.cn/20200102221555.png
+.. |image3| image:: http://image.python-online.cn/20200102221840.png
+.. |image4| image:: http://image.python-online.cn/20200102221932.png
+.. |image5| image:: http://image.python-online.cn/20200102222123.png
+.. |image6| image:: http://image.python-online.cn/20200102222635.png
+.. |image7| image:: http://image.python-online.cn/20200102222907.png
+.. |image8| image:: http://image.python-online.cn/20200102223113.png
+.. |image9| image:: http://image.python-online.cn/20200102223451.png
+.. |image10| image:: http://image.python-online.cn/20200102223946.png
+.. |image11| image:: http://image.python-online.cn/20200102224643.png
+.. |image12| image:: http://image.python-online.cn/20200102225750.png
+.. |image13| image:: http://image.python-online.cn/20200102225349.png
+.. |image14| image:: http://image.python-online.cn/20200127192147.png
+.. |image15| image:: http://image.python-online.cn/20200127192512.png
+.. |image16| image:: http://image.python-online.cn/20200127192748.png
+.. |image17| image:: http://image.python-online.cn/20200102224417.png
+.. |image18| image:: http://image.python-online.cn/20200102225550.png
+.. |image19| image:: http://image.python-online.cn/20200109210630.png
+.. |image20| image:: http://image.python-online.cn/20200108202934.png
+.. |image21| image:: http://image.python-online.cn/20200109153948.png
+.. |image22| image:: http://image.python-online.cn/20200109210654.png
+.. |image23| image:: http://image.python-online.cn/20200109211543.png
+.. |image24| image:: http://image.python-online.cn/20200109213056.png
+.. |image25| image:: http://image.python-online.cn/20200109214117.png
+.. |image26| image:: http://image.python-online.cn/20200109154657.png
+.. |image27| image:: http://image.python-online.cn/image-20200320125724880.png
 

@@ -1,6 +1,8 @@
 1.11 流程控制：goto 无条件跳转
 ==============================
 
+|image0|
+
 Go里的流程控制方法还是挺丰富，整理了下有如下这么多种：
 
 -  if - else 条件语句
@@ -173,7 +175,8 @@ goto语句与标签之间不能有变量声明，否则编译错误。
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

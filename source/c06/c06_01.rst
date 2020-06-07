@@ -1,6 +1,8 @@
 6.1 go test 工具命令详解
 ========================
 
+|image0|
+
 接下来几篇文章，我将介绍 下 Golang 中有关测试相关的一些文章。
 
 在学习如何编写测试代码之前，需要先了解一下Go 提供的测试工具 ：go test
@@ -96,7 +98,8 @@ TestAdd，如果还有一个测试函数为 TestAdd02，那么它也会被运行
    # 这里没有输出 
    $ go test -i 
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

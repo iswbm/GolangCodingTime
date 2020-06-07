@@ -1,6 +1,8 @@
 1.8 流程控制：if-else
 =====================
 
+|image0|
+
 1. 条件语句模型
 ---------------
 
@@ -123,7 +125,8 @@ if - else if - else
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

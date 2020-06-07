@@ -1,6 +1,8 @@
 5.1 Gin 实战：Hello World
 =========================
 
+|image0|
+
 1. Go 环境的准备
 ----------------
 
@@ -474,3 +476,6 @@ Response
 -  pkg：存放各种代码包
 -  routers：路由逻辑处理
 -  runtimestamp：应用运行时数据
+
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+

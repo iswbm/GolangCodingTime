@@ -1,6 +1,8 @@
 4.5 学习 Go 协程：WaitGroup
 ===========================
 
+|image0|
+
 在前两篇文章里，我们学习了 ``协程`` 和 ``信道``
 的内容，里面有很多例子，当时为了保证 main goroutine 在所有的 goroutine
 都执行完毕后再退出，我使用了 time.Sleep 这种简单的方式。
@@ -114,7 +116,8 @@ sync.WaitGroup。。
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

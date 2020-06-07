@@ -1,6 +1,8 @@
 1.6 数据类型：字典与布尔类型
 ============================
 
+|image0|
+
 1. 字典
 -------
 
@@ -217,7 +219,7 @@ false。只是这两个值，在不同的语言里可能不同。
 
 如下图所示，Goland 直接波浪线提示类型不匹配，不能比较。
 
-|image0|
+|image1|
 
 Go 中确实不如 Python 那样灵活，bool 与 int
 不能直接转换，如果要转换，需要你自己实现函数。
@@ -288,8 +290,9 @@ Go 中确实不如 Python 那样灵活，bool 与 int
 
 --------------
 
-|image1|
+|image2|
 
-.. |image0| image:: http://image.python-online.cn/20200106201856.png
-.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/20200106201856.png
+.. |image2| image:: http://image.python-online.cn/image-20200320125724880.png
 

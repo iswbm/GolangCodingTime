@@ -1,6 +1,8 @@
 1.7 数据类型：指针
 ==================
 
+|image0|
+
 0. 什么是指针
 -------------
 
@@ -217,7 +219,8 @@ ptr（pointer的简写），而这个变量，我们称之为指针变量。
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

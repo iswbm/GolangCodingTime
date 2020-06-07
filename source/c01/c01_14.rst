@@ -1,6 +1,8 @@
 1.14 Go 语言中的类型断言？
 ==========================
 
+|image0|
+
 Type Assertion
 --------------
 
@@ -200,7 +202,8 @@ Type Switch
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

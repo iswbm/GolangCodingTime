@@ -1,6 +1,8 @@
 2.3 关键字：make 和 new 的区别？
 ================================
 
+|image0|
+
 1. new 函数
 -----------
 
@@ -98,7 +100,8 @@ make：只能为 slice，map，chan 分配内存，并初始化，返回的是�
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

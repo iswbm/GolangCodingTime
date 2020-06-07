@@ -1,6 +1,8 @@
 2.5 说说 Go 语言中的空接口
 ==========================
 
+|image0|
+
 1. 什么是空接口？
 -----------------
 
@@ -227,7 +229,8 @@ interface{}，但动态类型（是 int，string
    参数的类型是 int
    参数的类型是 string
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

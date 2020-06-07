@@ -1,6 +1,8 @@
 6.2 如何进行单元测试？
 ======================
 
+|image0|
+
 在计算机编程中，单元测试（英语：Unit
 Testing）又称为模块测试，是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。
 
@@ -146,7 +148,8 @@ Add(1, 2) 是一次单元测试的场景，而 Add(2, 4) ，Add(3, 6)
    PASS
    ok      _/home/wangbm/golang/math   0.002s
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 

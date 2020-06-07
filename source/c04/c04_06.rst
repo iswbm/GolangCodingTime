@@ -1,6 +1,8 @@
 4.6 学习 Go 协程：互斥锁和读写锁
 ================================
 
+|image0|
+
 在 「\ `19. 学习 Go
 协程：详解信道/通道 <http://mp.weixin.qq.com/s?__biz=MzU1NzU1MTM2NA==&mid=2247483741&idx=1&sn=4d4ccd8fdee404432f03447927ddb055&chksm=fc355b36cb42d2201e12b77085f7db5a5fed98674e369a5df7fd852abde09a1efad35ba28944&scene=21#wechat_redirect>`__\ 」这一节里我详细地介绍信道的一些用法，要知道的是在
 Go 语言中，信道的地位非常高，它是 first class
@@ -229,7 +231,8 @@ defer。
 
 --------------
 
-|image0|
+|image1|
 
-.. |image0| image:: http://image.python-online.cn/image-20200320125724880.png
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.python-online.cn/image-20200320125724880.png
 
