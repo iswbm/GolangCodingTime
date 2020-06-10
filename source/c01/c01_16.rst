@@ -7,8 +7,8 @@
 
 每种语言的反射模型都不同，并且有些语言根本不支持反射。Golang语言实现了反射，反射机制就是在运行时动态的调用对象的方法和属性，官方自带的reflect包就是反射相关的，只要包含这个包就可以使用。
 
-什么是反射？
-------------
+1. 什么是反射？
+---------------
 
 在 wiki 百科上，关于反射的定义是这样的
 
@@ -22,43 +22,23 @@
 Golang
 是静态语言，很多变量的类型在编译时，就能确定。但是有一些却不行，它们的类型和值只有在运行时（runtime）才能知道。
 
-这里从 「\ `Go 系列教程 ——第 34
-篇：反射 <https://mp.weixin.qq.com/s/dkgJ_fA0smvpv69t5Nv-7A>`__\ 」摘一个例子过来
-
-优点
-~~~~
-
-支持反射的语言提供了一些在早期高级语言中难以实现的运行时特性。
-
--  可以在一定程度上避免硬编码，提供灵活性和通用性。
--  可以作为一个\ `第一类对象 <https://zh.wikipedia.org/wiki/第一類物件>`__\ 发现并修改源代码的结构（如代码块、类、方法、协议等）。
--  可以在运行时像对待源代码语句一样动态解析字符串中可执行的代码（类似JavaScript的eval()函数），进而可将跟class或function匹配的字符串转换成class或function的调用或引用。
--  可以创建一个新的语言字节码解释器来给编程结构一个新的意义或用途。
-
-劣势
-~~~~
-
--  此技术的学习成本高。面向反射的编程需要较多的高级知识，包括框架、关系映射和对象交互，以实现更通用的代码执行。
--  同样因为反射的概念和语法都比较抽象，过多地滥用反射技术会使得代码难以被其他人读懂，不利于合作与交流。
--  由于将部分信息检查工作从编译期推迟到了运行期，此举在提高了代码灵活性的同时，牺牲了一点点运行效率。
-
-通过深入学习反射的特性和技巧，它的劣势可以尽量避免，但这需要许多时间和经验的积累。
-
-1. 静态类型和动态类型
+2. 静态类型和动态类型
 ---------------------
 
-静态类型（也即 static type）是你在编码是看见的类型(如int、string)，如
+本章节要讲的是
+**反射**\ ，而在理解反射之前，需要你对静态类型和动态类型有一个了解。
+
+所谓的\ **静态类型**\ （也即 static
+type）是你在编码是看见的类型(如int、string)，如
 
 .. code:: go
 
    var age int   // int 是静态类型
 
-   type MyInt int  // int 是静态类型
-
    name := "Go编程时光"   // string 是静态类型
 
-动态类型（也即 concrete type）是 runtime 系统才能看见的类型，主要和
-interface 有关，如
+而\ **动态类型**\ （也即 concrete type）是 runtime
+系统才能看见的类型，主要和 interface 有关，如
 
 .. code:: go
 
@@ -67,17 +47,26 @@ interface 有关，如
    i = 18  // 静态类型为interface{}  动态为int
    i = "Go编程时光"  // 静态类型为interface{}  动态为string
 
-2. Type 与 Value
------------------
+由于动态类型的存在，在一个函数中接收的参数的类型有可能无法预先知晓，此时我们就要对参数进行反射，然后根据不同的类型做不同的处理。
 
-在 Go 语言中，每个接口变量都有一个对应的 pair，pair
-中记录着实际变量的值和类型。
+3. reflect 反射包的使用
+-----------------------
+
+在 Go 中，提供了一个 relect
+包来帮助我们在程序运行时，可动态获取接口变量的类型和值。
+
+接下来，我将详细介绍一下，这个包应该如何使用？
+
+4. Type 与 Value 是什么？
+--------------------------
+
+每个接口变量都有一个对应的 pair，pair 中记录着实际变量的值和类型。
 
 ::
 
    (value, type)
 
-比如 ``var age : 25`` ，value 就是25，type 就是 int
+比如 ``var age : 25`` 这条语句，value 是25，type 是 int
 
 pair 的存在，是Golang中实现反射的前提，理解了pair，就更容易理解反射。
 
@@ -87,7 +76,7 @@ pair 的存在，是Golang中实现反射的前提，理解了pair，就更容�
 这个包有两个方法：
 
 1. reflect.TypeOf(i) ：获得接口值的类型
-2. Reflect.ValueOf(i)：获得接口值的值
+2. reflect.ValueOf(i)：获得接口值的值
 
 这两个方法返回的对象，我们称之为反射对象：Type object 和 Value object。
 
@@ -114,30 +103,41 @@ pair 的存在，是Golang中实现反射的前提，理解了pair，就更容�
        var x interface{}
        x = 3.4
 
-       fmt.Println("type:",reflect.TypeOf(x))
-       fmt.Println("value:",reflect.ValueOf(x))
+       fmt.Printf(" 【%v】type: %s, value: %v \n" ,x, reflect.TypeOf(x), reflect.ValueOf(x))
 
        x = "Go编程时光"
-       fmt.Println("type:",reflect.TypeOf(x))
-       fmt.Println("value:",reflect.ValueOf(x))
+       fmt.Printf(" 【%v】type: %s, value: %v\n" ,x, reflect.TypeOf(x), reflect.ValueOf(x))
    }
 
 输出如下
 
 ::
 
-   type: float64
-   value: 3.4
-   type: string
-   value: Go编程时光
+   【3.4】type: float64, value: 3.4 
+   【Go编程时光】type: string, value: Go编程时光
 
-3. Kind 与 Type
----------------
+5. Kind 与 Type 的区别
+----------------------
 
 ``reflect`` 包中还有一个重要的类型：\ ``Kind``\ 。
 
 在反射包中，\ ``Kind`` 和 ``Type``
-的类型可能看起来很相似，但在下面代码中，可以很清楚地看出它们的不同之处。
+从字面上来看，你可能说不上来它们有什么区别。
+
+相较于 Type 而言，Kind 所表示的范畴更大。
+
+用中文来表述，就是 Kind 是类别，而 Type 是类型。
+
+就好比说，Kind 是电子产品，而 Type 是手机。
+
+对于 Kind 的获取，你可以通过 Type ，也可以通过 Value。
+
+.. code:: go
+
+   reflect.TypeOf(m).Kind()
+   reflect.ValueOf(m).Kind()
+
+接下来，用一段代码来试验一下，它如何使用
 
 .. code:: go
 
@@ -173,19 +173,7 @@ pair 的存在，是Golang中实现反射的前提，理解了pair，就更容�
    type: main.profile
    kind: struct
 
-相较于 Type 而言，Kind 所表示的范畴更大。
-
-Kind 是类别，而 Type 是类型，用一个例子来生动描述来类比：Kind
-是电子产品，而 Type 是手机。
-
-对于 Kind 的获取，你可以通过 Type ，也可以通过 Value。
-
-.. code:: go
-
-   reflect.TypeOf(m).Kind()
-   reflect.ValueOf(m).Kind()
-
-Kind 有哪些呢？
+通过查看源码，可以看到 Kind 有如下这么多种
 
 .. code:: go
 
@@ -221,72 +209,11 @@ Kind 有哪些呢？
        UnsafePointer
    )
 
-4. reflect 其他方法
--------------------
+6. 使用 Elem 更新 Value
+-----------------------
 
-上面说的 Kind 只是 Type 和 Value
-众多方法中的一个，其他的方法还有很多，比如 Int 、String
-
-5. 使用场景
------------
-
-1、动态调用函数（无参数）
-
-.. code:: go
-
-   package main
-
-   import (
-       "fmt"
-       "reflect"
-   )
-
-   type T struct {}
-
-   func main() {
-       name := "Do"
-       t := &T{}
-       reflect.ValueOf(t).MethodByName(name).Call(nil)
-   }
-
-   func (t *T) Do() {
-       fmt.Println("hello")
-   }
-
-2、动态调用函数（有参数）
-
-.. code:: go
-
-   package main
-
-   import (
-       "fmt"
-       "reflect"
-   )
-
-   type T struct{}
-
-   func main() {
-       name := "Do"
-       t := &T{}
-       a := reflect.ValueOf(1111)
-       b := reflect.ValueOf("world")
-       in := []reflect.Value{a, b}
-       reflect.ValueOf(t).MethodByName(name).Call(in)
-   }
-
-   func (t *T) Do(a int, b string) {
-       fmt.Println("hello" + b, a)
-   }
-
-反射的定律三
-------------
-
-只有当值是可设置时，才可修改反射对象。
-
-Value 类型有一个方法，叫 ``CanSet()``
-
-通过它，能知道这个 Value 可否设置一个新的值
+Value 类型有一个方法叫 ``CanSet()``\ ，它返回的是一个布尔值，true
+代表这个值可以被更新，false 则表示不能被更新。
 
 .. code:: go
 
@@ -298,58 +225,80 @@ Value 类型有一个方法，叫 ``CanSet()``
    )
 
    func main() {
-       var x float64 = 3.4
-       v := reflect.ValueOf(x)
-       fmt.Println("settability of v:", v.CanSet())
+       var name string = "wangbm"
+       var age int = 27
+
+       fmt.Println("settability of name: ", reflect.ValueOf(name).CanSet())
+       fmt.Println("settability of age: ", reflect.ValueOf(age).CanSet())
    }
 
-输出如下，false 表示，不可设置
+输出都为 false，表示两个值都不能被更新
 
 ::
 
-   settability of v: false
+   settability of name:  false
+   settability of age:  false
 
-这时，如果你强行设置新值
+如果你强行对其进行更新，则会报错
 
 .. code:: go
 
    package main
 
    import (
+       "fmt"
        "reflect"
    )
 
-
    func main() {
-       var x float64 = 3.4
-       v := reflect.ValueOf(x)
-       v.SetFloat(6.8)
+       var name string = "wangbm"
+       var age int = 27
+
+       // 强行对其进行修改
+       reflect.ValueOf(age).SetInt(18)
+       fmt.Println(name, age)
    }
 
-就会触发 panic
+返回如下，可以看到 v.CanSet() 返回 false，说明不可修改，如果使用
+SetFloat() 强行对其进行修改，则会报错。
 
-::
+.. code:: go
 
    panic: reflect: reflect.flag.mustBeAssignable using unaddressable value
 
    goroutine 1 [running]:
-   reflect.flag.mustBeAssignableSlow(0x8e)
+   reflect.flag.mustBeAssignableSlow(0x82)
            /usr/local/go/src/reflect/value.go:247 +0x138
    reflect.flag.mustBeAssignable(...)
            /usr/local/go/src/reflect/value.go:234
-   reflect.Value.SetFloat(0x1082e20, 0xc00001a068, 0x8e, 0x401b333333333333)
-           /usr/local/go/src/reflect/value.go:1587 +0x37
+   reflect.Value.SetInt(0x10aac60, 0xc00010c008, 0x82, 0x12)
+           /usr/local/go/src/reflect/value.go:1601 +0x3b
    main.main()
-           /Users/MING/GolandProjects/golang-test/main.go:11 +0xb3
+           /Users/MING/Code/Golang/src/demo/demo.go:12 +0xb2
 
    Process finished with exit code 2
 
-为什么会这样呢？
+那有没有办法对其进行修改呢？
 
-因为当我们使用 ``reflect.ValueOf(x)`` 传递进去的实际是 x 的副本，而不是
-x 本身，只有将参数改为指针类型，才是传递 x 本身。
+答案是有，得用到 Elem 这个函数。
 
-因此可以把上面的代码修改一下
+要对原数据进行修改，首先得 value 为 指针的 Value 对象。
+
+.. code:: go
+
+   v := reflect.ValueOf(&age)
+
+但这返回的是 value 是原数据对象的指针，而如果我们要使用
+SetFloat()（或者SetInt 、SetString 等其他类似的函数）还应该使用 Elem
+函数
+
+.. code:: go
+
+   v = v.Elem()
+
+然后就可以使用 SetFloat 函数了。
+
+具体的代码如下，供你参考
 
 .. code:: go
 
@@ -360,24 +309,334 @@ x 本身，只有将参数改为指针类型，才是传递 x 本身。
        "reflect"
    )
 
+   func main() {
+       var name string = "wangbm"
+       var age int = 27
+
+       v := reflect.ValueOf(&age)
+       v = v.Elem()
+       fmt.Println("settability of name: ", v.CanSet())
+       v.SetInt(18)
+     fmt.Println("after update: ", name, age)
+   }
+
+运行后输出如下
+
+.. code:: go
+
+   settability of name:  true
+   after update: wangbm 18
+
+7. Int() 和 String() 函数
+-------------------------
+
+上面讲到了 Elem 这个函数，其实这个函数返回的还是一个 reflect.Value
+类型，那么有没有办法可以将这个类型转为基本的数据类型呢，如 int，string
+等
+
+有，直接使用 Int() 和 String() 这两个函数即可。
+
+示例代码如下
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
 
    func main() {
-       var x float64 = 3.4
-       p := reflect.ValueOf(&x)
-       v := p.Elem()
-       v.SetFloat(6.8)
-       fmt.Println("settability of v:", v.CanSet())
-       fmt.Println("value of x:", x)
-       fmt.Println("value of v:", v)
+       var name string = "wangbm"
+       var age int = 27
+
+       v1 := reflect.ValueOf(&age)
+       fmt.Printf("type: %T, value: %v \n", v1, v1)
+       v2 := reflect.ValueOf(&age).Elem()
+       fmt.Printf("type: %T, value: %v \n", v2, v2)
+       v3 := reflect.ValueOf(age).Int()
+       fmt.Printf("type: %T, value: %v", v3, v3)
+
+       v4 := reflect.ValueOf(&name)
+       fmt.Printf("type: %T, value: %v \n", v4, v4)
+       v5 := reflect.ValueOf(&name).Elem()
+       fmt.Printf("type: %T, value: %v \n", v5, v5)
+       v6 := reflect.ValueOf(name).String()
+       fmt.Printf("type: %T, value: %v", v6, v6)
+   }
+
+输出如下
+
+.. code:: go
+
+   type: reflect.Value, value: 0xc00001c090 
+   type: reflect.Value, value: 27 
+   type: int64, value: 27type: reflect.Value, value: 0xc000010200 
+   type: reflect.Value, value: wangbm 
+   type: string, value: wangbm
+
+8. NumField() 和 Field() 方法
+-----------------------------
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type Person struct {
+       name string
+       age int
+       gender string
+   }
+
+   func (p Person)SayBye()  {
+       fmt.Println("Bye")
+   }
+
+   func (p Person)SayHello()  {
+       fmt.Println("Hello")
+   }
+
+
+
+   func main() {
+       p := Person{"写代码的明哥", 27, "male"}
+
+       v := reflect.ValueOf(p)
+
+       fmt.Println("字段数:", v.NumField())
+       fmt.Println("第 1 个字段：", v.Field(0))
+       fmt.Println("第 2 个字段：", v.Field(1))
+       fmt.Println("第 3 个字段：", v.Field(2))
+
+       fmt.Println("==========================")
+       // 也可以这样来遍历
+       for i:=0;i<v.NumField();i++{
+           fmt.Printf("第 %d 个字段：%v \n", i+1, v.Field(i))
+       }
+   }
+
+输出如下
+
+.. code:: go
+
+   字段数: 3
+   第 1 个字段： 写代码的明哥
+   第 2 个字段： 27
+   第 3 个字段： male
+   ==========================
+   第 1 个字段：写代码的明哥 
+   第 2 个字段：27 
+   第 3 个字段：male 
+
+9. NumMethod() 和 Method()
+--------------------------
+
+要获取 Name ，注意使用使用 TypeOf
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type Person struct {
+       name string
+       age int
+       gender string
+   }
+
+   func (p Person)SayBye()  {
+       fmt.Println("Bye")
+   }
+
+   func (p Person)SayHello()  {
+       fmt.Println("Hello")
+   }
+
+
+
+   func main() {
+       p := &Person{"写代码的明哥", 27, "male"}
+
+       t := reflect.TypeOf(p)
+
+       fmt.Println("方法数（可导出的）:", t.NumMethod())
+       fmt.Println("第 1 个方法：", t.Method(0).Name)
+       fmt.Println("第 2 个方法：", t.Method(1).Name)
+
+       fmt.Println("==========================")
+       // 也可以这样来遍历
+       for i:=0;i<t.NumMethod();i++{
+          fmt.Printf("第 %d 个方法：%v \n", i+1, t.Method(i).Name)
+       }
+   }
+
+输出如下
+
+.. code:: go
+
+   方法数（可导出的）: 2
+   第 1 个方法： SayBye
+   第 2 个方法： SayHello
+   ==========================
+   第 1 个方法：SayBye 
+   第 2 个方法：SayHello 
+
+10. 动态调用函数（使用索引且无参数）
+------------------------------------
+
+要调用 Call，注意要使用 ValueOf
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type Person struct {
+       name string
+       age int
+   }
+
+   func (p Person)SayBye() string {
+       return "Bye"
+   }
+
+   func (p Person)SayHello() string {
+       return "Hello"
+   }
+
+
+   func main() {
+       p := &Person{"wangbm", 27}
+
+       t := reflect.TypeOf(p)
+       v := reflect.ValueOf(p)
+
+
+       for i:=0;i<v.NumMethod();i++{
+          fmt.Printf("调用第 %d 个方法：%v ，调用结果：%v\n",
+              i+1,
+              t.Method(i).Name,
+              v.Elem().Method(i).Call(nil))
+       }
+   }
+
+输出如下
+
+.. code:: go
+
+   调用第 1 个方法：SayBye ，调用结果：[Bye]
+   调用第 2 个方法：SayHello ，调用结果：[Hello]
+
+11. 动态调用函数（使用函数名且无参数）
+--------------------------------------
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type Person struct {
+       name string
+       age int
+       gender string
+   }
+
+   func (p Person)SayBye()  {
+       fmt.Print("Bye")
+   }
+
+   func (p Person)SayHello()  {
+       fmt.Println("Hello")
+   }
+
+
+
+   func main() {
+       p := &Person{"写代码的明哥", 27, "male"}
+
+       v := reflect.ValueOf(p)
+
+       v.MethodByName("SayHello").Call(nil)
+       v.MethodByName("SayBye").Call(nil)
+   }
+
+12. 动态调用函数（使用函数且有参数）
+------------------------------------
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type Person struct {
+   }
+
+   func (p Person)SelfIntroduction(name string, age int)  {
+       fmt.Printf("Hello, my name is %s and i'm %d years old.", name, age)
+   }
+
+
+
+   func main() {
+       p := &Person{}
+
+       //t := reflect.TypeOf(p)
+       v := reflect.ValueOf(p)
+       name := reflect.ValueOf("wangbm")
+       age := reflect.ValueOf(27)
+       input := []reflect.Value{name, age}
+       v.MethodByName("SelfIntroduction").Call(input)
    }
 
 输出如下
 
 ::
 
-   settability of v: true
-   value of x: 6.8
-   value of v: 6.8
+   Hello, my name is wangbm and i'm 27 years old.
+
+13. 对反射的看法
+----------------
+
+优点
+~~~~
+
+支持反射的语言提供了一些在早期高级语言中难以实现的运行时特性。
+
+-  可以在一定程度上避免硬编码，提供灵活性和通用性。
+-  可以作为一个\ `第一类对象 <https://zh.wikipedia.org/wiki/第一類物件>`__\ 发现并修改源代码的结构（如代码块、类、方法、协议等）。
+-  可以在运行时像对待源代码语句一样动态解析字符串中可执行的代码（类似JavaScript的eval()函数），进而可将跟class或function匹配的字符串转换成class或function的调用或引用。
+-  可以创建一个新的语言字节码解释器来给编程结构一个新的意义或用途。
+
+劣势
+~~~~
+
+-  此技术的学习成本高。面向反射的编程需要较多的高级知识，包括框架、关系映射和对象交互，以实现更通用的代码执行。
+-  同样因为反射的概念和语法都比较抽象，过多地滥用反射技术会使得代码难以被其他人读懂，不利于合作与交流。
+-  由于将部分信息检查工作从编译期推迟到了运行期，此举在提高了代码灵活性的同时，牺牲了一点点运行效率。
+
+通过深入学习反射的特性和技巧，它的劣势可以尽量避免，但这需要许多时间和经验的积累。
 
 几点说明
 --------
