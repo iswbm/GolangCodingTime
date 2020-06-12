@@ -48,12 +48,10 @@ interface{}，它还是不会变，但是它的动态类型此时又变成了 st
 ``i="Go编程时光"``\ ，都是当程序运行到这里时，变量的类型，才发生了改变，这就是我们最开始所说的
 动态类型是程序运行时系统才能看见的类型。
 
-Go 语言中的接口可以分为两种
-
 3. 接口组成
 -----------
 
-每个接口变量，实际上都是由一 pair 对组合而成，pair
+每个接口变量，实际上都是由一 pair 对（type 和 data）组合而成，pair
 对中记录着实际变量的值和类型。
 
 比如下面这条语句
@@ -65,6 +63,30 @@ Go 语言中的接口可以分为两种
 我们声明了一个 int 类型变量，变量名叫 age ，其值为 25
 
 |image1|
+
+知道了接口的组成后，我们在定义一个变量时，除了使用常规的方法（可参考：\ `02.
+学习五种变量创建的方法 <http://mp.weixin.qq.com/s?__biz=MzU1NzU1MTM2NA==&mid=2247483669&idx=2&sn=e70a1400c094e981f15b8da552bd8fbf&chksm=fc355b7ecb42d26824985163a3ef0c3567134975637c4efc42161751f54ab10343b485b36e23&scene=21#wechat_redirect>`__\ ）
+
+也可以使用像下面这样的方式
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func main() {
+       age := (int)(25)
+       //或者使用 age := (interface{})(25)
+       
+       fmt.Printf("type: %T, data: %v ", age, age)
+   }
+
+输出如下
+
+.. code:: go
+
+   type: int, data: 25
 
 4. 接口细分
 -----------
@@ -237,7 +259,7 @@ eface，其只有一个 ``_type`` 可以存放变量类型，此时 empty
 |image6|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/image-20200610222454920.png
+.. |image1| image:: http://image.iswbm.com/20200610235106.png
 .. |image2| image:: http://image.iswbm.com/image-20200610225323018.png
 .. |image3| image:: http://image.iswbm.com/20200610230951.png
 .. |image4| image:: http://image.iswbm.com/image-20200610230819030.png
