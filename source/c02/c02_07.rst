@@ -1,0 +1,224 @@
+2.7 关于接口的三个“潜规则”
+==========================
+
+|image0|
+
+1. 对方法的调用限制
+-------------------
+
+接口是一组固定的方法集，由于静态类型的限制，接口变量有时仅能调用其中特定的一些方法。
+
+请看下面这段代码
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   type Phone interface {
+       call()
+   }
+
+   type iPhone struct {
+       name string
+   }
+
+   func (phone iPhone)call()  {
+       fmt.Println("Hello, iPhone.")
+   }
+
+   func (phone iPhone)send_wechat()  {
+       fmt.Println("Hello, Wechat.")
+   }
+
+   func main() {
+       var phone Phone
+       phone = iPhone{name:"ming's iphone"}
+       phone.call()
+       phone.send_wechat()
+   }
+
+我定义了一个 Phone 的接口，只要求实现 call
+方法即可，也就是只要能打电话的设备就是一个电话（好像是一句没用的废话）。
+
+然后再定义了一个 iPhone 的结构体，该结构体接收两个方法，一个是打电话（
+call 函数），一个是发微信（send_wechat 函数）。
+
+最后一步是关键，我们定义了一个 Phone 接口类型的 phone
+对象，该对象的内容是 iPhone 结构体。然后我们调用该对象的 call
+方法，一切正常。
+
+但是当你调用 ``phone.send_wechat``\ 方法，程序会报错，提示我们 Phone
+类型的方法没有 send_wechat 的字段或方法。
+
+.. code:: go
+
+   # command-line-arguments
+   ./demo.go:30:10: phone.send_wechat undefined (type Phone has no field or method send_wechat)
+
+原因也很明显，因为我们的phone对象显示声明为 Phone 接口类型，因此
+phone调用的方法会受到此接口的限制。
+
+**那么如何让 phone 可以调用 send_wechat 方法呢？**
+
+答案是可以不显示的声明为 Phone接口类型 ，但要清楚 phone
+对象实际上是隐式的实现了 Phone
+接口，如此一来，方法的调用就不会受到接口类型的约束。
+
+修改 main 方法成如下
+
+.. code:: go
+
+   func main() {
+       phone := iPhone{name:"ming's iphone"}
+       phone.call()
+       phone.send_wechat()
+   }
+
+运行后，一切正常，没有报错。
+
+.. code:: go
+
+   Hello, iPhone.
+   Hello, Wechat.
+
+2. 调用函数时的隐式转换
+-----------------------
+
+Go 语言中的函数调用都是值传递的，变量会在方法调用前进行类型转换。
+
+比如下面这段代码
+
+.. code:: go
+
+
+   import (
+       "fmt"
+   )
+
+   func printType(i interface{})  {
+
+       switch i.(type) {
+       case int:
+           fmt.Println("参数的类型是 int")
+       case string:
+           fmt.Println("参数的类型是 string")
+       }
+   }
+
+   func main() {
+       a := 10
+       printType(a)
+   }
+
+如果你运行后，会发现一切都很正常
+
+.. code:: go
+
+   参数的类型是 int
+
+但是如果你把函数内的内容搬到到外面来
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+
+   func main() {
+       a := 10
+
+       switch a.(type) {
+       case int:
+           fmt.Println("参数的类型是 int")
+       case string:
+           fmt.Println("参数的类型是 string")
+       }
+   }
+
+就会有意想不到的结果，居然报错了。
+
+.. code:: go
+
+   # command-line-arguments
+   ./demo.go:9:5: cannot type switch on non-interface value a (type int)
+
+这个操作会让一个新人摸不着头脑，代码逻辑都是一样的，为什么一个不会报错，一个会报错呢？
+
+原因其实很简单。
+
+当一个函数接口 interface{}
+空接口类型时，我们说它可以接收什么任意类型的参数（江湖上称之为无招胜有招）。
+
+当你使用这种写法时，Go
+会默默地为我们做一件事，就是把传入函数的参数值（注意：Go
+语言中的函数调用都是值传递的）的类型隐式的转换成 interface{} 类型。
+
+如何进行接口类型的显示转换
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+上面了解了函数中
+接口类型的隐式转换后，你的心里可能开始有了疑问了，难道我使用类型断言，只能通过一个接收空接口类型的函数才能实现吗？
+
+答案当然是 No.
+
+如果你想手动对其进行类型转换，可以像下面这样子，就可以将变量 a
+的静态类型转换为 interface{} 类型然后赋值给 b （此时 a 的静态类型还是
+int，而 b 的静态类型为 interface{}）
+
+.. code:: go
+
+   var a int = 25
+   b := interface{}(a)
+
+知道了方法后，将代码修改成如下：
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+
+   func main() {
+       a := 10
+
+       switch interface{}(a).(type) {
+       case int:
+           fmt.Println("参数的类型是 int")
+       case string:
+           fmt.Println("参数的类型是 string")
+       }
+   }
+
+运行后，一切正常。
+
+.. code:: go
+
+   参数的类型是 int
+
+3. 类型断言中的隐式转换
+-----------------------
+
+上面我们知道了，只有静态类型为接口类型的对象才可以进行类型断言。
+
+而当类型断言完成后，会返回一个静态类型为你断言的类型的对象，也就是说，当我们使用了类型断言，Go
+实际上又会默认为我们进行了一次隐式的类型转换。
+
+验证方法也很简单，使用完一次类型断言后，对返回的对象再一次使用类型断言，Goland
+立马就会提示我们新对象 b 不是一个接口类型的对象，不允许进行类型断言。
+
+.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200614154343406.png
+   :alt: image-20200614154343406
+
+   image-20200614154343406
+
+--------------
+
+|image1|
+
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.iswbm.com/20200607174235.png
+
