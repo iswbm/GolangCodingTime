@@ -210,15 +210,13 @@ int，而 b 的静态类型为 interface{}）
 验证方法也很简单，使用完一次类型断言后，对返回的对象再一次使用类型断言，Goland
 立马就会提示我们新对象 b 不是一个接口类型的对象，不允许进行类型断言。
 
-.. figure:: /Users/MING/Library/Application%20Support/typora-user-images/image-20200614154343406.png
-   :alt: image-20200614154343406
-
-   image-20200614154343406
+|image1|
 
 --------------
 
-|image1|
+|image2|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
+.. |image1| image:: http://image.iswbm.com/image-20200614154343406.png
+.. |image2| image:: http://image.iswbm.com/20200607174235.png
 
