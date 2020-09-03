@@ -19,7 +19,7 @@
 
    $ go env
 
-.. figure:: http://image.python-online.cn/image-20200311221418584.png
+.. figure:: http://image.iswbm.com/image-20200311221418584.png
    :alt: 仅截取部分内容
 
    仅截取部分内容
@@ -249,17 +249,17 @@ https://juejin.im/post/5d0b865c6fb9a07f050a6f45
 |image13|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.python-online.cn/image-20200313222620374.png
-.. |image2| image:: http://image.python-online.cn/image-20200313222710998.png
-.. |image3| image:: http://image.python-online.cn/image-20200312201759541.png
-.. |image4| image:: http://image.python-online.cn/image-20200312202032363.png
-.. |image5| image:: http://image.python-online.cn/image-20200312202520902.png
-.. |image6| image:: http://image.python-online.cn/image-20200313224148510.png
-.. |image7| image:: http://image.python-online.cn/image-20200312204335687.png
-.. |image8| image:: http://image.python-online.cn/image-20200312204746007.png
-.. |image9| image:: http://image.python-online.cn/image-20200312205001161.png
-.. |image10| image:: http://image.python-online.cn/image-20200312210557326.png
-.. |image11| image:: http://image.python-online.cn/image-20200312221011685.png
-.. |image12| image:: http://image.python-online.cn/image-20200312221141028.png
+.. |image1| image:: http://image.iswbm.com/image-20200313222620374.png
+.. |image2| image:: http://image.iswbm.com/image-20200313222710998.png
+.. |image3| image:: http://image.iswbm.com/image-20200312201759541.png
+.. |image4| image:: http://image.iswbm.com/image-20200312202032363.png
+.. |image5| image:: http://image.iswbm.com/image-20200312202520902.png
+.. |image6| image:: http://image.iswbm.com/image-20200313224148510.png
+.. |image7| image:: http://image.iswbm.com/image-20200312204335687.png
+.. |image8| image:: http://image.iswbm.com/image-20200312204746007.png
+.. |image9| image:: http://image.iswbm.com/image-20200312205001161.png
+.. |image10| image:: http://image.iswbm.com/image-20200312210557326.png
+.. |image11| image:: http://image.iswbm.com/image-20200312221011685.png
+.. |image12| image:: http://image.iswbm.com/image-20200312221141028.png
 .. |image13| image:: http://image.iswbm.com/20200607174235.png
 

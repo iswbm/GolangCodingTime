@@ -312,18 +312,18 @@ go vender 械管理，除此之外，任何 Gopher 应该从此刻就投入 go m
 |image14|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.python-online.cn/image-20200311220825614.png
-.. |image2| image:: http://image.python-online.cn/image-20200312221011685.png
-.. |image3| image:: http://image.python-online.cn/image-20200312221141028.png
-.. |image4| image:: http://image.python-online.cn/image-20200314132614248.png
-.. |image5| image:: http://image.python-online.cn/image-20200314000227914.png
-.. |image6| image:: http://image.python-online.cn/image-20200314000940825.png
-.. |image7| image:: http://image.python-online.cn/image-20200314001426817.png
-.. |image8| image:: http://image.python-online.cn/image-20200314001708640.png
-.. |image9| image:: http://image.python-online.cn/image-20200314003442400.png
-.. |image10| image:: http://image.python-online.cn/image-20200314003913527.png
-.. |image11| image:: http://image.python-online.cn/image-20200314004643487.png
-.. |image12| image:: http://image.python-online.cn/image-20200314005924877.png
-.. |image13| image:: http://image.python-online.cn/image-20200314005217447.png
+.. |image1| image:: http://image.iswbm.com/image-20200311220825614.png
+.. |image2| image:: http://image.iswbm.com/image-20200312221011685.png
+.. |image3| image:: http://image.iswbm.com/image-20200312221141028.png
+.. |image4| image:: http://image.iswbm.com/image-20200314132614248.png
+.. |image5| image:: http://image.iswbm.com/image-20200314000227914.png
+.. |image6| image:: http://image.iswbm.com/image-20200314000940825.png
+.. |image7| image:: http://image.iswbm.com/image-20200314001426817.png
+.. |image8| image:: http://image.iswbm.com/image-20200314001708640.png
+.. |image9| image:: http://image.iswbm.com/image-20200314003442400.png
+.. |image10| image:: http://image.iswbm.com/image-20200314003913527.png
+.. |image11| image:: http://image.iswbm.com/image-20200314004643487.png
+.. |image12| image:: http://image.iswbm.com/image-20200314005924877.png
+.. |image13| image:: http://image.iswbm.com/image-20200314005217447.png
 .. |image14| image:: http://image.iswbm.com/20200607174235.png
 

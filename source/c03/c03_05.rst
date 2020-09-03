@@ -142,15 +142,15 @@ release 发布一个版本
 |image11|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.python-online.cn/image-20200317202948177.png
-.. |image2| image:: http://image.python-online.cn/image-20200317211914020.png
-.. |image3| image:: http://image.python-online.cn/image-20200317212645500.png
-.. |image4| image:: http://image.python-online.cn/image-20200317212816613.png
-.. |image5| image:: http://image.python-online.cn/image-20200317213121828.png
-.. |image6| image:: http://image.python-online.cn/image-20200317213331606.png
-.. |image7| image:: http://image.python-online.cn/image-20200321130405670.png
-.. |image8| image:: http://image.python-online.cn/image-20200321130456438.png
-.. |image9| image:: http://image.python-online.cn/image-20200321132052173.png
-.. |image10| image:: http://image.python-online.cn/image-20200321133247067.png
+.. |image1| image:: http://image.iswbm.com/image-20200317202948177.png
+.. |image2| image:: http://image.iswbm.com/image-20200317211914020.png
+.. |image3| image:: http://image.iswbm.com/image-20200317212645500.png
+.. |image4| image:: http://image.iswbm.com/image-20200317212816613.png
+.. |image5| image:: http://image.iswbm.com/image-20200317213121828.png
+.. |image6| image:: http://image.iswbm.com/image-20200317213331606.png
+.. |image7| image:: http://image.iswbm.com/image-20200321130405670.png
+.. |image8| image:: http://image.iswbm.com/image-20200321130456438.png
+.. |image9| image:: http://image.iswbm.com/image-20200321132052173.png
+.. |image10| image:: http://image.iswbm.com/image-20200321133247067.png
 .. |image11| image:: http://image.iswbm.com/20200607174235.png
 

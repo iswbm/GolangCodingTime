@@ -40,7 +40,7 @@ var setIdTimer = setInterval(function () {
                 id: id,
                 blogId: '15406-1578143418297-890',
                 name: 'Go编程时光',
-                qrcode: 'http://image.python-online.cn/20200315163037.png',
+                qrcode: 'http://image.iswbm.com/20200315163037.png',
                 keyword: 'vip'
             });
         }

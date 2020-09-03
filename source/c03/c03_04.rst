@@ -272,12 +272,12 @@ pkg，由于这个包是我随便指定的，当然会找不到，找不到就�
 |image8|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.python-online.cn/image-20200319211407803.png
-.. |image2| image:: http://image.python-online.cn/image-20200320125058043.png
-.. |image3| image:: http://image.python-online.cn/image-20200320123745729.png
-.. |image4| image:: http://image.python-online.cn/image-20200320122730128.png
-.. |image5| image:: http://image.python-online.cn/image-20200320123057495.png
-.. |image6| image:: http://image.python-online.cn/image-20200319222834534.png
-.. |image7| image:: http://image.python-online.cn/image-20200319225219195.png
+.. |image1| image:: http://image.iswbm.com/image-20200319211407803.png
+.. |image2| image:: http://image.iswbm.com/image-20200320125058043.png
+.. |image3| image:: http://image.iswbm.com/image-20200320123745729.png
+.. |image4| image:: http://image.iswbm.com/image-20200320122730128.png
+.. |image5| image:: http://image.iswbm.com/image-20200320123057495.png
+.. |image6| image:: http://image.iswbm.com/image-20200319222834534.png
+.. |image7| image:: http://image.iswbm.com/image-20200319225219195.png
 .. |image8| image:: http://image.iswbm.com/20200607174235.png
 

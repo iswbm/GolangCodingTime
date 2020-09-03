@@ -136,12 +136,12 @@
        Read(p []byte) (n int, err error)
    }
 
-5. 注释规范
+6. 注释规范
 -----------
 
 注释分为
 
-5.1 包注释
+6.1 包注释
 ~~~~~~~~~~
 
 1. 位于 package 之前，如果一个包有多个文件，只需要在一个文件中编写即可
@@ -158,7 +158,7 @@
 
 3. 如果是特别复杂的包，可单独创建 doc.go 文件说明
 
-5.2 代码注释
+6.2 代码注释
 ~~~~~~~~~~~~
 
 用于解释代码逻辑，可以有两种写法
@@ -222,14 +222,14 @@
         // HasPrefix returns true if name has any string in given slice as prefix.
         func HasPrefix(name string, prefixes []string) bool { ...
 
-5.3 特别注释
+6.3 特别注释
 ~~~~~~~~~~~~
 
 -  TODO：提醒维护人员此部分代码待完成
 -  FIXME：提醒维护人员此处有BUG待修复
 -  NOTE：维护人员要关注的一些问题说明
 
-6. 包的导入
+7. 包的导入
 -----------
 
 单行的包导入
@@ -271,7 +271,7 @@
        "github.com/gogits/gogs/routers/user"
    )
 
-7. 善用 gofmt
+8. 善用 gofmt
 -------------
 
 除了命名规范外，Go 还有很多格式上的规范，比如
