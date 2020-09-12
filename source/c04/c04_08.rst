@@ -170,7 +170,7 @@ async def 而言），运行时只需要一个关键字
 1. I/O,select
 2. channel
 3. 等待锁
-4. 函数调用（有时
+4. 函数调用
 5. runtime.Gosched()
 
 参考阅读：

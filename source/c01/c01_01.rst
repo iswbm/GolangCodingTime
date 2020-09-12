@@ -28,80 +28,38 @@
 风格的IDE，可以替我省去很多熟悉新IDE的成本，所以这里我照样使用 JetBrains
 专门为 Go语言开发的IDE：\ ``Goland``\ 。
 
-Goland 下载地址：https://download.jetbrains.com/go/goland-2019.2.3.exe
+Goland 没有像 PyCharm 那样搞一个免费社区版，它是需要付费的。
 
-双击下载下来的 exe 文件，除了选择安装路径，我惯例更换成 E
-盘之外，一路选择 ``Next`` ，
-直到如下界面，根据你的需要全选中（推荐全选）
+网上的PJ教程几乎都不能用了，幸好我这里有绿色免安装的版本，对，就是那种连安装都不用安装，下载解压后就能使用的专业版本。
 
 |image4|
 
-接着一路 ``Next``\ ，直到出现如下界面，安装完成，选择 ``Run Gogland``
-立即运行。
+当你的可以正常使用 Goland
+后，通过点击设置进入如下界面，创建我的项目目录，顺便设置好 GOROOT 。
 
 |image5|
-
-此时如果你若没有购买 JetBrains 的激活码，此时是无法使用 Goland 的。
-
-|image6|
-
-为了让我们的学习更加顺畅，这里会教大家使用 破解的方式获得 Goland
-的使用权。
-
-首先下载相关的破解补丁：http://c.biancheng.net/uploads/course/go/Goland_Crack_Sinicization.zip
-
-下载的 zip 包里包含三个文件
-
-|image7|
-
--  jetbrains-agent.jar：破解补丁
--  resources_cn.jar：汉化补丁
--  激活码.txt：激活码
-
-将 jetbrains-agent.jar 拷贝到 你的 Goland
-安装目录的bin文件夹下，我的路径是：E::raw-latex:`\Program `Files:raw-latex:`\JetBrains`:raw-latex:`\GoLand `2019.2.3:raw-latex:`\bin`
-
-然后用编辑器打开这两个文件
-
-|image8|
-
-在最后一行添加如下一行，你要根据自己路径对应修改后面的值
-
-.. code:: shell
-
-   -javaagent:E:\Program Files\JetBrains\GoLand 2019.2.3\bin\jetbrains-agent.jar
-
-接着打开回到你的 Goland 启动界面，点击 ``Activation code``\ ，复制
-``激活码.txt`` 中的激活码，填入再点击 OK
-
-|image9|
-
-此时你的 Goland 已经可以正常使用了，创建我的项目目录，顺便设置好 GOROOT
-。
-
-|image10|
 
 创建好Project后，再点击
 Files->Settings->GOPATH，添加我们的项目目录\ ``F:\Go-Player``
 
-|image11|
+|image6|
 
 随便点击一个go文件，就能在下图箭头处看到配置入口，点击进入配置一下
 Go运行器。
 
-|image12|
+|image7|
 
 按照如下指示进行配置。
 
-|image13|
+|image8|
 
 去掉参数提示
 
-|image14|
+|image9|
 
 设置 goproxy
 
-|image15|
+|image10|
 
 可先的代理有如下（注意后面的 direct 不要删除）
 
@@ -112,20 +70,18 @@ Go运行器。
 设置 goimports（自动格式化插件），如果 你之前 没有安装 ，会提示你点击
 ``yes`` 下载安装 。
 
-|image16|
+|image11|
 
 至此，环境配置完成。
 
 在项目根目录下，创建如下三个文件夹，并在 src 目录下创建一个hello.go
 的文件。
 
-|image17|
+|image12|
 
 点击运行按钮，在控制台我们看到了熟悉的 ``Hello, World!``
 
-|image18|
-
-另：有关 Golang 最新版的破解教程，请关注这个博客：https://zhile.io
+|image13|
 
 3. 配置 VS Code 环境
 --------------------
@@ -166,7 +122,7 @@ Go的工作目录，这个目录指定了需要从哪个地方寻找GO的包、�
 打开你的 VS Code软件，先确认你设置的环境变量已经生效，点击 ``Terminal``
 -> ``New Terminal``\ ，使用 cmd 命令查看环境变量。
 
-|image19|
+|image14|
 
 如上图所求，我的环境变量是OK的，如果你的输出是指向你的用户目录：\ ``%USERPROFILE%\go``
 建议你不要折腾（因为我无论重启多少次 VS
@@ -187,11 +143,11 @@ Code，其记录的GOPATH始终指向%USERPROFILE%:raw-latex:`\go`），
 
 第一个是：Go 语言的扩展插件
 
-|image20|
+|image15|
 
 第二个是：Code Runner，让你的 VS Code 能够编译运行 Go 的程序。
 
-|image21|
+|image16|
 
 随便点开一个 go
 文件，在你的右下角会提示要你安装一些工具，安装的包有些由于墙的原因，无法下载，为了保证下载顺利，可以设置一下代理。
@@ -202,23 +158,23 @@ Code，其记录的GOPATH始终指向%USERPROFILE%:raw-latex:`\go`），
 
 然后再点击 ``Install All``
 
-|image22|
+|image17|
 
 然后你在 OUTPUT 就能看到安装进度
 
-|image23|
+|image18|
 
 安装的 exe 文件会放在 %GOPATH%/bin 下，也就是 ``F:\Go-Player\bin``
 
-|image24|
+|image19|
 
 而此的 src 目录结构是这样的
 
-|image25|
+|image20|
 
 到这时环境配置完成，编写 HelloWorld，并运行查看输出，一切完成。
 
-|image26|
+|image21|
 
 4. 配置环境变量
 ---------------
@@ -287,34 +243,29 @@ Code，其记录的GOPATH始终指向%USERPROFILE%:raw-latex:`\go`），
 
 --------------
 
-|image27|
+|image22|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
 .. |image1| image:: http://image.iswbm.com/20200102220841.png
 .. |image2| image:: http://image.iswbm.com/20200102221555.png
 .. |image3| image:: http://image.iswbm.com/20200102221840.png
-.. |image4| image:: http://image.iswbm.com/20200102221932.png
-.. |image5| image:: http://image.iswbm.com/20200102222123.png
-.. |image6| image:: http://image.iswbm.com/20200102222635.png
-.. |image7| image:: http://image.iswbm.com/20200102222907.png
-.. |image8| image:: http://image.iswbm.com/20200102223113.png
-.. |image9| image:: http://image.iswbm.com/20200102223451.png
-.. |image10| image:: http://image.iswbm.com/20200102223946.png
-.. |image11| image:: http://image.iswbm.com/20200102224643.png
-.. |image12| image:: http://image.iswbm.com/20200102225750.png
-.. |image13| image:: http://image.iswbm.com/20200102225349.png
-.. |image14| image:: http://image.iswbm.com/20200127192147.png
-.. |image15| image:: http://image.iswbm.com/20200127192512.png
-.. |image16| image:: http://image.iswbm.com/20200127192748.png
-.. |image17| image:: http://image.iswbm.com/20200102224417.png
-.. |image18| image:: http://image.iswbm.com/20200102225550.png
-.. |image19| image:: http://image.iswbm.com/20200109210630.png
-.. |image20| image:: http://image.iswbm.com/20200108202934.png
-.. |image21| image:: http://image.iswbm.com/20200109153948.png
-.. |image22| image:: http://image.iswbm.com/20200109210654.png
-.. |image23| image:: http://image.iswbm.com/20200109211543.png
-.. |image24| image:: http://image.iswbm.com/20200109213056.png
-.. |image25| image:: http://image.iswbm.com/20200109214117.png
-.. |image26| image:: http://image.iswbm.com/20200109154657.png
-.. |image27| image:: http://image.iswbm.com/20200607174235.png
+.. |image4| image:: http://image.iswbm.com/20200912181005.png
+.. |image5| image:: http://image.iswbm.com/20200102223946.png
+.. |image6| image:: http://image.iswbm.com/20200102224643.png
+.. |image7| image:: http://image.iswbm.com/20200102225750.png
+.. |image8| image:: http://image.iswbm.com/20200102225349.png
+.. |image9| image:: http://image.iswbm.com/20200127192147.png
+.. |image10| image:: http://image.iswbm.com/20200127192512.png
+.. |image11| image:: http://image.iswbm.com/20200127192748.png
+.. |image12| image:: http://image.iswbm.com/20200102224417.png
+.. |image13| image:: http://image.iswbm.com/20200102225550.png
+.. |image14| image:: http://image.iswbm.com/20200109210630.png
+.. |image15| image:: http://image.iswbm.com/20200108202934.png
+.. |image16| image:: http://image.iswbm.com/20200109153948.png
+.. |image17| image:: http://image.iswbm.com/20200109210654.png
+.. |image18| image:: http://image.iswbm.com/20200109211543.png
+.. |image19| image:: http://image.iswbm.com/20200109213056.png
+.. |image20| image:: http://image.iswbm.com/20200109214117.png
+.. |image21| image:: http://image.iswbm.com/20200109154657.png
+.. |image22| image:: http://image.iswbm.com/20200607174235.png
 
