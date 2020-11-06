@@ -1,110 +1,154 @@
-1.13 异常机制：panic 和 recover
+1.13 流程控制：理解 select 用法
 ===============================
 
 |image0|
 
-编程语言一般都会有异常捕获机制，在 Python 中 是使用\ ``raise`` 和
-``try-except`` 语句来实现的异常抛出和异常捕获的。
+前面写过两节关于 ``switch-case`` 的文章，分别是：
 
-在 Golang
-中，有不少常规错误，在编译阶段就能提前告警，比如语法错误或类型错误等，但是有些错误仅能在程序运行后才能发生，比如数组访问越界、空指针引用等，这些运行时错误会引起程序退出。
+`流程控制：switch-case <http://golang.iswbm.com/en/latest/c01/c01_09.html>`__
 
-当然能触发程序宕机退出的，也可以是我们自己，比如经过检查判断，当前环境无法达到我们程序进行的预期条件时（比如一个服务指定监听端口被其他程序占用），可以手动触发
-panic，让程序退出停止运行。
+`Go
+语言中的类型断言 <http://golang.iswbm.com/en/latest/c01/c01_14.html>`__
 
-1. 触发panic
-------------
+今天要学习一个跟 ``switch-case`` 很像，但还有点\ ``个人特色`` 的
+``select-case``\ ，这一节本应该放在 `学习 Go
+协程：详解信道/通道 <http://golang.iswbm.com/en/latest/c04/c04_03.html>`__
+里一起讲的，但是当时漏了，直到有读者给我提出，才注意到，今天就用这篇文章补充一下。
 
-手动触发宕机，是非常简单的一件事，只需要调用 panic
-这个内置函数即可，就像这样子
+跟 switch-case 相比，select-case 用法比较单一，它仅能用于 信道/通道
+的相关操作。
+
+.. code:: go
+
+   select {
+       case 表达式1:
+           <code>
+       case 表达式2:
+           <code>
+     default:
+       <code>
+   }
+
+接下来，我们来看几个例子帮助理解这个 select 的模型。
+
+1. 最简单的例子
+---------------
+
+先创建两个信道，并在 select 前往 c2 发送数据
 
 .. code:: go
 
    package main
 
+   import (
+       "fmt"
+   )
+
    func main() {
-       panic("crash")
+       c1 := make(chan string, 1)
+       c2 := make(chan string, 1)
+
+       c2 <- "hello"
+
+       select {
+       case msg1 := <-c1:
+         fmt.Println("c1 received: ", msg1)
+       case msg2 := <-c2:
+         fmt.Println("c2 received: ", msg2)
+       default:
+         fmt.Println("No data received.")
+       }
    }
 
-运行后，直接报错宕机
+在运行 select 时，会遍历所有（如果有机会的话）的 case
+表达式，只要有一个信道有接收到数据，那么 select 就结束，所以输出如下
 
-.. code:: shell
+::
 
-   $ go run main.go
-   go run main.go
-   panic: crash
+   c2 received:  hello
 
-   goroutine 1 [running]:
+2. 避免造成死锁
+---------------
+
+select 在执行过程中，必须命中其中的某一分支。
+
+如果在遍历完所有的 case
+后，若没有命中（\ ``命中``\ ：也许这样描述不太准确，我本意是想说可以执行信道的操作语句）任何一个
+case 表达式，就会进入 default 里的代码分支。
+
+但如果你没有写 default 分支，select 就会阻塞，直到有某个 case
+可以命中，而如果一直没有命中，select 就会抛出 ``deadlock``
+的错误，就像下面这样子。
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+   )
+
+   func main() {
+       c1 := make(chan string, 1)
+       c2 := make(chan string, 1)
+
+       // c2 <- "hello"
+
+       select {
+       case msg1 := <-c1:
+           fmt.Println("c1 received: ", msg1)
+       case msg2 := <-c2:
+           fmt.Println("c2 received: ", msg2)
+           // default:
+           //  fmt.Println("No data received.")
+       }
+   }
+
+运行后输出如下
+
+::
+
+   fatal error: all goroutines are asleep - deadlock!
+
+   goroutine 1 [select]:
    main.main()
-           E:/Go-Code/main.go:4 +0x40
+           /Users/MING/GolandProjects/golang-test/main.go:13 +0x10f
    exit status 2
 
-2. 捕获 panic
--------------
+**解决这个问题的方法有两种**
 
-发生了异常，有时候就得捕获，就像 Python 中的\ ``except`` 一样，那 Golang
-中是如何做到的呢？
-
-这就不得不引出另外一个内建函数 –
-``recover``\ ，它可以让程序在发生宕机后起生回生。
-
-但是 recover 的使用，有一个条件，就是它必须在 defer
-函数中才能生效，其他作用域下，它是不工作的。
-
-这是一个简单的例子
+一个是，养成好习惯，在 select 的时候，也写好 default 分支代码，尽管你
+default 下没有写任何代码。
 
 .. code:: go
 
-   import "fmt"
+   package main
 
-   func set_data(x int) {
-       defer func() {
-           // recover() 可以将捕获到的panic信息打印
-           if err := recover(); err != nil {
-               fmt.Println(err)
-           }
-       }()
-
-       // 故意制造数组越界，触发 panic
-       var arr [10]int
-       arr[x] = 88
-   }
+   import (
+       "fmt"
+   )
 
    func main() {
-       set_data(20)
+       c1 := make(chan string, 1)
+       c2 := make(chan string, 1)
 
-       // 如果能执行到这句，说明panic被捕获了
-       // 后续的程序能继续运行
-       fmt.Println("everything is ok")
+     // c2 <- "hello"
+     
+       select {
+       case msg1 := <-c1:
+           fmt.Println("c1 received: ", msg1)
+       case msg2 := <-c2:
+           fmt.Println("c2 received: ", msg2)
+       default:
+           
+       }
    }
 
-运行后，输出如下
+另一个是，让其中某一个信道可以接收到数据
 
 .. code:: go
 
-   $ go run main.go
-   runtime error: index out of range [20] with length 10
-   everything is ok
-
-通常来说，不应该对进入 panic
-宕机的程序做任何处理，但有时，需要我们可以从宕机中恢复，至少我们可以在程序崩溃前，做一些操作，举个例子，当
-web
-服务器遇到不可预料的严重问题时，在崩溃前应该将所有的连接关闭，如果不做任何处理，会使得客户端一直处于等待状态，如果
-web 服务器还在开发阶段，服务器甚至可以将异常信息反馈到客户端，帮助调试。
-
-3. 无法跨协程
--------------
-
-从上面的例子，可以看到，即使 panic 会导致整个程序退出，但在退出前，若有
-defer 延迟函数，还是得执行完 defer 。
-
-但是这个 defer 在多个协程之间是没有效果，在子协程里触发
-panic，只能触发自己协程内的 defer，而不能调用 main 协程里的 defer
-函数的。
-
-来做个实验就知道了
-
-.. code:: go
+   package main
 
    import (
        "fmt"
@@ -112,46 +156,126 @@ panic，只能触发自己协程内的 defer，而不能调用 main 协程里的
    )
 
    func main() {
-       // 这个 defer 并不会执行
-       defer fmt.Println("in main")
-       
+       c1 := make(chan string, 1)
+       c2 := make(chan string, 1)
+
+     // 开启一个协程，可以发送数据到信道
        go func() {
-           defer println("in goroutine")
-           panic("")
+           time.Sleep(time.Second * 1)
+           c2 <- "hello"
        }()
 
-       time.Sleep(2 * time.Second)
+       select {
+       case msg1 := <-c1:
+           fmt.Println("c1 received: ", msg1)
+       case msg2 := <-c2:
+           fmt.Println("c2 received: ", msg2)
+       }
+   }
+
+3. select 随机性
+----------------
+
+之前学过 switch 的时候，知道了 switch 里的 case 是顺序执行的，但在
+select 里却不是。
+
+通过下面这个例子的执行结果就可以看出
+
+|image1|
+
+4. select 的超时
+----------------
+
+当 case 里的信道始终没有接收到数据时，而且也没有 default 语句时，select
+整体就会阻塞，但是有时我们并不希望 select
+一直阻塞下去，这时候就可以手动设置一个超时时间。
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "time"
+   )
+
+   func makeTimeout(ch chan bool, t int) {
+       time.Sleep(time.Second * time.Duration(t))
+       ch <- true
+   }
+
+   func main() {
+       c1 := make(chan string, 1)
+       c2 := make(chan string, 1)
+       timeout := make(chan bool, 1)
+
+       go makeTimeout(timeout, 2)
+
+       select {
+       case msg1 := <-c1:
+           fmt.Println("c1 received: ", msg1)
+       case msg2 := <-c2:
+           fmt.Println("c2 received: ", msg2)
+       case <-timeout:
+           fmt.Println("Timeout, exit.")
+       }
    }
 
 输出如下
 
 ::
 
-   in goroutine
-   panic:
+   Timeout, exit.
 
-   goroutine 6 [running]:
-   main.main.func1()
-           E:/Go-Code/main.go:12 +0x7b
-   created by main.main
-           E:/Go-Code/main.go:10 +0xbc
-   exit status 2
+5. 读取/写入都可以
+------------------
 
-4. 总结一下
+上面例子里的 case，好像都只从信道中读取数据，但实际上，select 里的 case
+表达式只要求你是对信道的操作即可，不管你是往信道写入数据，还是从信道读出数据。
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+   )
+
+   func main() {
+       c1 := make(chan int, 2)
+
+       c1 <- 2
+       select {
+       case c1 <- 4:
+           fmt.Println("c1 received: ", <-c1)
+           fmt.Println("c1 received: ", <-c1)
+       default:
+           fmt.Println("channel blocking")
+       }
+   }
+
+输出如下
+
+::
+
+   c1 received:  2
+   c1 received:  4
+
+6. 总结一下
 -----------
 
-Golang 异常的抛出与捕获，依赖两个内置函数：
+select 与 switch
+原理很相似，但它的使用场景更特殊，学习了本篇文章，你需要知道如下几点区别：
 
--  panic：抛出异常，使程序崩溃
--  recover：捕获异常，恢复程序或做收尾工作
+1. select 只能用于 channel 的操作(写入/读出)，而 switch 则更通用一些；
+2. select 的 case 是随机的，而 switch 里的 case 是顺序执行；
+3. select 要注意避免出现死锁，同时也可以自行实现超时机制；
+4. select 里没有类似 switch 里的 fallthrough 的用法；
+5. select 不能像 switch 一样接函数或其他表达式。
 
-revocer 调用后，抛出的 panic 将会在此处终结，不会再外抛，但是
-recover，并不能任意使用，它有强制要求，必须得在 defer 下才能发挥用途。
-
---------------
-
-|image1|
+|image2|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
+.. |image1| image:: http://image.iswbm.com/20200402215126.png
+.. |image2| image:: http://image.iswbm.com/20200607174235.png
 

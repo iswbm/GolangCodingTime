@@ -1,355 +1,169 @@
-2.8 反射必学：反射三定律
-========================
+2.8 学习反射：全面学习反射的函数
+================================
 
-|image0|
+1. 获取类别：Kind()
+-------------------
 
-很多人都知道我是从 Python 转过来学习 Go 语言的，当我在使用 Python
-的时候，我甚至可以做到不需要知道什么是内省，什么是反射，就可以立即使用内省去做一些事情。
-
-而在学习 Go 语言后，反射在我这却变成了一个难点，一直感觉这个
-**反射对象** 的概念异常的抽象。
-
-这篇文章还是会跟上篇文章一样，尽量使用图解来解释一些抽象的概念，如果是我理解有误，还希望你在文章尾部给我留言指正，谢谢。
-
-关于反射的内容，我分为了好几篇，这一篇是入门篇，会从经典的反射三大定律入手，写一些
-demo 代码，告诉你反射的基本内容。
-
-1. 真实世界与反射世界
----------------------
-
-在本篇文章里，为了区分反射前后的变量值类型，我将反射前环境称为
-**真实世界**\ ，而将反射后的环境称为
-**反射世界**\ 。这种比喻不严谨，但是对于我理解是有帮助的，也希望对你有用。
-
-在反射的世界里，我们拥有了获取一个对象的类型，属性及方法的能力。
-
-|image1|
-
-2. 两种类型：Type 和 Value
---------------------------
-
-在 Go 反射的世界里，有两种类型非常重要，是整个反射的核心，在学习 reflect
-包的使用时，先得学习下这两种类型：
-
-1. reflect.Type
-2. reflect.Value
-
-它们分别对应着真实世界里的 type 和
-value，只不过在反射对象里，它们拥有更多的内容。
-
-从源码上来看，reflect.Type 是以一个接口的形式存在的
+Type 对象 和 Value 对象都可以通过 Kind()
+方法返回对应的接口变量的基础类型。
 
 .. code:: go
 
-   type Type interface {
-       Align() int
-       FieldAlign() int
-       Method(int) Method
-       MethodByName(string) (Method, bool)
-       NumMethod() int
-       Name() string
-       PkgPath() string
-       Size() uintptr
-       String() string
-       Kind() Kind
-       Implements(u Type) bool
-       AssignableTo(u Type) bool
-       ConvertibleTo(u Type) bool
-       Comparable() bool
-       Bits() int
-       ChanDir() ChanDir
-       IsVariadic() bool
-       Elem() Type
-       Field(i int) StructField
-       FieldByIndex(index []int) StructField
-       FieldByName(name string) (StructField, bool)
-       FieldByNameFunc(match func(string) bool) (StructField, bool)
-       In(i int) Type
-       Key() Type
-       Len() int
-       NumField() int
-       NumIn() int
-       NumOut() int
-       Out(i int) Type
-       common() *rtype
-       uncommon() *uncommonType
-   }
+   reflect.TypeOf(m).Kind()
+   reflect.ValueOf(m).Kind()
 
-而 reflect.Value 是以一个结构体的形式存在，
+在这里，要注意的是，Kind 和 Type 是有区别的，Kind
+表示更基础，范围更广的分类。
+
+有一个例子来表示， iPhone （接口变量）的 Type 是手机，Kind 是电子产品。
+
+通过查看源码文件： ``src/reflect/type.go`` ，可以得知 Kind
+表示的基本都是 Go 原生的基本类型（共有 25
+种的合法类型），而不包含自定义类型。
 
 .. code:: go
 
-   type Value struct {
-       typ *rtype
-       ptr unsafe.Pointer
-       flag
-   }
+   type Kind uint
 
-同时它接收了很多的方法（见下表），这里出于篇幅的限制这里也没办法一一介绍。
+   const (
+     Invalid Kind = iota  // 非法类型
+     Bool                 // 布尔型
+     Int                  // 有符号整型
+     Int8                 // 有符号8位整型
+     Int16                // 有符号16位整型
+     Int32                // 有符号32位整型
+     Int64                // 有符号64位整型
+     Uint                 // 无符号整型
+     Uint8                // 无符号8位整型
+     Uint16               // 无符号16位整型
+     Uint32               // 无符号32位整型
+     Uint64               // 无符号64位整型
+     Uintptr              // 指针
+     Float32              // 单精度浮点数
+     Float64              // 双精度浮点数
+     Complex64            // 64位复数类型
+     Complex128           // 128位复数类型
+     Array                // 数组
+     Chan                 // 通道
+     Func                 // 函数
+     Interface            // 接口
+     Map                  // 映射
+     Ptr                  // 指针
+     Slice                // 切片
+     String               // 字符串
+     Struct               // 结构体
+     UnsafePointer        // 底层指针
+   )
 
-.. code:: go
+下面来看一下 Kind 函数如何使用？
 
-   Addr
-   Bool
-   Bytes
-   runes
-   CanAddr
-   CanSet
-   Call
-   CallSlice
-   call
-   Cap
-   Close
-   Complex
-   Elem
-   Field
-   FieldByIndex
-   FieldByName
-   FieldByNameFunc
-   Float
-   Index
-   Int
-   CanInterface
-   Interface
-   InterfaceData
-   IsNil
-   IsValid
-   IsZero
-   Kind
-   Len
-   MapIndex
-   MapKeys
-   MapRange
-   Method
-   NumMethod
-   MethodByName
-   NumField
-   OverflowComplex
-   OverflowFloat
-   OverflowInt
-   OverflowUint
-   Pointer
-   Recv
-   recv
-   Send
-   send
-   Set
-   SetBool
-   SetBytes
-   setRunes
-   SetComplex
-   SetFloat
-   SetInt
-   SetLen
-   SetCap
-   SetMapIndex
-   SetUint
-   SetPointer
-   SetString
-   Slice
-   Slice3
-   String
-   TryRecv
-   TrySend
-   Type
-   Uint
-   UnsafeAddr
-   assignTo
-   Convert
-
-通过上一节的内容（\ `关于接口的三个
-『潜规则』 <http://golang.iswbm.com/en/latest/c02/c02_07.html>`__\ ），我们知道了一个接口变量，实际上都是由一
-pair 对（type 和 data）组合而成，pair
-对中记录着实际变量的值和类型。也就是说在真实世界里，type 和 value
-是合并在一起组成 接口变量的。
-
-而在反射的世界里，type 和 data 却是分开的，他们分别由 reflect.Type 和
-reflect.Value 来表现。
-
-3. 解读反射的三大定律
----------------------
-
-Go 语言里有个反射三定律，是你在学习反射时，很重要的参考：
-
-1. Reflection goes from interface value to reflection object.
-2. Reflection goes from reflection object to interface value.
-3. To modify a reflection object, the value must be settable.
-
-翻译一下，就是：
-
-1. 反射可以将接口类型变量 转换为“反射类型对象”；
-2. 反射可以将 “反射类型对象”转换为 接口类型变量；
-3. 如果要修改 “反射类型对象” 其类型必须是 可写的；
-
-第一定律
-~~~~~~~~
-
-   Reflection goes from interface value to reflection object.
-
-为了实现从接口变量到反射对象的转换，需要提到 reflect
-包里很重要的两个方法：
-
-1. reflect.TypeOf(i) ：获得接口值的类型
-2. reflect.ValueOf(i)：获得接口值的值
-
-这两个方法返回的对象，我们称之为反射对象：Type object 和 Value object。
-
-.. figure:: http://image.iswbm.com/image-20200614175219320.png
-   :alt: golang reflection
-
-   golang reflection
-
-举个例子，看下这两个方法是如何使用的？
+第一种：传入值
 
 .. code:: go
 
    package main
 
    import (
-   "fmt"
-   "reflect"
+       "fmt"
+       "reflect"
    )
 
+   type Profile struct {
+       name string
+       age int
+       gender string
+   }
+
    func main() {
-       var age interface{} = 25
+       m := Profile{}
 
-       fmt.Printf("原始接口变量的类型为 %T，值为 %v \n", age, age)
-
-       t := reflect.TypeOf(age)
-       v := reflect.ValueOf(age)
-
-       // 从接口变量到反射对象
-       fmt.Printf("从接口变量到反射对象：Type对象的类型为 %T \n", t)
-       fmt.Printf("从接口变量到反射对象：Value对象的类型为 %T \n", v)
-
+       t := reflect.TypeOf(m)
+       fmt.Println("Type: ",t)
+       fmt.Println("Kind: ",t.Kind())
    }
 
 输出如下
 
 .. code:: go
 
-   原始接口变量的类型为 int，值为 25 
-   从接口变量到反射对象：Type对象的类型为 *reflect.rtype 
-   从接口变量到反射对象：Value对象的类型为 reflect.Value 
+   Type:  main.Profile
+   Kind:  struct
 
-如此我们完成了从接口类型变量到反射对象的转换。
-
-等等，上面我们定义的 age 不是 int
-类型的吗？第一法则里怎么会说是接口类型的呢？
-
-关于这点，其实在上一节（\ `关于接口的三个
-『潜规则』 <http://golang.iswbm.com/en/latest/c02/c02_07.html>`__\ ）已经提到过了，由于
-TypeOf 和 ValueOf 两个函数接收的是 interface{} 空接口类型，而 Go
-语言函数都是值传递，因此Go语言会将我们的类型隐式地转换成接口类型。
-
-.. code:: go
-
-   // TypeOf returns the reflection Type of the value in the interface{}.TypeOf returns nil.
-   func TypeOf(i interface{}) Type
-
-   // ValueOf returns a new Value initialized to the concrete value stored in the interface i. ValueOf(nil) returns the zero Value.
-   func ValueOf(i interface{}) Value
-
-第二定律
-~~~~~~~~
-
-   Reflection goes from reflection object to interface value.
-
-和第一定律刚好相反，第二定律描述的是，从反射对象到接口变量的转换。
-
-.. figure:: http://image.iswbm.com/image-20200614175325721.png
-   :alt: golang reflection
-
-   golang reflection
-
-通过源码可知， reflect.Value 的结构体会接收 ``Interface``
-方法，返回了一个 ``interface{}`` 类型的变量（\ **注意：只有 Value
-才能逆向转换，而 Type 则不行，这也很容易理解，如果 Type
-能逆向，那么逆向成什么呢？**\ ）
-
-.. code:: go
-
-   // Interface returns v's current value as an interface{}.
-   // It is equivalent to:
-   //  var i interface{} = (v's underlying value)
-   // It panics if the Value was obtained by accessing
-   // unexported struct fields.
-   func (v Value) Interface() (i interface{}) {
-       return valueInterface(v, true)
-   }
-
-这个函数就是我们用来实现将反射对象转换成接口变量的一个桥梁。
-
-例子如下
+第二种：传入指针，关于 Elem() 的使用上一篇文章已经讲过了，它会返回 Type
+对象所表示的指针指向的数据。
 
 .. code:: go
 
    package main
 
    import (
-   "fmt"
-   "reflect"
+       "fmt"
+       "reflect"
    )
 
+   type Profile struct {
+       name string
+       age int
+       gender string
+   }
+
    func main() {
-       var age interface{} = 25
+       m := Profile{}
 
-       fmt.Printf("原始接口变量的类型为 %T，值为 %v \n", age, age)
-
-       t := reflect.TypeOf(age)
-       v := reflect.ValueOf(age)
-
-       // 从接口变量到反射对象
-       fmt.Printf("从接口变量到反射对象：Type对象的类型为 %T \n", t)
-       fmt.Printf("从接口变量到反射对象：Value对象的类型为 %T \n", v)
-
-       // 从反射对象到接口变量
-       i := v.Interface()
-       fmt.Printf("从反射对象到接口变量：新对象的类型为 %T 值为 %v \n", i, i)
-
+       t := reflect.TypeOf(&m)
+       
+       fmt.Println("&m Type: ",t)
+       fmt.Println("&m Kind: ",t.Kind())
+       
+       fmt.Println("m Type: ",t.Elem())
+       fmt.Println("m Kind: ",t.Elem().Kind())
    }
 
 输出如下
 
 .. code:: go
 
-   原始接口变量的类型为 int，值为 25 
-   从接口变量到反射对象：Type对象的类型为 *reflect.rtype 
-   从接口变量到反射对象：Value对象的类型为 reflect.Value 
-   从反射对象到接口变量：新对象的类型为 int 值为 25 
+   &m Type:  *main.Profile
+   &m Kind:  ptr
+   m Type:  main.Profile
+   m Kind:  struct
 
-当然了，最后转换后的对象，静态类型为 ``interface{}``
-，如果要转成最初的原始类型，需要再类型断言转换一下，关于这点，我已经在上一节里讲解过了，你可以点此前往复习：（\ `关于接口的三个
-『潜规则』 <http://golang.iswbm.com/en/latest/c02/c02_07.html>`__\ ）。
+如果这里不使用 TypeOf 方法，而是使用 ValueOf 方法呢，应该这样子写
 
 .. code:: go
 
-   i := v.Interface().(int)
+   package main
 
-至此，我们已经学习了反射的两大定律，对这两个定律的理解，我画了一张图，你可以用下面这张图来加强理解，方便记忆。
+   import (
+       "fmt"
+       "reflect"
+   )
 
-|image2|
+   type Profile struct {
+       name string
+       age int
+       gender string
+   }
 
-第三定律
-~~~~~~~~
+   func main() {
+       m := Profile{}
 
-   To modify a reflection object, the value must be settable.
+       v := reflect.ValueOf(&m)
 
-反射世界是真实世界的一个『映射』，是我的一个描述，但这并不严格，因为并不是你在反射世界里所做的事情都会还原到真实世界里。
+       fmt.Println("&m Type: ",v.Type())
+       fmt.Println("&m Kind: ",v.Kind())
 
-第三定律引出了一个 ``settable`` （可设置性，或可写性）的概念。
+       fmt.Println("m Type: ",v.Elem().Type())
+       fmt.Println("m Kind: ",v.Elem().Kind())
+   }
 
-其实早在以前的文章中，我们就一直在说，Go
-语言里的函数都是值传递，只要你传递的不是变量的指针，你在函数内部对变量的修改是不会影响到原始的变量的。
+2. 进行类型的转换
+-----------------
 
-回到反射上来，当你使用 reflect.Typeof 和 reflect.Valueof
-的时候，如果传递的不是接口变量的指针，反射世界里的变量值始终将只是真实世界里的一个拷贝，你对该反射对象进行修改，并不能反映到真实世界里。
+Int() ：转成 int
+~~~~~~~~~~~~~~~~
 
-因此在反射的规则里
-
--  不是接收变量指针创建的反射对象，是不具备『\ **可写性**\ 』的
--  是否具备『\ **可写性**\ 』，可使用 ``CanSet()`` 来获取得知
--  对不具备『\ **可写性**\ 』的对象进行修改，是没有意义的，也认为是不合法的，因此会报错。
+示例代码如下
 
 .. code:: go
 
@@ -361,24 +175,232 @@ TypeOf 和 ValueOf 两个函数接收的是 interface{} 空接口类型，而 Go
    )
 
    func main() {
+
+       var age int = 25
+
+       v1 := reflect.ValueOf(age)
+       fmt.Printf("转换前， type: %T, value: %v \n", v1, v1)
+       v2 := v1.Int()
+       fmt.Printf("转换后， type: %T, value: %v \n", v2, v2)
+   }
+
+输出如下
+
+.. code:: go
+
+   转换前， type: reflect.Value, value: 25 
+   转换后， type: int64, value: 25 
+
+Float()：转成 float
+~~~~~~~~~~~~~~~~~~~
+
+示例代码如下
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   func main() {
+
+       var score float64 = 99.5
+
+       v1 := reflect.ValueOf(score)
+       fmt.Printf("转换前， type: %T, value: %v \n", v1, v1)
+       v2 := v1.Float()
+       fmt.Printf("转换后， type: %T, value: %v \n", v2, v2)
+   }
+
+输出如下
+
+.. code:: go
+
+   转换前， type: reflect.Value, value: 99.5 
+   转换后， type: float64, value: 99.5 
+
+String()：转成 string
+~~~~~~~~~~~~~~~~~~~~~
+
+示例代码如下
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   func main() {
+
        var name string = "Go编程时光"
+
+       v1 := reflect.ValueOf(name)
+       fmt.Printf("转换前， type: %T, value: %v \n", v1, v1)
+       v2 := v1.String()
+       fmt.Printf("转换后， type: %T, value: %v \n", v2, v2)
+   }
+
+输出如下
+
+.. code:: go
+
+   转换前， type: reflect.Value, value: Go编程时光 
+   转换后， type: string, value: Go编程时光 
+
+Bool()：转成布尔值
+~~~~~~~~~~~~~~~~~~
+
+示例代码如下
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   func main() {
+
+       var isMale bool = true
+
+       v1 := reflect.ValueOf(isMale)
+       fmt.Printf("转换前， type: %T, value: %v \n", v1, v1)
+       v2 := v1.Bool()
+       fmt.Printf("转换后， type: %T, value: %v \n", v2, v2)
+   }
+
+输出如下
+
+.. code:: go
+
+   转换前， type: reflect.Value, value: true 
+   转换后， type: bool, value: true 
+
+Pointer()：转成指针
+~~~~~~~~~~~~~~~~~~~
+
+示例代码如下
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   func main() {
+
+       var age int = 25
+
+       v1 := reflect.ValueOf(&age)
+       fmt.Printf("转换前， type: %T, value: %v \n", v1, v1)
+       v2 := v1.Pointer()
+       fmt.Printf("转换后， type: %T, value: %v \n", v2, v2)
+   }
+
+输出如下
+
+.. code:: go
+
+   转换前， type: reflect.Value, value: 0xc0000b4008 
+   转换后， type: uintptr, value: 824634458120 
+
+Interface()：转成接口类型
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+由于空接口类型可以接收任意类型的值，所以上面介绍的各种方法，其实都可以用
+Interface() 函数来代替。
+
+区别只有一个，使用 Interface() 返回的对象，静态类型为
+interface{}，而使用 Int ()、String() 等函数，返回的对象，其静态类型会是
+int，string 等更具体的类型。
+
+关于 Interface() 示例代码如下
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   func main() {
+
+       var age int = 25
+
+       v1 := reflect.ValueOf(age)
+       fmt.Printf("转换前， type: %T, value: %v \n", v1, v1)
+       v2 := v1.Interface()
+       fmt.Printf("转换后， type: %T, value: %v \n", v2, v2)
+   }
+
+输出如下
+
+.. code:: go
+
+   转换前， type: reflect.Value, value: 25 
+   转换后， type: int, value: 25 
+
+3. 对切片的操作
+---------------
+
+Slice()：对切片再切片（两下标）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Slice() 函数与上面所有类型转换的函数都不一样，它返回还是 reflect.Value
+反射对象，而不再是我们所想的真实世界里的切片对象。
+
+通过以下示例代码可验证
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   func main() {
+
+       var numList []int = []int{1,2}
+
+       v1 := reflect.ValueOf(numList)
+       fmt.Printf("转换前， type: %T, value: %v \n", v1, v1)
      
-       v := reflect.ValueOf(name)
-       fmt.Println("可写性为:", v.CanSet())
+       // Slice 函数接收两个参数
+       v2 := v1.Slice(0, 2)
+       fmt.Printf("转换后， type: %T, value: %v \n", v2, v2)
    }
 
 输出如下
 
 .. code:: go
 
-   可写性为: false
+   转换前， type: reflect.Value, value: [1 2] 
+   转换后， type: reflect.Value, value: [1 2] 
 
-要让反射对象具备可写性，需要注意两点
+Slice3()：对切片再切片（三下标）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. 创建反射对象时传入变量的指针
-2. 使用 ``Elem()``\ 函数返回指针指向的数据
+Slice3() 与 Slice() 函数一样，都是对一个切片的反射对象
 
-完整代码如下
+Set() 和 Append()：更新切片
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+示例代码如下
 
 .. code:: go
 
@@ -389,31 +411,37 @@ TypeOf 和 ValueOf 两个函数接收的是 interface{} 空接口类型，而 Go
        "reflect"
    )
 
-   func main() {
-       var name string = "Go编程时光"
-       v1 := reflect.ValueOf(&name)
-       fmt.Println("v1 可写性为:", v1.CanSet())
+   func appendToSlice(arrPtr interface{}) {
+       valuePtr := reflect.ValueOf(arrPtr)
+       value := valuePtr.Elem()
 
-       v2 := v1.Elem()
-       fmt.Println("v2 可写性为:", v2.CanSet())
+       value.Set(reflect.Append(value, reflect.ValueOf(3)))
+
+       fmt.Println(value)
+       fmt.Println(value.Len())
+   }
+
+   func main() {
+       arr := []int{1,2}
+
+       appendToSlice(&arr)
+
+       fmt.Println(arr)
    }
 
 输出如下
 
 .. code:: go
 
-   v1 可写性为: false
-   v2 可写性为: true
+   3
+   [1 2 3]
+   [1 2 3]
 
-知道了如何使反射的世界里的对象具有可写性后，接下来是时候了解一下如何对修改更新它。
+4. 对属性的操作
+---------------
 
-反射对象，都会有如下几个以 ``Set`` 单词开头的方法
-
-|image3|
-
-这些方法就是我们修改值的入口。
-
-来举个例子
+NumField() 和 Field()
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: go
 
@@ -424,36 +452,284 @@ TypeOf 和 ValueOf 两个函数接收的是 interface{} 空接口类型，而 Go
        "reflect"
    )
 
+   type Person struct {
+       name string
+       age int
+       gender string
+   }
+
+   func (p Person)SayBye()  {
+       fmt.Println("Bye")
+   }
+
+   func (p Person)SayHello()  {
+       fmt.Println("Hello")
+   }
+
+
+
    func main() {
-       var name string = "Go编程时光"
-       fmt.Println("真实世界里 name 的原始值为：", name)
+       p := Person{"写代码的明哥", 27, "male"}
 
-       v1 := reflect.ValueOf(&name)
-       v2 := v1.Elem()
+       v := reflect.ValueOf(p)
 
-       v2.SetString("Python编程时光")
-       fmt.Println("通过反射对象进行更新后，真实世界里 name 变为：", name)
+       fmt.Println("字段数:", v.NumField())
+       fmt.Println("第 1 个字段：", v.Field(0))
+       fmt.Println("第 2 个字段：", v.Field(1))
+       fmt.Println("第 3 个字段：", v.Field(2))
+
+       fmt.Println("==========================")
+       // 也可以这样来遍历
+       for i:=0;i<v.NumField();i++{
+           fmt.Printf("第 %d 个字段：%v \n", i+1, v.Field(i))
+       }
    }
 
 输出如下
 
 .. code:: go
 
-   真实世界里 name 的原始值为： Go编程时光
-   通过反射对象进行更新后，真实世界里 name 变为： Python编程时光
+   字段数: 3
+   第 1 个字段： 写代码的明哥
+   第 2 个字段： 27
+   第 3 个字段： male
+   ==========================
+   第 1 个字段：写代码的明哥 
+   第 2 个字段：27 
+   第 3 个字段：male 
+
+5. 对方法的操作
+---------------
+
+NumMethod() 和 Method()
+~~~~~~~~~~~~~~~~~~~~~~~
+
+要获取 Name ，注意使用使用 TypeOf
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type Person struct {
+       name string
+       age int
+       gender string
+   }
+
+   func (p Person)SayBye()  {
+       fmt.Println("Bye")
+   }
+
+   func (p Person)SayHello()  {
+       fmt.Println("Hello")
+   }
+
+
+
+   func main() {
+       p := &Person{"写代码的明哥", 27, "male"}
+
+       t := reflect.TypeOf(p)
+
+       fmt.Println("方法数（可导出的）:", t.NumMethod())
+       fmt.Println("第 1 个方法：", t.Method(0).Name)
+       fmt.Println("第 2 个方法：", t.Method(1).Name)
+
+       fmt.Println("==========================")
+       // 也可以这样来遍历
+       for i:=0;i<t.NumMethod();i++{
+          fmt.Printf("第 %d 个方法：%v \n", i+1, t.Method(i).Name)
+       }
+   }
+
+输出如下
+
+.. code:: go
+
+   方法数（可导出的）: 2
+   第 1 个方法： SayBye
+   第 2 个方法： SayHello
+   ==========================
+   第 1 个方法：SayBye 
+   第 2 个方法：SayHello 
+
+10. 动态调用函数（使用索引且无参数）
+------------------------------------
+
+要调用 Call，注意要使用 ValueOf
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type Person struct {
+       name string
+       age int
+   }
+
+   func (p Person)SayBye() string {
+       return "Bye"
+   }
+
+   func (p Person)SayHello() string {
+       return "Hello"
+   }
+
+
+   func main() {
+       p := &Person{"wangbm", 27}
+
+       t := reflect.TypeOf(p)
+       v := reflect.ValueOf(p)
+
+
+       for i:=0;i<v.NumMethod();i++{
+          fmt.Printf("调用第 %d 个方法：%v ，调用结果：%v\n",
+              i+1,
+              t.Method(i).Name,
+              v.Elem().Method(i).Call(nil))
+       }
+   }
+
+输出如下
+
+.. code:: go
+
+   调用第 1 个方法：SayBye ，调用结果：[Bye]
+   调用第 2 个方法：SayHello ，调用结果：[Hello]
+
+11. 动态调用函数（使用函数名且无参数）
+--------------------------------------
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type Person struct {
+       name string
+       age int
+       gender string
+   }
+
+   func (p Person)SayBye()  {
+       fmt.Print("Bye")
+   }
+
+   func (p Person)SayHello()  {
+       fmt.Println("Hello")
+   }
+
+
+
+   func main() {
+       p := &Person{"写代码的明哥", 27, "male"}
+
+       v := reflect.ValueOf(p)
+
+       v.MethodByName("SayHello").Call(nil)
+       v.MethodByName("SayBye").Call(nil)
+   }
+
+12. 动态调用函数（使用函数且有参数）
+------------------------------------
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "reflect"
+   )
+
+   type Person struct {
+   }
+
+   func (p Person)SelfIntroduction(name string, age int)  {
+       fmt.Printf("Hello, my name is %s and i'm %d years old.", name, age)
+   }
+
+
+
+   func main() {
+       p := &Person{}
+
+       //t := reflect.TypeOf(p)
+       v := reflect.ValueOf(p)
+       name := reflect.ValueOf("wangbm")
+       age := reflect.ValueOf(27)
+       input := []reflect.Value{name, age}
+       v.MethodByName("SelfIntroduction").Call(input)
+   }
+
+输出如下
+
+::
+
+   Hello, my name is wangbm and i'm 27 years old.
+
+13. 如何看待反射？
+------------------
+
+**反射** 提供了一些在早期高级语言中难以实现的运行时特性
+
+-  可以在一定程度上避免硬编码，提供灵活性和通用性。
+-  可以作为一个\ `第一类对象 <https://zh.wikipedia.org/wiki/第一類物件>`__\ 发现并修改源代码的结构（如代码块、类、方法、协议等）。
+-  可以在运行时像对待源代码语句一样动态解析字符串中可执行的代码（类似JavaScript的eval()函数），进而可将跟class或function匹配的字符串转换成class或function的调用或引用。
+-  可以创建一个新的语言字节码解释器来给编程结构一个新的意义或用途。
+
+劣势
+~~~~
+
+-  此技术的学习成本高。面向反射的编程需要较多的高级知识，包括框架、关系映射和对象交互，以实现更通用的代码执行。
+-  同样因为反射的概念和语法都比较抽象，过多地滥用反射技术会使得代码难以被其他人读懂，不利于合作与交流。
+-  由于将部分信息检查工作从编译期推迟到了运行期，此举在提高了代码灵活性的同时，牺牲了一点点运行效率。
+
+通过深入学习反射的特性和技巧，它的劣势可以尽量避免，但这需要许多时间和经验的积累。
+
+几点说明
+--------
+
+1. 有 reflect 的代码一般都较难理解，使用时请注意适当。
+2. Golang 的反射很慢，这个和它的 API 设计有关
+3. 反射是一个高级知识点，内容很多，不容易掌握，应该小心谨慎的使用它
+4. 不到不得不用的地步，能避免使用反射就不用。
+
+在开发中，你或许会碰到在有些情况下，你需要获取一个对象的类型，属性及方法，而这个过程其实就是
+**反射**\ 。
+
+通过反射你可以实现一些动态的功能，提高了 Go 作为一门静态语言的灵活性。
+
+Go 原生为我们内置了一个 reflect
+包来为对象提供反射能力，本篇文章将重点于这个 reflect 包的使用。
 
 参考文章
+--------
 
--  `思否：Go
-   语言反射三定律 <https://segmentfault.com/a/1190000006190038>`__
+`Go 系列教程 ——第 34
+篇：反射 <https://mp.weixin.qq.com/s/dkgJ_fA0smvpv69t5Nv-7A>`__
 
---------------
+`第001节：反射reflect <https://www.qfgolang.com/?special=fanshejizhi>`__
 
-|image4|
+https://golang.org/pkg/reflect/
 
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200614174556.png
-.. |image2| image:: http://image.iswbm.com/image-20200614194727218.png
-.. |image3| image:: http://image.iswbm.com/image-20200614161613417.png
-.. |image4| image:: http://image.iswbm.com/20200607174235.png
+https://segmentfault.com/a/1190000016230264
 
+https://studygolang.com/articles/12348?fr=sidebar
+
+https://blog.golang.org/laws-of-reflection

@@ -1,215 +1,157 @@
-1.16 如何使用 GDB 调试 Go 程序？
-================================
+1.16 异常机制：panic 和 recover
+===============================
 
 |image0|
 
-做为新手，熟练掌握一个好的调试工具，对于我们学习语言或者排查问题的时候，非常有帮助。
+编程语言一般都会有异常捕获机制，在 Python 中 是使用\ ``raise`` 和
+``try-except`` 语句来实现的异常抛出和异常捕获的。
 
-你如果使用 VS Code 或者 Goland
-，可以直接上手，我就不再写这方面的文章了。
+在 Golang
+中，有不少常规错误，在编译阶段就能提前告警，比如语法错误或类型错误等，但是有些错误仅能在程序运行后才能发生，比如数组访问越界、空指针引用等，这些运行时错误会引起程序退出。
 
-其实相比有用户界面的 IDE
-调试工具，我更喜欢简单直接的命令行调试，原因有三点：
+当然能触发程序宕机退出的，也可以是我们自己，比如经过检查判断，当前环境无法达到我们程序进行的预期条件时（比如一个服务指定监听端口被其他程序占用），可以手动触发
+panic，让程序退出停止运行。
 
-1. 速度快，个人感觉在 Windows 下速度巨慢
-2. 依赖少，在 Linux 服务器上 也能轻松调试
-3. 指令简单，我习惯只使用快捷键就能操作
+1. 触发panic
+------------
 
-如果你有和我一样的感受和习惯，可以看下今天的文章，介绍的是 GDB
-调试工具。
-
-1. 下载安装 Go
---------------
-
-在 Linux 上进行调试，那咱所以得先安装 Go ，由于第一节里只讲了 Windows
-的下载安装，并没有讲到在 Linux
-上如何安装。所以这里要先讲一下，已经安装过了可以直接跳过。
-
-首先在 go
-下载页面上（https://golang.org/dl/），查看并复制源码包的的下载地址
-
-|image1|
-
-登陆 linux 机器 ，使用 wget 下载
-
-.. code:: shell
-
-   $ wget https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
-
-|image2|
-
-将下载的源码包解压到 ``/usr/local`` 目录下，并设置环境变量
-
-.. code:: shell
-
-   [root@localhost ~]# tar -C /usr/local -xzf go1.14.2.linux-amd64.tar.gz
-   [root@localhost ~]# 
-   [root@localhost ~]# export PATH=$PATH:/usr/local/go/bin
-   [root@localhost ~]# which go
-   /usr/local/go/bin/go
-   [root@localhost ~]# 
-   [root@localhost ~]# go version
-   go version go1.14.2 linux/amd64
-   [root@localhost ~]# 
-
-2. 开始进行调试
----------------
-
-调试使用的是 GDB （好像要求版本 7.1 +
-），使用前，请先确保你的机器上已经安装 GDB
-
-::
-
-   [root@localhost code]# which gdb
-   /usr/bin/gdb
-
-准备就绪后，先在目录下写一个测试文件
+手动触发宕机，是非常简单的一件事，只需要调用 panic
+这个内置函数即可，就像这样子
 
 .. code:: go
 
    package main
 
-   import "fmt"
-
-   func main(){
-     msg := "hello, world"
-     fmt.Println(msg)
+   func main() {
+       panic("crash")
    }
 
-然后执行 如下命令进行编译，里面有好多个参数，有疑问的可以自行搜索引擎
+运行后，直接报错宕机
 
 .. code:: shell
 
-   # 关闭内联优化，方便调试
-   $ go build -gcflags "-N -l" demo.go
+   $ go run main.go
+   go run main.go
+   panic: crash
 
-   # 发布版本删除调试符号
-   go build -ldflags “-s -w”
+   goroutine 1 [running]:
+   main.main()
+           E:/Go-Code/main.go:4 +0x40
+   exit status 2
 
-最后使用 GDB 命令进入调试界面
+2. 捕获 panic
+-------------
 
-.. code:: shell
+发生了异常，有时候就得捕获，就像 Python 中的\ ``except`` 一样，那 Golang
+中是如何做到的呢？
 
-   # 如果你喜欢这种界面的话，用这条命令
-   $ gdb -tui demo
+这就不得不引出另外一个内建函数 –
+``recover``\ ，它可以让程序在发生宕机后起生回生。
 
-   # 如果你跟我一样不喜欢不习惯用界面，就使用这个命令
-   $ gdb demo
+但是 recover 的使用，有一个条件，就是它必须在 defer
+函数中才能生效，其他作用域下，它是不工作的。
 
-完整操作如下：
+这是一个简单的例子
 
-|image3|
+.. code:: go
 
-进入 GDB
-调试界面后，并不是立即可用，你先需要回车，然后再你敲入几行命令，调试窗口就会出现代码。
+   import "fmt"
 
-.. code:: shell
+   func set_data(x int) {
+       defer func() {
+           // recover() 可以将捕获到的panic信息打印
+           if err := recover(); err != nil {
+               fmt.Println(err)
+           }
+       }()
 
-   (gdb) b main.main   # 在 main 包里的 main 函数 加断点
-   Breakpoint 1 at 0x4915c0: file /home/wangbm/code/demo.go, line 5.
-   (gdb) run  # 执行进程
-   Starting program: /home/wangbm/code/demo 
-   Breakpoint 1, main.main () at /home/wangbm/code/demo.go:5
-   (gdb) 
+       // 故意制造数组越界，触发 panic
+       var arr [10]int
+       arr[x] = 88
+   }
 
-|image4|
+   func main() {
+       set_data(20)
 
-3. 详解调试指令
----------------
+       // 如果能执行到这句，说明panic被捕获了
+       // 后续的程序能继续运行
+       fmt.Println("everything is ok")
+   }
 
-要熟练使用 GDB ，你得熟悉的掌握它的指令，这里列举一下
+运行后，输出如下
 
--  ``r``\ ：run，执行程序
--  ``n``\ ：next，下一步，不进入函数
--  ``s``\ ：step，下一步，会进入函数
--  ``b``\ ：breakponit，设置断点
--  ``l``\ ：list，查看源码
--  ``c``\ ：continue，继续执行到下一断点
--  ``bt``\ ：backtrace，查看当前调用栈
--  ``p``\ ：print，打印查看变量
--  ``q``\ ：quit，退出 GDB
--  ``whatis``\ ：查看对象类型
--  ``info breakpoints``\ ：查看所有的断点
--  ``info locals``\ ：查看局部变量
--  ``info args``\ ：查看函数的参数值及要返回的变量值
--  ``info frame``\ ：堆栈帧信息
--  ``info goroutines``\ ：查看 goroutines 信息。在使用前
-   ，需要注意先执行 source /usr/local/go/src/runtime/runtime-gdb.py
+.. code:: go
 
--  ``goroutine 1 bt``\ ：查看指定序号的 goroutine 调用堆栈
--  回车：重复执行上一次操作
+   $ go run main.go
+   runtime error: index out of range [20] with length 10
+   everything is ok
 
-其中有几个指令的使用比较灵活
+通常来说，不应该对进入 panic
+宕机的程序做任何处理，但有时，需要我们可以从宕机中恢复，至少我们可以在程序崩溃前，做一些操作，举个例子，当
+web
+服务器遇到不可预料的严重问题时，在崩溃前应该将所有的连接关闭，如果不做任何处理，会使得客户端一直处于等待状态，如果
+web 服务器还在开发阶段，服务器甚至可以将异常信息反馈到客户端，帮助调试。
 
-比如 l - list，查看代码
+3. 无法跨协程
+-------------
+
+从上面的例子，可以看到，即使 panic 会导致整个程序退出，但在退出前，若有
+defer 延迟函数，还是得执行完 defer 。
+
+但是这个 defer 在多个协程之间是没有效果，在子协程里触发
+panic，只能触发自己协程内的 defer，而不能调用 main 协程里的 defer
+函数的。
+
+来做个实验就知道了
+
+.. code:: go
+
+   import (
+       "fmt"
+       "time"
+   )
+
+   func main() {
+       // 这个 defer 并不会执行
+       defer fmt.Println("in main")
+       
+       go func() {
+           defer println("in goroutine")
+           panic("")
+       }()
+
+       time.Sleep(2 * time.Second)
+   }
+
+输出如下
 
 ::
 
-   # 查看指定行数上下5行
-   (gdb) l 8
+   in goroutine
+   panic:
 
-   # 查看指定范围的行数
-   (gdb) l 5:8
+   goroutine 6 [running]:
+   main.main.func1()
+           E:/Go-Code/main.go:12 +0x7b
+   created by main.main
+           E:/Go-Code/main.go:10 +0xbc
+   exit status 2
 
-   # 查看指定文件的行数上下5行
-   l demo.go:8
+4. 总结一下
+-----------
 
-   # 可以查看函数，记得加包名
-   l main.main
+Golang 异常的抛出与捕获，依赖两个内置函数：
 
-把上面的 ``l`` 换成 ``b`` ，大多数也同样适用
+-  panic：抛出异常，使程序崩溃
+-  recover：捕获异常，恢复程序或做收尾工作
 
-::
+revocer 调用后，抛出的 panic 将会在此处终结，不会再外抛，但是
+recover，并不能任意使用，它有强制要求，必须得在 defer 下才能发挥用途。
 
-   # 在指定行打断点
-   (gdb) b 8
+--------------
 
-
-   # 在指定指定文件的行打断点
-   b demo.go:8
-
-   # 在指定函数打断点，记得加包名
-   b main.main
-
-还有 p - print，打印变量
-
-::
-
-   # 查看变量
-   (gdb) p var
-
-   # 查看对象长度或容量
-   (gdb) p $len(var)
-   (gdb) p $cap(var)
-
-   # 查看对象的动态类型
-   (gdb) p $dtype(var)
-   (gdb) iface var
-
-   # 举例如下
-   (gdb) p i
-   $4 = {str = "cbb"}
-   (gdb) whatis i
-   type = regexp.input
-   (gdb) p $dtype(i)
-   $26 = (struct regexp.inputBytes *) 0xf8400b4930
-   (gdb) iface i
-   regexp.input: struct regexp.inputBytes *
-
-以上就是关于 GDB 的使用方法，非常简单，可以自己手动敲下体验一下。
-
-**参考文章**
-
--  `go 官方对于 gdb 的使用说明 <https://golang.org/doc/gdb>`__
--  `Mac 调试 golang
-   程序 <%5Bhttps://www.do1618.com/archives/771/mac-gdb-%E8%B0%83%E8%AF%95-golang-%E7%A8%8B%E5%BA%8F/%5D(https://www.do1618.com/archives/771/mac-gdb-调试-golang-程序/)>`__
-
-|image5|
+|image1|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200428180632.png
-.. |image2| image:: http://image.iswbm.com/20200428180713.png
-.. |image3| image:: http://image.iswbm.com/20200428181902.png
-.. |image4| image:: http://image.iswbm.com/20200428182620.png
-.. |image5| image:: http://image.iswbm.com/20200607174235.png
+.. |image1| image:: http://image.iswbm.com/20200607174235.png
 

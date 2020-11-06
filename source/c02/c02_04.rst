@@ -1,164 +1,268 @@
-2.4 理解语句块与作用域
-======================
+2.4 详细图解：静态类型与动态类型
+================================
 
 |image0|
 
-由于 Go
-使用的是词法作用域，而词法作用域依赖于语句块。所以在讲作用域时，需要先了解一下
-Go 中的语句块是怎么一回事？
+1. 静态类型
+-----------
 
-1. 显示语句块与隐式语句块
--------------------------
-
-通俗地说，语句块是由花括弧（\ ``{}``\ ）所包含的一系列语句。
-
-语句块内部声明的名字是无法被外部块访问的。这个块决定了内部声明的名字的作用域范围，也就是作用域。
-
-用花括弧包含的语句块，属于显示语句块。
-
-在 Go 中还有很多的隐式语句块：
-
--  主语句块：包括所有源码，对应内置作用域
--  包语句块：包括该包中所有的源码（一个包可能会包括一个目录下的多个文件），对应包级作用域
--  文件语句块：包括该文件中的所有源码，对应文件级作用域
--  for 、if、switch等语句本身也在它自身的隐式语句块中，对应局部作用域
-
-前面三点好理解，第四点举几个例子
-
-for 循环完后，不能再使用变量 i
+所谓的\ **静态类型**\ （即 static type），就是变量声明的时候的类型。
 
 .. code:: go
 
-   for i := 0; i < 5; i++ {
-       fmt.Println(i)
-   }
+   var age int   // int 是静态类型
+   var name string  // string 也是静态类型
 
-if 语句判断完后，同样不能再使用变量 i
+它是你在编码时，肉眼可见的类型。
 
-.. code:: go
+2. 动态类型
+-----------
 
-   if i := 0; i >= 0 {
-       fmt.Println(i)
-   }
+所谓的 **动态类型**\ （即 concrete type，也叫具体类型）是
+程序运行时系统才能看见的类型。
 
-switch 语句完了后，也是不是再使用变量 i
+这是什么意思呢？
 
-.. code:: go
+我们都知道 **空接口** 可以承接什么问题类型的值，什么 int 呀，string
+呀，都可以接收。
 
-   switch i := 2; i * 4 {
-   case 8:
-       fmt.Println(i)
-   default:
-       fmt.Println(“default”)
-   }
-
-且每个 switch 语句的子句都是一个隐式的语句块
+比如下面这几行代码
 
 .. code:: go
 
-   switch i := 2; i * 4 {
-   case 8:
-       j := 0
-       fmt.Println(i, j)
-   default:
-       // "j" is undefined here
-       fmt.Println(“default”)
-   }
-   // "j" is undefined here
+   var i interface{}   
 
-2. 四种作用域的理解
--------------------
+   i = 18  
+   i = "Go编程时光"  
 
-变量的声明，除了声明其类型，其声明的位置也有讲究，不同的位置决定了其拥有不同的作用范围，说白了就是我这个变量，在哪里可用，在哪里不可用。
+第一行：我们在给 ``i`` 声明了 ``interface{}`` 类型，所以 ``i``
+的静态类型就是 ``interface{}``
 
-根据声明位置的不同，作用域可以分为以下四个类型：
+第二行：当我们给变量 ``i`` 赋一个 int 类型的值时，它的静态类型还是
+interface{}，这是不会变的，但是它的动态类型此时变成了 int 类型。
 
--  内置作用域：不需要自己声明，所有的关键字和内置类型、函数都拥有全局作用域
--  包级作用域：必須函数外声明，在该包内的所有文件都可以访问
--  文件级作用域：不需要声明，导入即可。一个文件中通过import导入的包名，只在该文件内可用
--  局部作用域：在自己的语句块内声明，包括函数，for、if
-   等语句块，或自定义的 {}
-   语句块形成的作用域，只在自己的局部作用域内可用
+第三行：当我们给变量 ``i`` 赋一个 string 类型的值时，它的静态类型还是
+interface{}，它还是不会变，但是它的动态类型此时又变成了 string 类型。
 
-以上的四种作用域，从上往下，范围从大到小，为了表述方便，我这里自己将范围大的作用域称为高层作用域，而范围小的称为低层作用域。
+从以上，可以知道，不管是 ``i=18`` ，还是
+``i="Go编程时光"``\ ，都是当程序运行到这里时，变量的类型，才发生了改变，这就是我们最开始所说的
+动态类型是程序运行时系统才能看见的类型。
 
-对于作用域，有以下几点总结：
+3. 接口组成
+-----------
 
--  低层作用域，可以访问高层作用域
--  同一层级的作用域，是相互隔离的
--  低层作用域里声明的变量，会覆盖高层作用域里声明的变量
+每个接口变量，实际上都是由一 pair 对（type 和 data）组合而成，pair
+对中记录着实际变量的值和类型。
 
-在这里要注意一下，不要将作用域和生命周期混为一谈。声明语句的作用域对应的是一个源代码的文本区域；它是一个编译时的属性。
-
-而一个变量的生命周期是指程序运行时变量存在的有效时间段，在此时间区域内它可以被程序的其他部分引用；是一个运行时的概念。
-
-3. 静态作用域与动态作用域
--------------------------
-
-根据局部作用域内变量的可见性，是否是静态不变，可以将编程语言分为如下两种：
-
--  静态作用域，如 Go 语言
--  动态作用域，如 Shell 语言
-
-具体什么是动态作用域，这里用 Shell 的代码演示一下，你就知道了
-
-.. code:: python
-
-   #!/bin/bash
-   func01() {
-       local value=1
-       func02
-   }
-   func02() {
-       echo "func02 sees value as ${value}"
-   }
-
-   # 执行函数
-   func01
-   func02
-
-从代码中，可以看到在 func01 函数中定义了个局部变量 value，按理说，这个
-value 变量只在该函数内可用，但由于在 shell 中的作用域是动态的，所以在
-func01中也可以调用 func02 时，func02 可以访问到 value 变量，此时的
-func02 作用域可以当成是 局部作用域中（func01）的局部作用域。
-
-但若脱离了 func01的执行环境，将其放在全局环境下或者其他函数中， func02
-是访问不了 value 变量的。
-
-所以此时的输出结果是
-
-.. code:: shell
-
-   func02 sees value as 1
-   func02 sees value as 
-
-但在 Go 中并不存在这种动态作用域，比如这段代码，在func01函数中，要想取得
-name
-这个变量，只能从func01的作用域或者更高层作用域里查找（文件级作用域，包级作用域和内置作用域），而不能从调用它的另一个局部作用域中（因为他们在层级上属于同一级）查找。
+比如下面这条语句
 
 .. code:: go
 
-   import "fmt"
+   var age int = 25
 
-   func func01() {
-       fmt.Println("在 func01 函数中，name：", name)
-   }
-
-   func main()  {
-       var name string = "Python编程时光"
-       fmt.Println("在 main 函数中，name：", name)
-
-       func01()
-   }
-
-因此你在执行这段代码时，会报错，提示在func01中的name还未定义。
-
-参考文章：https://studygolang.com/articles/12632
-
---------------
+我们声明了一个 int 类型变量，变量名叫 age ，其值为 25
 
 |image1|
 
+知道了接口的组成后，我们在定义一个变量时，除了使用常规的方法（可参考：\ `02.
+学习五种变量创建的方法 <http://mp.weixin.qq.com/s?__biz=MzU1NzU1MTM2NA==&mid=2247483669&idx=2&sn=e70a1400c094e981f15b8da552bd8fbf&chksm=fc355b7ecb42d26824985163a3ef0c3567134975637c4efc42161751f54ab10343b485b36e23&scene=21#wechat_redirect>`__\ ）
+
+也可以使用像下面这样的方式
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func main() {
+       age := (int)(25)
+       //或者使用 age := (interface{})(25)
+       
+       fmt.Printf("type: %T, data: %v ", age, age)
+   }
+
+输出如下
+
+.. code:: go
+
+   type: int, data: 25
+
+4. 接口细分
+-----------
+
+根据接口是否包含方法，可以将接口分为 ``iface`` 和 ``eface``\ 。
+
+iface
+~~~~~
+
+第一种：\ **iface**\ ，表示带有一组方法的接口。
+
+比如
+
+.. code:: go
+
+   type Phone interface {
+      call()
+   }
+
+``iface`` 的具体结构可用如下一张图来表示
+
+.. figure:: http://image.iswbm.com/20200610220830.png
+   :alt: iface 结构
+
+   iface 结构
+
+iface 的源码如下：
+
+.. code:: go
+
+   // runtime/runtime2.go
+   // 非空接口
+   type iface struct {
+       tab  *itab
+       data unsafe.Pointer
+   }
+    
+   // 非空接口的类型信息
+   type itab struct {
+       inter  *interfacetype  // 接口定义的类型信息
+       _type  *_type      // 接口实际指向值的类型信息
+       link   *itab  
+       bad    int32
+       inhash int32
+       fun    [1]uintptr   // 接口方法实现列表，即函数地址列表，按字典序排序
+   }
+
+   // runtime/type.go
+   // 非空接口类型，接口定义，包路径等。
+   type interfacetype struct {
+      typ     _type
+      pkgpath name
+      mhdr    []imethod      // 接口方法声明列表，按字典序排序
+   }
+   // 接口的方法声明 
+   type imethod struct {
+      name nameOff          // 方法名
+      ityp typeOff                // 描述方法参数返回值等细节
+   }
+
+eface
+~~~~~
+
+第二种：\ **eface**\ ，表示不带有方法的接口
+
+比如
+
+.. code:: go
+
+   var i interface{} 
+
+eface 的源码如下：
+
+.. code:: go
+
+   // src/runtime/runtime2.go
+   // 空接口
+   type eface struct {
+       _type *_type
+       data  unsafe.Pointer
+   }
+
+.. figure:: http://image.iswbm.com/20200610221213.png
+   :alt: eface 结构组成
+
+   eface 结构组成
+
+5.理解动态类型
+--------------
+
+前两节，我们知道了什么是动态类型？如何让一个对象具有动态类型？
+
+后两节，我们知道了接口分两种，它们的内部结构各是什么样的？
+
+那最后一节，可以将前面四节的内容结合起来，看看在给一个空接口类型的变量赋值时，接口的内部结构会发生怎样的变化
+。
+
+.. _iface-1:
+
+iface
+~~~~~
+
+先来看看 iface，有如下一段代码：
+
+.. code:: go
+
+   var reader io.Reader 
+
+   tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
+   if err != nil {
+       return nil, err
+   }
+
+   reader = tty
+
+第一行代码：var reader io.Reader ，由于 io.Reader 接口包含 Read
+方法，所以 io.Reader 是 ``iface``\ ，此时 reader 对象的静态类型是
+io.Reader，暂无动态类型。
+
+|image2|
+
+最后一行代码：reader = tty，tty 是一个 ``*os.File``
+类型的实例，此时reader 对象的静态类型还是 io.Reader，而动态类型变成了
+``*os.File``\ 。
+
+|image3|
+
+.. _eface-1:
+
+eface
+~~~~~
+
+再来看看 eface，有如下一段代码：
+
+.. code:: go
+
+   //不带函数的interface
+   var empty interface{}
+
+   tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
+   if err != nil {
+       return nil, err
+   }
+
+   empty = tty
+
+第一行代码：var empty interface{}，由于 ``interface{}`` 是一个
+eface，其只有一个 ``_type`` 可以存放变量类型，此时 empty
+对象的（静态）类型是 nil。
+
+|image4|
+
+最后一行代码：empty = tty，tty 是一个 ``*os.File`` 类型的实例，此时
+``_type`` 变成了 ``*os.File``\ 。
+
+|image5|
+
+6. 反射的必要性
+---------------
+
+由于动态类型的存在，在一个函数中接收的参数的类型有可能无法预先知晓，此时我们就要对参数进行反射，然后根据不同的类型做不同的处理。
+
+关于 反射 的内容有点多，我将其安排在下一篇。
+
+参考文章
+--------
+
+-  `图解go反射实现原理 <https://i6448038.github.io/2020/02/15/golang-reflection/>`__
+
+|image6|
+
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
+.. |image1| image:: http://image.iswbm.com/20200610235106.png
+.. |image2| image:: http://image.iswbm.com/image-20200610225323018.png
+.. |image3| image:: http://image.iswbm.com/20200610230951.png
+.. |image4| image:: http://image.iswbm.com/image-20200610230819030.png
+.. |image5| image:: http://image.iswbm.com/image-20200610231015612.png
+.. |image6| image:: http://image.iswbm.com/20200607174235.png
 

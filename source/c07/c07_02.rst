@@ -1,7 +1,0 @@
-6.2 配置高颜值 IDE：Goland
-==========================
-
-|image0|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-
