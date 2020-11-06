@@ -1,73 +1,29 @@
-2.4 详细图解：静态类型与动态类型
-================================
+2.4 学习接口：详解类型断言
+==========================
 
 |image0|
 
-1. 静态类型
------------
+Type Assertion
+--------------
 
-所谓的\ **静态类型**\ （即 static type），就是变量声明的时候的类型。
+Type Assertion（中文名叫：类型断言），通过它可以做到以下几件事情
 
-.. code:: go
+1. 检查 ``i`` 是否为 nil
+2. 检查 ``i`` 存储的值是否为某个类型
 
-   var age int   // int 是静态类型
-   var name string  // string 也是静态类型
+具体的使用方式有两种：
 
-它是你在编码时，肉眼可见的类型。
+**第一种：**
 
-2. 动态类型
------------
+::
 
-所谓的 **动态类型**\ （即 concrete type，也叫具体类型）是
-程序运行时系统才能看见的类型。
+   t := i.(T)
 
-这是什么意思呢？
+这个表达式可以断言一个接口对象（i）里不是
+nil，并且接口对象（i）存储的值的类型是 T，如果断言成功，就会返回值给
+t，如果断言失败，就会触发 panic。
 
-我们都知道 **空接口** 可以承接什么问题类型的值，什么 int 呀，string
-呀，都可以接收。
-
-比如下面这几行代码
-
-.. code:: go
-
-   var i interface{}   
-
-   i = 18  
-   i = "Go编程时光"  
-
-第一行：我们在给 ``i`` 声明了 ``interface{}`` 类型，所以 ``i``
-的静态类型就是 ``interface{}``
-
-第二行：当我们给变量 ``i`` 赋一个 int 类型的值时，它的静态类型还是
-interface{}，这是不会变的，但是它的动态类型此时变成了 int 类型。
-
-第三行：当我们给变量 ``i`` 赋一个 string 类型的值时，它的静态类型还是
-interface{}，它还是不会变，但是它的动态类型此时又变成了 string 类型。
-
-从以上，可以知道，不管是 ``i=18`` ，还是
-``i="Go编程时光"``\ ，都是当程序运行到这里时，变量的类型，才发生了改变，这就是我们最开始所说的
-动态类型是程序运行时系统才能看见的类型。
-
-3. 接口组成
------------
-
-每个接口变量，实际上都是由一 pair 对（type 和 data）组合而成，pair
-对中记录着实际变量的值和类型。
-
-比如下面这条语句
-
-.. code:: go
-
-   var age int = 25
-
-我们声明了一个 int 类型变量，变量名叫 age ，其值为 25
-
-|image1|
-
-知道了接口的组成后，我们在定义一个变量时，除了使用常规的方法（可参考：\ `02.
-学习五种变量创建的方法 <http://mp.weixin.qq.com/s?__biz=MzU1NzU1MTM2NA==&mid=2247483669&idx=2&sn=e70a1400c094e981f15b8da552bd8fbf&chksm=fc355b7ecb42d26824985163a3ef0c3567134975637c4efc42161751f54ab10343b485b36e23&scene=21#wechat_redirect>`__\ ）
-
-也可以使用像下面这样的方式
+来写段代码试验一下
 
 .. code:: go
 
@@ -76,193 +32,184 @@ interface{}，它还是不会变，但是它的动态类型此时又变成了 st
    import "fmt"
 
    func main() {
-       age := (int)(25)
-       //或者使用 age := (interface{})(25)
-       
-       fmt.Printf("type: %T, data: %v ", age, age)
+       var i interface{} = 10
+       t1 := i.(int)
+       fmt.Println(t1)
+
+       fmt.Println("=====分隔线=====")
+
+       t2 := i.(string)
+       fmt.Println(t2)
+   }
+
+运行后输出如下，可以发现在执行第二次断言的时候失败了，并且触发了 panic
+
+::
+
+   10
+   =====分隔线=====
+   panic: interface conversion: interface {} is int, not string
+
+   goroutine 1 [running]:
+   main.main()
+           E:/GoPlayer/src/main.go:12 +0x10e
+   exit status 2
+
+如果要断言的接口值是 nil，那我们来看看也是不是也如预期一样会触发panic
+
+.. code:: go
+
+   package main
+
+   func main() {
+       var i interface{} // nil
+       var _ = i.(interface{})
+   }
+
+输出如下，确实是会 触发 panic
+
+::
+
+   panic: interface conversion: interface is nil, not interface {}
+
+   goroutine 1 [running]:
+   main.main()
+           E:/GoPlayer/src/main.go:5 +0x34
+   exit status 2
+
+**第二种**
+
+::
+
+   t, ok:= i.(T)
+
+和上面一样，这个表达式也是可以断言一个接口对象（i）里不是
+nil，并且接口对象（i）存储的值的类型是 T，如果断言成功，就会返回其类型给
+t，并且此时 ok 的值 为 true，表示断言成功。
+
+如果接口值的类型，并不是我们所断言的
+T，就会断言失败，但和第一种表达式不同的事，这个不会触发 panic，而是将 ok
+的值设为 false ，表示断言失败，此时t 为 T 的零值。
+
+稍微修改下上面的例子，如下
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func main() {
+       var i interface{} = 10
+       t1, ok := i.(int)
+       fmt.Printf("%d-%t\n", t1, ok)
+
+       fmt.Println("=====分隔线1=====")
+
+       t2, ok := i.(string)
+       fmt.Printf("%s-%t\n", t2, ok)
+
+       fmt.Println("=====分隔线2=====")
+
+       var k interface{} // nil
+       t3, ok := k.(interface{})
+       fmt.Println(t3, "-", ok)
+
+       fmt.Println("=====分隔线3=====")
+       k = 10
+       t4, ok := k.(interface{})
+       fmt.Printf("%d-%t\n", t4, ok)
+
+       t5, ok := k.(int)
+       fmt.Printf("%d-%t\n", t5, ok)
+   }
+
+运行后输出如下，可以发现在执行第二次断言的时候，虽然失败了，但并没有触发了
+panic。
+
+::
+
+   10-true
+   =====分隔线1=====
+   -false
+   =====分隔线2=====
+   <nil> - false
+   =====分隔线3=====
+   10-true
+   10-true
+
+上面这段输出，你要注意的是第二个断言的输出在\ ``-false``
+之前并不是有没有输出任何 t2 的值，而是由于断言失败，所以 t2 得到的是
+string 的零值也是 ``""`` ，它是零长度的，所以你看不到其输出。
+
+Type Switch
+-----------
+
+如果需要区分多种类型，可以使用 type switch
+断言，这个将会比一个一个进行类型断言更简单、直接、高效。
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func findType(i interface{}) {
+       switch x := i.(type) {
+       case int:
+           fmt.Println(x, "is int")
+       case string:
+           fmt.Println(x, "is string")
+       case nil:
+           fmt.Println(x, "is nil")
+       default:
+           fmt.Println(x, "not type matched")
+       }
+   }
+
+   func main() {
+       findType(10)      // int
+       findType("hello") // string
+
+       var k interface{} // nil
+       findType(k)
+
+       findType(10.23) //float64
    }
 
 输出如下
 
-.. code:: go
+::
 
-   type: int, data: 25
+   10 is int
+   hello is string
+   <nil> is nil
+   10.23 not type matched
 
-4. 接口细分
------------
+额外说明一下：
 
-根据接口是否包含方法，可以将接口分为 ``iface`` 和 ``eface``\ 。
+-  如果你的值是 nil，那么匹配的是 ``case nil``
+-  如果你的值在 switch-case 里并没有匹配对应的类型，那么走的是 default
+   分支
 
-iface
-~~~~~
+此外，还有两点需要你格外注意
 
-第一种：\ **iface**\ ，表示带有一组方法的接口。
-
-比如
-
-.. code:: go
-
-   type Phone interface {
-      call()
-   }
-
-``iface`` 的具体结构可用如下一张图来表示
-
-.. figure:: http://image.iswbm.com/20200610220830.png
-   :alt: iface 结构
-
-   iface 结构
-
-iface 的源码如下：
-
-.. code:: go
-
-   // runtime/runtime2.go
-   // 非空接口
-   type iface struct {
-       tab  *itab
-       data unsafe.Pointer
-   }
-    
-   // 非空接口的类型信息
-   type itab struct {
-       inter  *interfacetype  // 接口定义的类型信息
-       _type  *_type      // 接口实际指向值的类型信息
-       link   *itab  
-       bad    int32
-       inhash int32
-       fun    [1]uintptr   // 接口方法实现列表，即函数地址列表，按字典序排序
-   }
-
-   // runtime/type.go
-   // 非空接口类型，接口定义，包路径等。
-   type interfacetype struct {
-      typ     _type
-      pkgpath name
-      mhdr    []imethod      // 接口方法声明列表，按字典序排序
-   }
-   // 接口的方法声明 
-   type imethod struct {
-      name nameOff          // 方法名
-      ityp typeOff                // 描述方法参数返回值等细节
-   }
-
-eface
-~~~~~
-
-第二种：\ **eface**\ ，表示不带有方法的接口
-
-比如
-
-.. code:: go
-
-   var i interface{} 
-
-eface 的源码如下：
-
-.. code:: go
-
-   // src/runtime/runtime2.go
-   // 空接口
-   type eface struct {
-       _type *_type
-       data  unsafe.Pointer
-   }
-
-.. figure:: http://image.iswbm.com/20200610221213.png
-   :alt: eface 结构组成
-
-   eface 结构组成
-
-5.理解动态类型
---------------
-
-前两节，我们知道了什么是动态类型？如何让一个对象具有动态类型？
-
-后两节，我们知道了接口分两种，它们的内部结构各是什么样的？
-
-那最后一节，可以将前面四节的内容结合起来，看看在给一个空接口类型的变量赋值时，接口的内部结构会发生怎样的变化
-。
-
-.. _iface-1:
-
-iface
-~~~~~
-
-先来看看 iface，有如下一段代码：
-
-.. code:: go
-
-   var reader io.Reader 
-
-   tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
-   if err != nil {
-       return nil, err
-   }
-
-   reader = tty
-
-第一行代码：var reader io.Reader ，由于 io.Reader 接口包含 Read
-方法，所以 io.Reader 是 ``iface``\ ，此时 reader 对象的静态类型是
-io.Reader，暂无动态类型。
-
-|image2|
-
-最后一行代码：reader = tty，tty 是一个 ``*os.File``
-类型的实例，此时reader 对象的静态类型还是 io.Reader，而动态类型变成了
-``*os.File``\ 。
-
-|image3|
-
-.. _eface-1:
-
-eface
-~~~~~
-
-再来看看 eface，有如下一段代码：
-
-.. code:: go
-
-   //不带函数的interface
-   var empty interface{}
-
-   tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
-   if err != nil {
-       return nil, err
-   }
-
-   empty = tty
-
-第一行代码：var empty interface{}，由于 ``interface{}`` 是一个
-eface，其只有一个 ``_type`` 可以存放变量类型，此时 empty
-对象的（静态）类型是 nil。
-
-|image4|
-
-最后一行代码：empty = tty，tty 是一个 ``*os.File`` 类型的实例，此时
-``_type`` 变成了 ``*os.File``\ 。
-
-|image5|
-
-6. 反射的必要性
----------------
-
-由于动态类型的存在，在一个函数中接收的参数的类型有可能无法预先知晓，此时我们就要对参数进行反射，然后根据不同的类型做不同的处理。
-
-关于 反射 的内容有点多，我将其安排在下一篇。
+1. 类型断言，仅能对静态类型为空接口（interface{}）的对象进行断言，否则会抛出错误，具体内容可以参考：\ `关于接口的三个“潜规则” <http://golang.iswbm.com/en/latest/c02/c02_07.html>`__
+2. 类型断言完成后，实际上会返回静态类型为你断言的类型的对象，而要清楚原来的静态类型为空接口类型（interface{}），这是
+   Go 的隐式转换。
 
 参考文章
 --------
 
--  `图解go反射实现原理 <https://i6448038.github.io/2020/02/15/golang-reflection/>`__
+-  `Explain Type Assertions in
+   Go <https://stackoverflow.com/questions/38816843/explain-type-assertions-in-go>`__
+-  `Go interface 详解 (四)
+   ：类型断言 <https://sanyuesha.com/2017/12/01/go-interface-4/>`__
 
-|image6|
+--------------
+
+|image1|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200610235106.png
-.. |image2| image:: http://image.iswbm.com/image-20200610225323018.png
-.. |image3| image:: http://image.iswbm.com/20200610230951.png
-.. |image4| image:: http://image.iswbm.com/image-20200610230819030.png
-.. |image5| image:: http://image.iswbm.com/image-20200610231015612.png
-.. |image6| image:: http://image.iswbm.com/20200607174235.png
+.. |image1| image:: http://image.iswbm.com/20200607174235.png
 

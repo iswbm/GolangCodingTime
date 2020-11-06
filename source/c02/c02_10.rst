@@ -1,252 +1,104 @@
-2.10 反引号的妙用：结构体里的 Tag 用法
-======================================
+2.10 关键字：make 和 new 的区别？
+=================================
 
 |image0|
 
-1. 抛砖引玉：什么是 Tag？
--------------------------
+1. new 函数
+-----------
 
-正常情况下，你定义的结构体是这样子的，每个字段都由名字和字段类型组成
-
-.. code:: go
-
-   type Person struct {
-       Name string 
-       Age  int   
-       Addr string
-   }
-
-也有例外，就像下面这样子，字段上还可以额外再加一个属性，用反引号（Esc键下面的那个键）包含的字符串，称之为
-Tag，也就是标签。
+在官方文档中，new 函数的描述如下
 
 .. code:: go
 
-   type Person struct {
-       Name string `json:"name"`
-       Age  int    `json:"age"`
-       Addr string `json:"addr,omitempty"`
-   }
+   // The new built-in function allocates memory. The first argument is a type,
+   // not a value, and the value returned is a pointer to a newly
+   // allocated zero value of that type.
+   func new(Type) *Type
 
-那么这个标签有什么用呢？
+可以看到，new
+只能传递一个参数，该参数为一个任意类型，可以是Go语言内建的类型，也可以是你自定义的类型
 
-这边先以 ``encoding/json``
-库的用法抛砖引玉，看一下它能起到什么样的效果。
+那么 new 函数到底做了哪些事呢：
+
+-  分配内存
+-  设置零值
+-  返回指针（重要）
+
+举个例子
 
 .. code:: go
 
-   package main
+   import "fmt"
 
-   import (
-       "encoding/json"
-       "fmt"
-   )
-
-   type Person struct {
-       Name string `json:"name"`
-       Age  int    `json:"age"`
-       Addr string `json:"addr,omitempty"`
+   type Student struct {
+      name string
+      age int
    }
 
    func main() {
-       p1 := Person{
-           Name: "Jack",
-           Age:  22,
-       }
+       // new 一个内建类型
+       num := new(int)
+       fmt.Println(*num) //打印零值：0
 
-       data1, err := json.Marshal(p1)
-       if err != nil {
-           panic(err)
-       }
-
-       // p1 没有 Addr，就不会打印了
-       fmt.Printf("%s\n", data1)
-
-       // ================
-
-       p2 := Person{
-           Name: "Jack",
-           Age:  22,
-           Addr: "China",
-       }
-
-       data2, err := json.Marshal(p2)
-       if err != nil {
-           panic(err)
-       }
-
-       // p2 则会打印所有
-       fmt.Printf("%s\n", data2)
+       // new 一个自定义类型
+       s := new(Student)
+       s.name = "wangbm"
    }
 
-由于 Person 结构体里的 Addr 字段有 omitempty 属性，因此 encoding/json
-在将对象转化 json 字符串时，只要发现对象里的 Addr 为 false， 0，
-空指针，空接口，空数组，空切片，空映射，空字符串中的一种，就会被忽略。
+2. make 函数
+------------
 
-因此运行后，输出的结果如下
+在官方文档中，make 函数的描述如下
 
-.. code:: shell
+   //The make built-in function allocates and initializes an object //of
+   type slice, map, or chan (only). Like new, the first argument is // a
+   type, not a value. Unlike new, make’s return type is the same as //
+   the type of its argument, not a pointer to it.
 
-   $ go run demo.go 
-   {"name":"Jack","age":22}
-   {"name":"Jack","age":22,"addr":"China"}
+   func make(t Type, size …IntegerType) Type
 
-2. 不懂就问：如何定义获取 Tag ？
---------------------------------
+翻译一下注释内容
 
-Tag 由反引号包含，由一对或几对的键值对组成，通过空格来分割键值。格式如下
+1. 内建函数 make 用来为 slice，map 或 chan
+   类型（注意：也只能用在这三种类型上）分配内存和初始化一个对象
+2. make
+   返回类型的本身而不是指针，而返回值也依赖于具体传入的类型，因为这三种类型就是引用类型，所以就没有必要返回他们的指针了
 
-::
+注意，因为这三种类型是引用类型，所以必须得初始化（size和cap），但是不是置为零值，这个和new是不一样的。
 
-   `key01:"value01" key02:"value02" key03:"value03"`
-
-定义完后，如何从结构体中，取出 Tag 呢？
-
-答案就是，我们上一节学过的 “反射”。
-
-获取 Tag 可以分为三个步骤：
-
-1. 获取字段 field
-2. 获取标签 tag
-3. 获取键值对 key:value
-
-演示如下
+举几个例子
 
 .. code:: go
 
-   // 三种获取 field
-   field := reflect.TypeOf(obj).FieldByName("Name")
-   field := reflect.ValueOf(obj).Type().Field(i)  // i 表示第几个字段
-   field := reflect.ValueOf(&obj).Elem().Type().Field(i)  // i 表示第几个字段
+   //切片
+   a := make([]int, 2, 10)  
 
-   // 获取 Tag
-   tag := field.Tag 
+   // 字典
+   b := make(map[string]int)
 
-   // 获取键值对
-   labelValue := tag.Get("label")
-   labelValue,ok := tag.Lookup("label")
+   // 通道
+   c := make(chan int, 10)
 
-获取键值对，有Get 和 Lookup 两种方法，但其实 Get 只是对 Lookup
-函数的简单封装而已，当没有获取到对应 tag 的内容，会返回空字符串。
+3. 总结
+-------
 
-.. code:: go
+new：为所有的类型分配内存，并初始化为零值，返回指针。
 
-   func (tag StructTag) Get(key string) string {
-       v, _ := tag.Lookup(key)
-       return v
-   }
+make：只能为 slice，map，chan 分配内存，并初始化，返回的是类型。
 
-空 Tag 和不设置 Tag 效果是一样的
+另外，目前来看 new 函数并不常用，大家更喜欢使用短语句声明的方式。
 
 .. code:: go
 
-   package main
+   a := new(int)
+   *a = 1
+   // 等价于
+   a := 1
 
-   import (
-       "fmt"
-       "reflect"
-   )
+但是 make
+就不一样了，它的地位无可替代，在使用slice、map以及channel的时候，还是要使用make进行初始化，然后才可以对他们进行操作。
 
-   type Person struct {
-       Name string ``
-       Age string
-   }
-   func main() {
-       p := reflect.TypeOf(Person{})
-       name, _ := p.FieldByName("Name")
-       fmt.Printf("%q\n", name.Tag) //输出 ""
-       age, _ := p.FieldByName("Age")
-       fmt.Printf("%q\n", age.Tag) // 输出 ""
-   }
-
-3. 实战一下：利用 Tag 搞点事情？
---------------------------------
-
-学会了如何定义 tag 和 获取 tag，可以试着利用 tag
-来做一些事情，来练习一下。
-
-这边我举个例子吧。
-
-如果我想实现一个函数（就叫 Print 吧），在打印 person
-对象时，能够美化输出
-
-.. code:: go
-
-   type Person struct {
-       Name        string 
-       Age         int    
-       Gender      string
-   }
-
-   person := Person{
-       Name:        "MING",
-       Age:         29,
-   }
-
-   Print(person)
-
-就像下面这样，key 和 value 之间有个 ``is:``\ ，如果没有指定 Gender
-的值，那么显示为unknown（未知）。
-
-.. code:: shell
-
-   Name is: MING
-   Age is: 29
-   Gender is: unknown
-
-那该怎么做呢？
-
-先改造下 Person 结构体，给每个字段加上 tag 标签，三个字段的tag 都有
-label 属性，而 Gender 多了一个 default 属性，意在指定默认值。
-
-.. code:: go
-
-   type Person struct {
-       Name        string `label:"Name is: "`
-       Age         int    `label:"Age is: "`
-       Gender      string `label:"Gender is: " default:"unknown"`
-   }
-
-然后来写一下这个 Print 函数
-
-.. code:: go
-
-   func Print(obj interface{}) error {
-       // 取 Value
-       v := reflect.ValueOf(obj)
-
-       // 解析字段
-       for i := 0; i < v.NumField(); i++ {
-
-           // 取tag
-           field := v.Type().Field(i)
-           tag := field.Tag
-
-           // 解析label 和 default
-           label := tag.Get("label")
-           defaultValue := tag.Get("default")
-
-           value := fmt.Sprintf("%v", v.Field(i))
-           if value == "" {
-               // 如果没有指定值，则用默认值替代
-               value = defaultValue
-           }
-
-           fmt.Println(label + value)
-       }
-
-       return nil
-   }
-
-最后执行一下，看了下输出，符合我们的预期：
-
-.. code:: shell
-
-   $ go run demo.go 
-   Name is: MING
-   Age is: 29
-   Gender is: unknown
-
-到此，我们就把 Tag 的用法介绍完了。
+--------------
 
 |image1|
 
