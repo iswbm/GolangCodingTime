@@ -1,6 +1,8 @@
 5.1 fmt.Printf 方法详解
 =======================
 
+|image0|
+
 %d 　　有符号10进制整数（%ld 长整型，%hd短整型 ） %hu 　
 无符号短整形（%u无符号整形，%lu无符号长整形） %i 　　有符号10进制整数
 （%i 和%d 没有区别，%i 是老式写法，都是整型格式）
@@ -14,3 +16,9 @@
 %c 输入输出为单个字符 %s 输入输出为字符串
 
 https://studygolang.com/articles/2644?fr=sidebar
+
+|image1|
+
+.. |image0| image:: http://image.iswbm.com/20200607145423.png
+.. |image1| image:: http://image.iswbm.com/20200607174235.png
+
