@@ -13,7 +13,22 @@
 
 %f　　 输入输出为浮点型 （%lf双精度浮点型） %E/e 用科学表示格式的浮点数
 
-%c 输入输出为单个字符 %s 输入输出为字符串
+%c 输出为单个字符 %s 输出为字符串
+
+%q 输出为原生型字符串
+
+.. code:: go
+
+   import (
+       "fmt"
+   )
+
+   func main() {
+       var mystr01 string = `\r\n`
+       fmt.Print(`\r\n`)
+       fmt.Printf("的原生字符串是： %q", mystr01)
+   }
+   // output:  \r\n的原生字符串是： "\\r\\n"
 
 https://studygolang.com/articles/2644?fr=sidebar
 
