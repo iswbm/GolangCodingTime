@@ -249,7 +249,7 @@ Code，其记录的GOPATH始终指向%USERPROFILE%:raw-latex:`\go`），
 .. |image1| image:: http://image.iswbm.com/20200102220841.png
 .. |image2| image:: http://image.iswbm.com/20200102221555.png
 .. |image3| image:: http://image.iswbm.com/20200102221840.png
-.. |image4| image:: http://image.iswbm.com/20200912181005.png
+.. |image4| image:: http://image.iswbm.com/20201117193515.png
 .. |image5| image:: http://image.iswbm.com/20200102223946.png
 .. |image6| image:: http://image.iswbm.com/20200102224643.png
 .. |image7| image:: http://image.iswbm.com/20200102225750.png
