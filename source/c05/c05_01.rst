@@ -1,36 +1,456 @@
-5.1 fmt.Printf 方法详解
-=======================
+5.1 fmt.Printf 方法速查指南
+===========================
 
 |image0|
 
-%d 　　有符号10进制整数（%ld 长整型，%hd短整型 ） %hu 　
-无符号短整形（%u无符号整形，%lu无符号长整形） %i 　　有符号10进制整数
-（%i 和%d 没有区别，%i 是老式写法，都是整型格式）
+1. fmt 的三大函数对比
+---------------------
 
-%o 　　无符号8进制整数 %u 　　无符号10进制整数 %x
-　　无符号的16进制数字，并以小写abcdef表示 %X 　
-无符号的16进制数字，并以大写ABCDEF表示
+``fmt`` 标准库是我们在学习和编写 Go 代码，使用最频繁的库之一。
 
-%f　　 输入输出为浮点型 （%lf双精度浮点型） %E/e 用科学表示格式的浮点数
+在新手阶段，通常会使用 fmt 包的 打印函数来查看变量的信息。
 
-%c 输出为单个字符 %s 输出为字符串
+这样的打印函数，有三个
 
-%q 输出为原生型字符串
+1. ``fmt.Print``\ ：正常打印字符串和变量，不会进行格式化，不会自动换行，需要手动添加
+   ``\n`` 进行换行，多个变量值之间不会添加空格
+2. ``fmt.Println``\ ：正常打印字符串和变量，不会进行格式化，多个变量值之间会添加空格，并且在每个变量值后面会进行自动换行
+3. ``fmt.Printf``\ ：可以按照自己需求对变量进行格式化打印。需要手动添加
+   ``\n`` 进行换行
 
 .. code:: go
 
-   import (
-       "fmt"
-   )
+   func main() {
+       fmt.Print("hello", "world\n")
+       fmt.Println("hello", "world")
+       fmt.Printf("hello world\n")
+   }
+
+输出如下
+
+::
+
+   helloworld
+   hello world
+   hello world
+
+前面两个函数，使用起来比较简单，容易上手。
+
+而第三个函数，使用起来虽然灵活，却有一定的上手难度，想要完全掌握，需要不断的进行练习。
+
+因此，我花了半天的时间，参考官方文档，对 ``fmt.Printf``
+的使用进行了系统学习，整理了这篇文章。
+
+这篇文章足够全面，完全可以成为你在使用 ``fmt.Printf``
+时的中文手册，收藏起来，需要用到了就来查一查。
+
+2. 初识 fmt.Prinf 函数
+----------------------
+
+``Printf`` 函数的定义如下
+
+.. code:: go
+
+   func Printf(format string, a ...interface{}) (n int, err error) {
+       return Fprintf(os.Stdout, format, a...)
+   }
+
+它的
+**第一个参数**\ 是需要格式化的字符串，这个字符串可以是不包含\ **占位符**\ 的字符串，也可以是包含\ **占位符**\ 的字符串。
+
+**占位符** 是以 ``%`` 开头的 n
+位短代码，这些短代码根据约定的格式决定着变量输出的格式。
+
+先举个例子
+
+我想知道10 进制的 1024 用 2 进制、8进制、16进制表示各是什么？
+
+可以像下面这样子写，其中的 ``%d``\ 、\ ``%b``\ 、\ ``%o``\ 、\ ``%x``
+都是叫做占位符，它决定了要以怎样的形式打印后面的变量 n。
+
+.. code:: go
+
+   package main
+
+   import "fmt"
 
    func main() {
-       var mystr01 string = `\r\n`
-       fmt.Print(`\r\n`)
-       fmt.Printf("的原生字符串是： %q", mystr01)
+       n := 1024
+       fmt.Printf("%d 的 2 进制：%b \n", n, n)
+       fmt.Printf("%d 的 8 进制：%o \n", n, n)
+       fmt.Printf("%d 的 10 进制：%d \n", n, n)
+       fmt.Printf("%d 的 16 进制：%x \n", n, n)
    }
-   // output:  \r\n的原生字符串是： "\\r\\n"
 
-https://studygolang.com/articles/2644?fr=sidebar
+运行后，输出如下
+
+::
+
+   1024 的 2 进制：10000000000 
+   1024 的 8 进制：2000 
+   1024 的 10 进制：1024 
+   1024 的 16 进制：400 
+
+初步理解了它的运行原理后，接下我会详细的讲解
+``fmt.Printf``\ 中的占位符都有哪些，他们各表示着什么意思。
+
+3. 详解 Printf 的占位符
+-----------------------
+
+通用占位符
+~~~~~~~~~~
+
+-  ``%v``\ ：以值的默认格式打印
+-  ``%+v``\ ：类似%v，但输出结构体时会添加字段名
+-  ``%#v``\ ：值的Go语法表示
+-  ``%T``\ ：打印值的类型
+-  ``%%``\ ： 打印百分号本身
+
+.. code:: go
+
+   type Profile struct {
+       name string
+       gender string
+       age int
+   }
+
+   func main() {
+       var people = Profile{name:"wangbm", gender: "male", age:27}
+       fmt.Printf("%v \n", people)  // output: {wangbm male 27}
+       fmt.Printf("%T \n", people)  // output: main.Profile
+     
+       // 打印结构体名和类型
+       fmt.Printf("%#v \n", people) // output: main.Profile{name:"wangbm", gender:"male", age:27}
+       fmt.Printf("%+v \n", people) // output: {name:wangbm gender:male age:27}
+       fmt.Printf("%% \n") // output: %
+   }
+
+运行后、输出如下
+
+::
+
+   {wangbm male 27} 
+   main.Profile 
+   main.Profile{name:"wangbm", gender:"male", age:27} 
+   {name:wangbm gender:male age:27} 
+   % 
+
+打印布尔值
+~~~~~~~~~~
+
+.. code:: go
+
+   func main() {
+       fmt.Printf("%t \n", true)   //output: true
+       fmt.Printf("%t \n", false)  //output: false
+   }
+
+打印字符串
+~~~~~~~~~~
+
+-  ``%s``\ ：输出字符串表示（string类型或[]byte)
+-  ``%q``\ ：双引号围绕的字符串，由Go语法安全地转义
+-  ``%x``\ ：十六进制，小写字母，每字节两个字符
+-  ``%X``\ ：十六进制，大写字母，每字节两个字符
+
+.. code:: go
+
+   func main() {
+       fmt.Printf("%s \n", []byte("Hello, Golang"))  // output: Hello, Golang
+       fmt.Printf("%s \n", "Hello, Golang")     // output: Hello, Golang
+     
+       fmt.Printf("%q \n", []byte("Hello, Golang"))  // output: "Hello, Golang"
+       fmt.Printf("%q \n", "Hello, Golang")     // output: "Hello, Golang"
+       fmt.Printf("%q \n", `hello \r\n world`)  // output: "hello \\r\\n world"
+     
+       fmt.Printf("%x \n", "Hello, Golang")     // output: 48656c6c6f2c20476f6c616e67
+       fmt.Printf("%X \n", "Hello, Golang")     // output: 48656c6c6f2c20476f6c616e67
+   }
+
+运行后、输出如下
+
+::
+
+   Hello, Golang 
+   Hello, Golang 
+
+   "Hello, Golang" 
+   "Hello, Golang" 
+   "hello \\r\\n world" 
+
+   48656c6c6f2c20476f6c616e67 
+   48656C6C6F2C20476F6C616E67 
+
+打印指针
+~~~~~~~~
+
+.. code:: go
+
+   func main() {
+       var people = Profile{name:"wangbm", gender: "male", age:27}
+       fmt.Printf("%p", &people)  // output: 0xc0000a6150
+   }
+
+打印整型
+~~~~~~~~
+
+-  ``%b``\ ：以二进制打印
+-  ``%d``\ ：以十进制打印
+-  ``%o``\ ：以八进制打印
+-  ``%x``\ ：以十六进制打印，使用小写：a-f
+-  ``%X``\ ：以十六进制打印，使用大写：A-F
+-  ``%c``\ ：打印对应的的unicode码值
+-  ``%q``\ ：该值对应的单引号括起来的go语法字符字面值，必要时会采用安全的转义表示
+-  ``%U``\ ：该值对应的 Unicode格式：U+1234，等价于”U+%04X”
+
+.. code:: go
+
+   func main() {
+       n := 1024
+       fmt.Printf("%d 的 2 进制：%b \n", n, n)
+       fmt.Printf("%d 的 8 进制：%o \n", n, n)
+       fmt.Printf("%d 的 10 进制：%d \n", n, n)
+       fmt.Printf("%d 的 16 进制：%x \n", n, n)
+
+       // 将 10 进制的整型转成 16 进制打印： %x 为小写， %X 为小写
+       fmt.Printf("%x \n", 1024)   
+       fmt.Printf("%X \n", 1024)   
+     
+       // 根据 Unicode码值打印字符
+       fmt.Printf("ASCII 编码为%d 表示的字符是： %c \n", 65, 65)  // output: A
+
+       // 根据 Unicode 编码打印字符
+       fmt.Printf("%c \n", 0x4E2D)  // output: 中
+       // 打印 raw 字符时
+       fmt.Printf("%q \n", 0x4E2D)  // output: '中'
+
+       // 打印 Unicode 编码
+       fmt.Printf("%U \n", '中')   // output: U+4E2D
+   }
+
+运行后，输出如下
+
+::
+
+   1024 的 2 进制：10000000000 
+   1024 的 8 进制：2000 
+   1024 的 10 进制：1024 
+   1024 的 16 进制：400 
+   400 
+   400 
+   ASCII 编码为65 表示的字符是： A 
+   中 
+   '中' 
+   U+4E2D 
+
+打印浮点数
+~~~~~~~~~~
+
+-  ``%e``\ ：科学计数法，如-1234.456e+78
+-  ``%E``\ ：科学计数法，如-1234.456E+78
+-  ``%f``\ ：有小数部分但无指数部分，如123.456
+-  ``%F``\ ：等价于%f
+-  ``%g``\ ：根据实际情况采用%e或%f格式（以获得更简洁、准确的输出）
+-  ``%G``\ ：根据实际情况采用%E或%F格式（以获得更简洁、准确的输出）
+
+.. code:: go
+
+   func main() {
+       f := 12.34
+       fmt.Printf("%b\n", f)
+       fmt.Printf("%e\n", f)
+       fmt.Printf("%E\n", f)
+       fmt.Printf("%f\n", f)
+       fmt.Printf("%g\n", f)
+       fmt.Printf("%G\n", f)
+   }
+
+输出如下
+
+::
+
+   6946802425218990p-49
+   1.234000e+01
+   1.234000E+01
+   12.340000
+   12.34
+   12.34
+
+宽度标识符
+~~~~~~~~~~
+
+宽度通过一个紧跟在百分号后面的十进制数指定，如果未指定宽度，则表示值时除必需之外不作填充。精度通过（可选的）宽度后跟点号后跟的十进制数指定。
+
+如果未指定精度，会使用默认精度；如果点号后没有跟数字，表示精度为0。举例如下：
+
+.. code:: go
+
+   func main() {
+       n := 12.34
+       fmt.Printf("%f\n", n)     // 以默认精度打印
+       fmt.Printf("%9f\n", n)   // 宽度为9，默认精度
+       fmt.Printf("%.2f\n", n)  // 默认宽度，精度2
+       fmt.Printf("%9.2f\n", n)  //宽度9，精度2
+       fmt.Printf("%9.f\n", n)    // 宽度9，精度0
+   }
+
+输出如下
+
+::
+
+   10.240000
+   10.240000
+   10.24
+       10.24
+          10
+
+占位符：%+
+~~~~~~~~~~
+
+-  ``%+v``\ ：若值为结构体，则输出将包括结构体的字段名。
+-  ``%+q``\ ：保证只输出ASCII编码的字符，非 ASCII
+   字符则以unicode编码表示
+
+.. code:: go
+
+   func main() {
+       // 若值为结构体，则输出将包括结构体的字段名。
+       var people = Profile{name:"wangbm", gender: "male", age:27}
+       fmt.Printf("%v \n", people) // output: {name:wangbm gender:male age:27}
+       fmt.Printf("%+v \n", people) // output: {name:wangbm gender:male age:27}
+       
+       // 保证只输出ASCII编码的字符
+       fmt.Printf("%q \n", "golang")  // output: "golang"
+       fmt.Printf("%+q \n", "golang")  // output: "golang"
+       
+       // 非 ASCII 字符则以unicode编码表示
+       fmt.Printf("%q \n", "中文")  // output: "中文"
+       fmt.Printf("%+q \n", "中文") // output: "\u4e2d\u6587"
+   }
+
+输出如下
+
+::
+
+   {wangbm male 27} 
+   {name:wangbm gender:male age:27} 
+
+   "golang" 
+   "golang" 
+
+   "中文" 
+   "\u4e2d\u6587"
+
+.. _占位符-1:
+
+占位符：%
+~~~~~~~~~
+
+-  ``%#x``\ ：给打印出来的是 16 进制字符串加前缀 ``0x``
+-  ``%#q``\ ：用反引号包含，打印原始字符串
+-  ``%#U``\ ：若是可打印的字符，则将其打印出来
+-  ``%#p``\ ：若是打印指针的内存地址，则去掉前缀 0x
+
+.. code:: go
+
+   func main() {
+       // 对于打印出来的是 16 进制，则加前缀 0x
+       fmt.Printf("%x \n", "Hello, Golang")     // output: 48656c6c6f2c20476f6c616e67
+       fmt.Printf("%#x \n", "Hello, Golang")     // output: 0x48656c6c6f2c20476f6c616e67
+
+       // 用反引号包含，打印原始字符串
+       fmt.Printf("%q \n", "Hello, Golang")     // output: "Hello, Golang"
+       fmt.Printf("%#q \n", "Hello, Golang")     // output: `Hello, Golang`
+
+       // 若是可打印的字符，则将其打印出来
+       fmt.Printf("%U \n", '中')     // output: U+4E2D
+       fmt.Printf("%#U \n", '中')     // output: U+4E2D '中'
+
+       // 若是打印指针的内存地址，则去掉前缀 0x
+       a := 1024
+       fmt.Printf("%p \n", &a)  // output: 0xc0000160e0
+       fmt.Printf("%#p \n", &a)  // output: c0000160e0
+   }
+
+对齐补全
+~~~~~~~~
+
+**字符串**
+
+.. code:: go
+
+   func main() {
+       // 打印的值宽度为5，若不足5个字符，则在前面补空格凑足5个字符。
+       fmt.Printf("a%5sc\n", "b")   // output: a    bc
+       // 打印的值宽度为5，若不足5个字符，则在后面补空格凑足5个字符。
+       fmt.Printf("a%-5sc\n", "b")  //output: ab    c
+       
+       // 不想用空格补全，还可以指定0，其他数值不可以，注意：只能在前边补全，后边补全无法指定字符
+       fmt.Printf("a%05sc\n", "b") // output: a0000bc
+        // 若超过5个字符，不会截断
+       fmt.Printf("a%5sd\n", "bbbccc") // output: abbbcccd
+   }
+
+输出如下
+
+::
+
+   a    bc
+   ab    c
+   a0000bc
+   abbbcccd
+
+**浮点数**
+
+.. code:: go
+
+   func main() {
+       // 保证宽度为6（包含小数点)，2位小数，右对齐
+       // 不足6位时，整数部分空格补全，小数部分补零，超过6位时，小数部分四舍五入
+       fmt.Printf("%6.2f,%6.2f\n", 12.3, 123.4567) 
+
+       // 保证宽度为6（包含小数点)，2位小数，- 表示左对齐
+       // 不足6位时，整数部分空格补全，小数部分补零，超过6位时，小数部分四舍五入
+       fmt.Printf("%-6.2f,%-6.2f\n", 12.2, 123.4567) 
+   }
+
+输出如下
+
+::
+
+    12.30,123.46
+   12.20 ,123.46
+
+正负号占位
+~~~~~~~~~~
+
+如果是正数，则留一个空格，表示正数
+
+如果是负数，则在此位置，用 ``-`` 表示
+
+.. code:: go
+
+   func main() {
+       fmt.Printf("1% d3\n", 22)
+       fmt.Printf("1% d3\n", -22)
+   }
+
+输出如下
+
+::
+
+   1 223
+   1-223
+
+以上就是参考 `golang - fmt 文档 <https://golang.org/pkg/fmt/>`__
+整理而成的 fmt.Printf 的使用手册。
+
+4. 参考文档
+-----------
+
+https://golang.org/pkg/fmt/
+
+https://www.liwenzhou.com/posts/Go/go_fmt/
 
 |image1|
 
