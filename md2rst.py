@@ -19,10 +19,10 @@ elif (osName == 'Darwin'):
     index_path = '/Users/MING/Github/GolangCodingTime/README.md'
 
 
-repo = Repo.init(path=repo_path)
-if not repo.is_dirty():
-    # 没有文件变更
-    os._exit(0)
+#repo = Repo.init(path=repo_path)
+#if not repo.is_dirty():
+#    # 没有文件变更
+#    os._exit(0)
 
 base_link = "http://golang.iswbm.com/en/latest/"
 readme_header = '''
