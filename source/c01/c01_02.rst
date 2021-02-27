@@ -30,7 +30,7 @@ Go
 
 .. code:: go
 
-   var name sting = "Python编程时光"
+   var name string = "Go编程时光"
 
 在 Go
 文件中的完整代码如下，为了不写重复性的代码，后续不再貼完整代码，只貼关键代码
@@ -42,7 +42,7 @@ Go
    import "fmt"
 
    func main()  {
-       var name string = "Python编程时光"
+       var name string = "Go编程时光"
        fmt.Println(name)
    }
 
@@ -53,7 +53,7 @@ Python 双引号与单引号等价，但在 Go
 
 .. code:: go
 
-   var name = "Python编程时光"
+   var name = "Go编程时光"
 
 若你的右值带有小数点，在不指定类型的情况下，编译器会将你的这个变量声明为
 float64，但是很多情况下，我们并不需要这么高的精度（占用的内存空间更大）
@@ -83,15 +83,15 @@ float64，但是很多情况下，我们并不需要这么高的精度（占用�
 
 .. code:: go
 
-   name := "Python编程时光"
+   name := "Go编程时光"
 
    // 等价于
 
-   var name string = "Python编程时光"
+   var name string = "Go编程时光"
 
    // 等价于
 
-   var name = "Python编程时光"
+   var name = "Go编程时光"
 
 但这种方法有个限制就是，只能用于函数内部
 
