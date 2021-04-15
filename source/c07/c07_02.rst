@@ -7,7 +7,7 @@
 -------------------
 
 边界检查，英文名 ``Bounds Check Elimination``\ ，简称为 BCE。它是 Go
-语言中防止数组、切片越界的检查手段。如果检查下标已经越界了，就会产生
+语言中防止数组、切片越界而导致内存不安全的检查手段。如果检查下标已经越界了，就会产生
 Panic。
 
 边界检查使得我们的代码能够安全地运行，但是另一方面，也使得我们的代码运行效率略微降低。
@@ -146,7 +146,7 @@ panic。
        "math/rand"
    )
 
-   func fa()  {
+   func f()  {
        s := make([]int, 3, 5)
        index := rand.Intn(3)
         _ = s[:index]  // 第一次检查
@@ -179,7 +179,7 @@ panic。
 3.4 案例四
 ~~~~~~~~~~
 
-有了上面的铺垫，再来看下面这个示例，由于数组是调用者传入的参数，所以编译器的编译的时候无法得知数组的长度和容量是否相等，因为只能保险一点，两个都检查。
+有了上面的铺垫，再来看下面这个示例，由于数组是调用者传入的参数，所以编译器的编译的时候无法得知数组的长度和容量是否相等，因此只能保险一点，两个都检查。
 
 .. code:: go
 
@@ -189,7 +189,7 @@ panic。
        "math/rand"
    )
 
-   func fb(s []int, index int) {
+   func f(s []int, index int) {
        _ = s[:index] // 第一次检查
        _ = s[index:] // 第二次检查
    }
@@ -206,7 +206,7 @@ panic。
        "math/rand"
    )
 
-   func fb(s []int, index int) {
+   func f(s []int, index int) {
        _ = s[index:] // 第一次检查
        _ = s[:index] // 不用检查
    }
@@ -227,7 +227,7 @@ panic。
    package main
 
 
-   func fd(is []int, bs []byte) {
+   func f(is []int, bs []byte) {
        if len(is) >= 256 {
            for _, n := range bs {
                _ = is[n] // 每个循环都要边界检查
@@ -245,7 +245,7 @@ panic。
    package main
 
 
-   func fd(is []int, bs []byte) {
+   func f(is []int, bs []byte) {
        if len(is) >= 256 {
            is = is[:256]
            for _, n := range bs {

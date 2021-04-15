@@ -87,7 +87,7 @@ fmt，那每次使用它的打印函数打印时，都要 包名+方法名。
 每个包都允许有一个 ``init`` 函数，当这个包被导入时，会执行该包的这个
 ``init`` 函数，做一些初始化任务。
 
-对于 ``init`` 函数的执行有两点需要注意
+对于 ``init`` 函数的执行有几点需要注意
 
 1. ``init`` 函数优先于 ``main`` 函数执行
 
@@ -96,6 +96,42 @@ fmt，那每次使用它的打印函数打印时，都要 包名+方法名。
    ::
 
       C.init→B.init→A.init→main
+
+3. 同一个包甚至同一个源文件，可以有多个 init 函数
+
+4. init 函数不能有入参和返回值
+
+5. init 函数不能被其他函数调用
+
+6. 同一个包内的多个 init 顺序是不受保证的
+
+7. 在 init
+   之前，其实会先初始化包作用域的常量和变量（常量优先于变量），具体可参考如下代码
+
+   .. code:: go
+
+      package main
+
+      import "fmt"
+
+      func init()  {
+       fmt.Println("init1:", a)
+      }
+
+      func init()  {
+       fmt.Println("init2:", a)
+      }
+
+      var a = 10
+      const b = 100
+
+      func main() {
+       fmt.Println("main:", a)
+      }
+      // 执行结果
+      // init1: 10
+      // init2: 10
+      // main: 10
 
 5. 包的匿名导入
 ---------------

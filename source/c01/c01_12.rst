@@ -88,6 +88,26 @@ defer 的用法很简单，只要在后面跟一个函数的调用，就能实�
    python
    go
 
+如果 defer 后面跟的是匿名函数，情况会有所不同， defer 会取到最后的变量值
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+
+   func main() {
+       name := "go"
+       defer func(){
+       fmt.Println(name) // 输出: python
+   }()
+       name = "python"
+       fmt.Println(name)      // 输出: python
+   }
+
+非常抱歉，目前以我的水平，暂时还无法解释这种现象，我建议是单独记忆一下这种特殊场景。
+
 3. 多个defer 反序调用
 ---------------------
 
