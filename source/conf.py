@@ -130,3 +130,6 @@ html_js_files = [
     'js/readmore.js',
     'js/baidutongji.js',
 ]
+
+html_baseurl = 'http://golang.iswbm.com'
+html_extra_path = ["robots.txt"]
