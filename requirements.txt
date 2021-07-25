@@ -32,3 +32,4 @@ tornado==6.0.3
 urllib3==1.25.3
 watchdog==0.9.0
 sphinx-sitemap==2.2.0
+sphinx-multiversion==0.2.4
