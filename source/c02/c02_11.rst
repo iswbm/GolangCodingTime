@@ -1,0 +1,71 @@
+2.11 面向对象：Go 语言中的空结构体
+==================================
+
+1. 普通的理解
+-------------
+
+在结构体中，可以包裹一系列与对象相关的属性，但若该对象没有属性呢？那它就是一个空结构体。
+
+空结构体，和正常的结构体一样，可以接收方法函数。
+
+.. code:: go
+
+   type Lamp struct{}
+
+   func (l Lamp) On() {
+           println("On")
+
+   }
+   func (l Lamp) Off() {
+           println("Off")
+   }
+
+2. 空结构体的妙用
+-----------------
+
+空结构体的表象特征，就是没有任何属性，而从更深层次的角度来说，空结构体是一个不占用空间的对象。
+
+使用 unsafe.Sizeof 可以轻易的验证这个结果
+
+.. code:: go
+
+   type Lamp struct{}
+
+   func main() {
+       lamp := Lamp{}
+       fmt.Print(unsafe.Sizeof(lamp))
+   }
+   // output: 0
+
+而这个特性，与结构体有没有接收函数是没有关系的。
+
+.. code:: go
+
+   type Lamp struct{}
+
+   func (l Lamp) On ()  {
+       fmt.Println("On...")
+   }
+
+   func main() {
+       lamp := Lamp{}
+       fmt.Print(unsafe.Sizeof(lamp))
+   }
+   // output: 0
+
+基于这个特性，在一些特殊的场合之下，可以用做占位符使用，合理的使用空结构体，会减小程序的内存占用空间。
+
+比如在使用信道(channel)控制并发时，我们只是需要一个信号，但并不需要传递值，这个时候，也可以使用
+struct{} 代替。
+
+.. code:: go
+
+   func main() {
+       ch := make(chan struct{}, 1)
+       go func() {
+           <-ch
+           // do something
+       }()
+       ch <- struct{}{}
+       // ...
+   }

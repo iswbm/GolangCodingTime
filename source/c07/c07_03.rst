@@ -1,0 +1,15 @@
+7.3 Go 允许多个返回值吗？
+=========================
+
+允许，以下是使用示例
+
+.. code:: go
+
+   func swap(x, y string) (string, string) {
+      return y, x
+   }
+
+   func main() {
+      a, b := swap("A", "B")
+      fmt.Println(a, b) // B A
+   }

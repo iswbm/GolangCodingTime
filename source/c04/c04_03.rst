@@ -326,6 +326,69 @@ range关键字，在range时，要确保信道是处于关闭状态，否则循�
 
 如果不加锁，输出会小于1000。
 
+7. 信道传递是深拷贝吗？
+-----------------------
+
+数据结构可以分为两种：
+
+-  **值类型** ：String，Array，Int，Struct，Float，Bool
+
+-  **引用类型**\ ：Slice，Map
+
+这两种不同的类型在拷贝的时候，在拷贝的时候效果是完全不一样的，这对于很多新手可能是一个坑。
+
+对于值类型来说，你的每一次拷贝，Go
+都会新申请一块内存空间，来存储它的值，改变其中一个变量，并不会影响另一个变量。
+
+.. code:: go
+
+   func main() {
+       aArr := [3]int{0,1,2}
+       fmt.Printf("打印 aArr: %v \n", aArr)
+       bArr := aArr
+       aArr[0] = 88
+       fmt.Println("将 aArr 拷贝给 bArr 后，并修改 aArr[0] = 88")
+       fmt.Printf("打印 aArr: %v \n", aArr)
+       fmt.Printf("打印 bArr: %v \n", bArr)
+   }
+
+从输出结果来看，aArr 和 bArr 相互独立，互不干扰
+
+.. code:: go
+
+   打印 aArr: [0 1 2] 
+   将 aArr 拷贝给 bArr 后，并修改 aArr[0] = 88
+   打印 aArr: [88 1 2] 
+   打印 bArr: [0 1 2] 
+
+对于引用类型来说，你的每一次拷贝，Go
+不会申请新的内存空间，而是使用它的指针，两个变量名其实都指向同一块内存空间，改变其中一个变量，会直接影响另一个变量。
+
+.. code:: go
+
+   func main() {
+       aslice := []int{0,1,2}
+       fmt.Printf("打印 aslice: %v \n", aslice)
+       bslice := aslice
+       aslice[0] = 88
+       fmt.Println("将 aslice 拷贝给 bslice 后，并修改 aslice[0] = 88")
+       fmt.Printf("打印 aslice: %v \n", aslice)
+       fmt.Printf("打印 bslice: %v \n", bslice)
+   }
+
+从输出结果来看，aslice 的更新直接反映到了 bslice 的值。
+
+.. code:: go
+
+   打印 aslice: [0 1 2] 
+   将 aslice 拷贝给 bslice 后，并修改 aslice[0] = 88
+   打印 aslice: [88 1 2] 
+   打印 bslice: [88 1 2] 
+
+介绍完深拷贝和浅拷贝后，来回来最开始的问题：\ **信道传递是深拷贝吗？**
+
+答案是：\ **是否是深拷贝，取决于你传入的值是值类型，还是引用类型？**
+
 7. 几个注意事项
 ---------------
 
