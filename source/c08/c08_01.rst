@@ -226,6 +226,13 @@ Go 语言高级编程
 
 |image16|
 
+冰霜之地
+~~~~~~~~
+
+网站链接：https://halfrost.com/tag/golang/
+
+|image17|
+
 4. 工具使用
 -----------
 
@@ -240,7 +247,7 @@ go 的命令非常多，如果想系统的学习，推荐郝林的 Go 命令教�
 
 2、https://wiki.jikexueyuan.com/project/go-command-tutorial/0.0.html
 
-|image17|
+|image18|
 
 Uber 编程规范
 ~~~~~~~~~~~~~
@@ -257,7 +264,7 @@ Uber”，也就是 Go 代码应该怎样写、不该怎样写。
 
 中文译文：https://www.infoq.cn/article/G6c95VyU5telNXXCC9yO
 
-|image18|
+|image19|
 
 Go Walker
 ~~~~~~~~~
@@ -265,7 +272,7 @@ Go Walker
 Go Walker 是一个可以在线生成并浏览 `Go <https://golang.org/>`__ 项目 API
 文档的 Web 服务器，目前已支持包括 **GitHub** 等代码托管平台。
 
-|image19|
+|image20|
 
 CTOLib 码库
 ~~~~~~~~~~~
@@ -275,7 +282,15 @@ CTOLib 码库
 
 **网站链接**\ ：https://www.ctolib.com/go/categories/go-guide.html
 
-|image20|
+|image21|
+
+A Tour of Go
+~~~~~~~~~~~~
+
+通过例子学习 Go
+编程，还提高在线运行环境，可以让你通过浏览器就可以直接运行 go 的程序
+
+|image22|
 
 5. 技术社区
 -----------
@@ -285,7 +300,7 @@ GoCN
 
 **网站链接**\ ：https://gocn.vip/
 
-|image21|
+|image23|
 
 Go 语言中文网
 ~~~~~~~~~~~~~
@@ -296,7 +311,7 @@ Go历史版本的下载，各种高质量的电子书资源，各种大牛写的
 
 **网站链接**\ ：https://studygolang.com/
 
-|image22|
+|image24|
 
 6. 源码学习
 -----------
@@ -309,14 +324,14 @@ Go 夜读
 
 **网站链接**\ ：https://talkgo.org/
 
-|image23|
+|image25|
 
 Go 语言原本
 ~~~~~~~~~~~
 
 **网站链接**\ ：https://changkun.de/golang/
 
-|image24|
+|image26|
 
 Go 语言设计与实现
 ~~~~~~~~~~~~~~~~~
@@ -325,14 +340,14 @@ Go 语言设计与实现
 
 **网站链接**\ ：https://draveness.me/golang/
 
-|image25|
+|image27|
 
 能翻到这里的，一定是真爱了，本以为 Go
 语言还处于不温不火的状态，没想到收集整理一下，资料还挺多的。
 
 --------------
 
-|image26|
+|image28|
 
 .. |image0| image:: http://image.iswbm.com/20200607145423.png
 .. |image1| image:: http://image.iswbm.com/20200430112024.png
@@ -351,14 +366,16 @@ Go 语言设计与实现
 .. |image14| image:: http://image.iswbm.com/20200430100755.png
 .. |image15| image:: http://image.iswbm.com/20200430095544.png
 .. |image16| image:: http://image.iswbm.com/20200430175818.png
-.. |image17| image:: http://image.iswbm.com/20200430102821.png
-.. |image18| image:: http://image.iswbm.com/20200430113756.png
-.. |image19| image:: http://image.iswbm.com/20200430170054.png
-.. |image20| image:: http://image.iswbm.com/20200430174109.png
-.. |image21| image:: http://image.iswbm.com/20200506192127.png
-.. |image22| image:: http://image.iswbm.com/20200430134207.png
-.. |image23| image:: http://image.iswbm.com/20200430174216.png
-.. |image24| image:: http://image.iswbm.com/20200506191803.png
-.. |image25| image:: http://image.iswbm.com/20200506191632.png
-.. |image26| image:: http://image.iswbm.com/20200607174235.png
+.. |image17| image:: http://image.iswbm.com/20210901084203.png
+.. |image18| image:: http://image.iswbm.com/20200430102821.png
+.. |image19| image:: http://image.iswbm.com/20200430113756.png
+.. |image20| image:: http://image.iswbm.com/20200430170054.png
+.. |image21| image:: http://image.iswbm.com/20200430174109.png
+.. |image22| image:: http://image.iswbm.com/20210902222745.png
+.. |image23| image:: http://image.iswbm.com/20200506192127.png
+.. |image24| image:: http://image.iswbm.com/20200430134207.png
+.. |image25| image:: http://image.iswbm.com/20200430174216.png
+.. |image26| image:: http://image.iswbm.com/20200506191803.png
+.. |image27| image:: http://image.iswbm.com/20200506191632.png
+.. |image28| image:: http://image.iswbm.com/20200607174235.png
 
