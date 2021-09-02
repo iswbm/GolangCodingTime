@@ -72,9 +72,19 @@
    * [7.4 Go 有异常类型吗？](https://golang.iswbm.com/c07/c07_04.html)
    * [7.5 Go 中的 rune 类型是什么？](https://golang.iswbm.com/c07/c07_05.html)
    * [7.6 Go 语言中的深拷贝和浅拷贝？](https://golang.iswbm.com/c07/c07_06.html)
+   * [7.7 局部变量分配在栈上还是堆上？](https://golang.iswbm.com/c07/c07_07.html)
+   * [7.8 什么叫字面量和组合字面量？](https://golang.iswbm.com/c07/c07_08.html)
+   * [7.9 为什么常量、字符串和字典不可寻址？](https://golang.iswbm.com/c07/c07_09.html)
+   * [7.10 为什么 slice 元素是可寻址的？](https://golang.iswbm.com/c07/c07_10.html)
+   * [7.11 对象选择器自动解引用怎么用？](https://golang.iswbm.com/c07/c07_11.html)
+   * [7.12 slice 扩容后容量及内存如何计算？](https://golang.iswbm.com/c07/c07_12.html)
+   * [7.13 goroutine 存在的意义是什么？](https://golang.iswbm.com/c07/c07_13.html)
+   * [7.14 说说 Go 中闭包的底层原理？](https://golang.iswbm.com/c07/c07_14.html)
 - **第八章：暂未分类**
    * [8.1 20 个学习 Go 语言的精品网站](https://golang.iswbm.com/c08/c08_01.html)
    * [8.2 Go 语言中边界检查](https://golang.iswbm.com/c08/c08_02.html)
+   * [8.3 Go 语言中的内存分配规律及逃逸分析](https://golang.iswbm.com/c08/c08_03.html)
+   * [8.4 Go 中晦涩难懂的寻址问题](https://golang.iswbm.com/c08/c08_04.html)
 
 ## 欢迎交流
 

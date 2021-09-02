@@ -1,0 +1,225 @@
+7.14 说说 Go 中闭包的底层原理？
+===============================
+
+1. 什么是闭包？
+---------------
+
+一个函数内引用了外部的局部变量，这个函数内的值，就称之为闭包。
+
+例如下面的这段代码中，adder 函数返回了一个匿名函数，而该匿名函数中引用了
+adder 函数中的局部变量 ``sum`` ，那这个函数就是一个闭包。
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func adder() func(int) int {
+       sum := 0
+       return func(x int) int {
+           sum += x
+           return sum
+       }
+   }
+
+而这个闭包中引用的外部局部变量并不会随着 adder
+函数的返回而被从栈上销毁。
+
+我们尝试着调用这个函数，发现每一次调用，sum 的值都会保留在
+闭包函数中以待使用。
+
+.. code:: go
+
+   func main() {
+        valueFunc:= adder()
+        fmt.Println(valueFunc(2))     // output: 2
+        fmt.Println(valueFunc(2))   // output: 4
+   }
+
+2. 复杂的闭包场景
+-----------------
+
+写一个闭包是比较容易的事，但单单会写简单的闭包函数，还远远不够，如果不搞清楚闭包真正的原理，那很容易在一些复杂的闭包场景中对函数的执行逻辑进行误判。
+
+别的不说，就拿下来这个例子来说吧？
+
+你觉得它会打印什么呢？
+
+是 6 还是 11 呢？
+
+.. code:: go
+
+   import "fmt"
+
+   func func1() (i int) {
+       i = 10
+       defer func() {
+           i += 1
+       }()
+       return 5
+   }
+
+   func main() {
+       closure := func1()
+       fmt.Println(closure)
+   }
+
+3. 闭包的底层原理？
+-------------------
+
+还是以最上面的例子来分析
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   func adder() func(int) int {
+       sum := 0
+       return func(x int) int {
+           sum += x
+           return sum
+       }
+   }
+
+   func main() {
+       valueFunc:= adder()
+       fmt.Println(valueFunc(2))     // output: 2
+   }
+
+我们先对它进行逃逸分析，很容易发现 sum 作为 adder
+函数局部变量，并不是分配在栈上，而是分配在堆上的。
+
+这就解决了第一个疑惑：\ **为什么 adder 函数返回后， sum 不会随之销毁？**
+
+.. code:: go
+
+   $ go build -gcflags="-m -m -l" demo.go
+   # command-line-arguments
+   ./demo.go:8:3: adder.func1 capturing by ref: sum (addr=true assign=true width=8)
+   ./demo.go:7:9: func literal escapes to heap:
+   ./demo.go:7:9:   flow: ~r0 = &{storage for func literal}:
+   ./demo.go:7:9:     from func literal (spill) at ./demo.go:7:9
+   ./demo.go:7:9:     from return func literal (return) at ./demo.go:7:2
+   ./demo.go:6:2: sum escapes to heap:
+   ./demo.go:6:2:   flow: {storage for func literal} = &sum:
+   ./demo.go:6:2:     from func literal (captured by a closure) at ./demo.go:7:9
+   ./demo.go:6:2:     from sum (reference) at ./demo.go:8:3
+   ./demo.go:6:2: moved to heap: sum
+   ./demo.go:7:9: func literal escapes to heap
+   ./demo.go:15:23: valueFunc(2) escapes to heap:
+   ./demo.go:15:23:   flow: {storage for ... argument} = &{storage for valueFunc(2)}:
+   ./demo.go:15:23:     from valueFunc(2) (spill) at ./demo.go:15:23
+   ./demo.go:15:23:   flow: {heap} = {storage for ... argument}:
+   ./demo.go:15:23:     from ... argument (spill) at ./demo.go:15:13
+   ./demo.go:15:23:     from fmt.Println(valueFunc(2)) (call parameter) at ./demo.go:15:13
+   ./demo.go:15:13: ... argument does not escape
+   ./demo.go:15:23: valueFunc(2) escapes to heap
+
+可另一个问题，又浮现出来了，就算它不会销毁，那闭包函数若是存储的若是 sum
+拷贝后的值，那每次调用闭包函数，里面的 sum
+应该都是一样的，调用两次都应该返回 2，而不是可以累加记录。
+
+因此，可以大胆猜测，闭包函数的结构体里存储的是 sum 的指针。
+
+为了验证这一猜想，只能上汇编了。
+
+通过执行下面的命令，可以输出对应的汇编代码
+
+.. code:: shell
+
+   go build -gcflags="-S" demo.go 
+
+输出的内容相当之多，我提取出下面最关键的一行代码，它定义了闭包函数的结构体。
+
+其中 F 是函数的指针，但这不是重点，重点是 sum
+存储的确实是指针，验证了我们的猜。
+
+::
+
+   type.noalg.struct { F uintptr; "".sum *int }(SB), CX
+
+4. 迷题揭晓
+-----------
+
+有了上面第三节的背景知识，那对于第二节给出的这道题，想必你也有答案了。
+
+首先，由于 ``i`` 在函数定义的返回值上声明，因此根据 go 的
+``caller-save`` 模式， ``i`` 变量会存储在 main 函数的栈空间。
+
+然后，\ ``func1`` 的 return 重新把 5 赋值给了 ``i`` ，此时 ``i = 5``
+
+由于闭包函数存储了这个变量 ``i`` 的指针。
+
+因此最后，在 defer 中对 ``i`` 进行自增，是直接更新到 ``i``
+的指针上，此时 ``i = 5+1``\ ，所以最终打印出来的结果是 ``6``
+
+.. code:: go
+
+   import "fmt"
+
+   func func1() (i int) {
+       i = 10
+       defer func() {
+           i += 1
+       }()
+       return 5
+   }
+
+   func main() {
+       closure := func1()
+       fmt.Println(closure)
+   }
+
+5. 再度变题
+-----------
+
+上面那题听懂了的话，再来看看下面这道题。
+
+``func1`` 的返回值我们不写变量名 ``i``
+了，然后原先返回具体字面量，现在改成变量 ``i``
+，就是这两小小小的改动，会导致运行结果大大不同，你可以思考一下结果。
+
+.. code:: go
+
+   import "fmt"
+
+   func func1() (int) {
+       i := 10
+       defer func() {
+           i += 1
+       }()
+       return i
+   }
+
+   func main() {
+       closure := func1()
+       fmt.Println(closure)
+   }
+
+如果你在返回值里写了变量名，那么该变量会存储 main
+的栈空间里，而如果你不写，那 i 只能存储在 ``func1``
+的栈空间里，与此同时，return 的值，不会作用于原变量 ``i``
+上，而是会存储在该函数在另一块栈内存里。
+
+因此你在 defer 中对原 ``i`` 进行自增，并不会作用到 func1 的返回值上。
+
+所以打印的结果，只能是 ``10``\ 。
+
+你答对了吗？
+
+6. 最后一个问题
+---------------
+
+不知道你有没有发现，在第一节示例中的 sum
+是存储在堆内存中的，而后面几个示例都是存储在栈内存里。
+
+这是为什么呢？
+
+仔细对比，不难发现，示例一返回的是闭包函数，闭包函数在 ``adder``
+返回后还要在其他地方继续使用，在这种情况下，为了保证闭包函数的正常运行，无论闭包函数在哪里，\ ``i``
+都不能回收，所以 Go 编译器会智能地将其分配在堆上。
+
+而后面的其他示例，都只是涉及了闭包的特性，并不是直接把闭包函数返回，因此完全可以将其分配在栈上，非常的合理。

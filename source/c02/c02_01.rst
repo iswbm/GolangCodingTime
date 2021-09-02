@@ -41,7 +41,76 @@
        father *Profile // 指针
    }
 
-2. 定义方法
+若相邻的属性（字段）是相同类型，可以合并写在一起
+
+.. code:: go
+
+   type Profile struct {
+       name,gender   string
+       age    int
+       mother *Profile // 指针
+       father *Profile // 指针
+   }
+
+通过结构体可以定义一个组合字面量，有几个细节，也算是规则，需要你注意。
+
+**规则一**\ ：当最后一个字段和结果不在同一行时，\ ``,`` 不可省略。
+
+.. code:: go
+
+   xm := Profile{
+       name: "小明",
+       age: 18,
+       gender: "male",
+   }
+
+反之，不在同一行，就可以省略。
+
+.. code:: go
+
+   xm := Profile{
+       name: "小明",
+       age: 18,
+       gender: "male"}
+
+**规则二**\ ：字段名要嘛全写，要嘛全不写，不能有的写，有的不写。
+
+例如下面这种写法是会报 ``mixture of field:value and value initializers``
+错误的
+
+.. code:: go
+
+   xm := Profile{
+       name: "小明",
+       18,
+       "male",
+   }
+
+**规则三**\ ：初始化结构体，并不一定要所有字段都赋值，未被赋值的字段，会自动赋值为其类型的零值。
+
+.. code:: go
+
+   xm := Profile{name: "小明"}
+   fmt.Println(xm.age)  
+   // output: 0
+
+但要注意的是，只有通过指定字段名才可以赋值部分字段。
+
+若你没有指定字段名，像这样
+
+.. code:: go
+
+   xm := Profile{"小明"}
+
+在编译的时候，是会直接报错的
+
+.. code:: shell
+
+   $ go run demo.go
+   # command-line-arguments
+   ./demo.go:12:16: too few values in Profile literal
+
+2. 绑定方法
 -----------
 
 在 Go
@@ -264,6 +333,92 @@ staff 中，做为 staff 的一个匿名字段，staff 就直接拥有了 compan
 
 -  当方法的首字母为大写时，这个方法对于所有包都是Public，其他包可以随意调用
 -  当方法的首字母为小写时，这个方法是Private，其他包是无法访问的。
+
+6. 三种实例化方法
+-----------------
+
+第一种：正常实例化
+~~~~~~~~~~~~~~~~~~
+
+.. code:: go
+
+   func main() {
+       xm := Profile{
+           name: "小明",
+           age: 18,
+           gender: "male",
+       }
+   }
+
+第二种：使用 new
+~~~~~~~~~~~~~~~~
+
+.. code:: go
+
+   func main() {
+       xm := new(Profile)
+       // 等价于: var xm *Profile = new(Profile)
+       fmt.Println(xm)
+       // output: &{ 0 }
+     
+       xm.name = "iswbm"   // 或者 (*xm).name = "iswbm"
+       xm.age = 18     //  或者 (*xm).age = 18
+       xm.gender = "male" // 或者 (*xm).gender = "male"
+       fmt.Println(xm)
+       //output: &{iswbm 18 male}
+   }
+
+第三种：使用 &
+~~~~~~~~~~~~~~
+
+.. code:: go
+
+   func main() {
+       var xm *Profile = &Profile{}
+       fmt.Println(xm)
+       // output: &{ 0 }
+
+       xm.name = "iswbm"   // 或者 (*xm).name = "iswbm"
+       xm.age = 18     //  或者 (*xm).age = 18
+       xm.gender = "male" // 或者 (*xm).gender = "male"
+       fmt.Println(xm)
+        //output: &{iswbm 18 male}
+   }
+
+7. 选择器的冷知识
+-----------------
+
+从一个结构体实例对象中获取字段的值，通常都是使用 ``.``
+这个操作符，该操作符叫做 **选择器**\ 。
+
+选择器有一个妙用，可能大多数人都不清楚。
+
+当你对象是结构体对象的指针时，你想要获取字段属性时，按照常规理解应该这么做
+
+.. code:: go
+
+   type Profile struct {
+       Name string
+   }
+
+   func main() {
+       p1 := &Profile{"iswbm"}
+     fmt.Println((*p1).Name)  // output: iswbm
+   }
+
+但还有一个更简洁的做法，可以直接省去 ``*`` 取值的操作，选择器 ``.``
+会直接解引用，示例如下
+
+.. code:: go
+
+   type Profile struct {
+       Name string
+   }
+
+   func main() {
+       p1 := &Profile{"iswbm"}
+       fmt.Println(p1.Name)  // output: iswbm
+   }
 
 --------------
 
