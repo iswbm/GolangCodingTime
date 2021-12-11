@@ -5,14 +5,13 @@
 
 前面写过两节关于 ``switch-case`` 的文章，分别是：
 
-`流程控制：switch-case <http://golang.iswbm.com/en/latest/c01/c01_09.html>`__
+`流程控制：switch-case <http://golang.iswbm.com/c01/c01_09.html>`__
 
-`Go
-语言中的类型断言 <http://golang.iswbm.com/en/latest/c01/c01_14.html>`__
+`Go 语言中的类型断言 <http://golang.iswbm.com/c01/c01_14.html>`__
 
 今天要学习一个跟 ``switch-case`` 很像，但还有点\ ``个人特色`` 的
 ``select-case``\ ，这一节本应该放在 `学习 Go
-协程：详解信道/通道 <http://golang.iswbm.com/en/latest/c04/c04_03.html>`__
+协程：详解信道/通道 <http://golang.iswbm.com/c04/c04_03.html>`__
 里一起讲的，但是当时漏了，直到有读者给我提出，才注意到，今天就用这篇文章补充一下。
 
 跟 switch-case 相比，select-case 用法比较单一，它仅能用于 信道/通道

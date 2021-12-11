@@ -1,0 +1,70 @@
+7.26 map 的值不可寻址，那如何修改值的属性？
+===========================================
+
+要回答本题，需要你知道什么是不可寻址。
+
+不急，请先看一下如下这段代码，你知道它有什么问题吗？
+
+.. code:: go
+
+   package main
+
+   type Person struct {
+       Age int
+   }
+
+   func (p *Person) GrowUp() {
+       p.Age++
+   }
+
+   func main() {
+       m := map[string]Person{
+           "iswbm": Person{Age: 20},
+       }
+       m["iswbm"].Age = 23
+       m["iswbm"].GrowUp()
+   }
+
+没错，这段代码是错误的，当你编译时，会直接报错呢？
+
+原因在于这两行
+
+.. code:: go
+
+       m["iswbm"].Age = 23
+       m["iswbm"].GrowUp()
+
+我们知道 map 的值是不可寻址的，当你使用 ``m["zhangsan"]``
+取得值时，其实返回的是其值的拷贝，虽然与原数据值相同，但是在内存中并不是同一个数据。
+
+也正是这样，当 map 的值是一个普通对象（非指针），是无法直接对其修改的。
+
+针对这种错误，解决方法有两种：
+
+第一种：新建变量，修改后再覆盖
+------------------------------
+
+.. code:: go
+
+   func main() {
+       m := map[string]Person{
+           "iswbm": Person{Age: 20},
+       }
+       p := m["iswbm"]
+       p.Age = 23
+       p.GrowUp()
+       m["iswbm"] = p
+   }
+
+第二种：使用指针的方式
+----------------------
+
+.. code:: go
+
+   func main() {
+       m := map[string]*Person{
+           "iswbm": &Person{Age: 20},
+       }
+       m["iswbm"].Age = 23
+       m["iswbm"].GrowUp()
+   }

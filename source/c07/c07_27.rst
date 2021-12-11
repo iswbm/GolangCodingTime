@@ -1,0 +1,34 @@
+7.27 所有的 T 类型都有 \*T 类型吗？
+===================================
+
+``*T`` 类型的对象指的是类型是 T 的对象的指针，很明显，只有当 T
+类型的对象，是可以寻址的情况，才可以取到其指针。
+
+诸如字符串、map
+的元素、常量、包级别的函数，都是不可寻址的，它们都没有对应的 ``*T`` 类型
+
+随便举个常量的例子
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   type T string
+
+   func (T *T) say() {
+       fmt.Println("hello")
+   }
+
+   func main() {
+       const NAME T = "iswbm"
+       NAME.say()
+   }
+
+报错如下
+
+.. code:: go
+
+   ./demo.go:13:6: cannot call pointer method on NAME
+   ./demo.go:13:6: cannot take the address of NAME

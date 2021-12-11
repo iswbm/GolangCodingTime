@@ -28,8 +28,10 @@ Greeting 类型的函数对象（也即 greet）
 
    // 转换成 Greeting 类型的函数对象
    greet := Greeting(english)
+   // 或者
+   var greet Greeting = english
 
-greet 做为 Greeting 类型的对象，自然也拥有 Greeting
+greet 做为 Greeting 类型的对象，也拥有 Greeting
 类型的所有方法，比如下面的 say 方法
 
 .. code:: go

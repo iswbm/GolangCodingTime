@@ -251,8 +251,8 @@ eface，其只有一个 ``_type`` 可以存放变量类型，此时 empty
 
 关于 反射 的内容有点多，我将其安排在另外两篇文章：。
 
--  `学习反射：反射三定律 <http://golang.iswbm.com/en/latest/c02/c02_07.html>`__
--  `学习反射：全面学习反射的函数 <http://golang.iswbm.com/en/latest/c02/c02_08.html>`__
+-  `学习反射：反射三定律 <http://golang.iswbm.com/c02/c02_07.html>`__
+-  `学习反射：全面学习反射的函数 <http://golang.iswbm.com/c02/c02_08.html>`__
 
 参考文章
 --------

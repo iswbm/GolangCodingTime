@@ -32,3 +32,27 @@
        p1 := &Profile{"iswbm"}
        fmt.Println(p1.Name)  // output: iswbm
    }
+
+也正是这个原因，因此在给你一个方法指定定一个接收者的时候，访问接收者的对象时，不需要像下面这样显示的解引用
+
+.. code:: go
+
+   type Person struct {
+       name string
+   }
+
+   func (p *Person) Say() {
+       fmt.Println((*p).name)
+   }
+
+而可以直接这样写
+
+.. code:: go
+
+   type Person struct {
+       name string
+   }
+
+   func (p *Person) Say() {
+       fmt.Println(p.name)
+   }

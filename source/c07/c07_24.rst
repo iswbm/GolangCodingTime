@@ -1,0 +1,204 @@
+7.24 如何让在强制转换类型时不发生内存拷贝？
+===========================================
+
+当你使用要对一个变量从一个类型强制转换成另一个类型，其实都会发生内存的拷贝，而这种拷贝会对性能有所影响的，因此如果可以在转换的时候避免内存的拷贝就好了。
+
+庆幸的是，在一些特定的类型下，这种想法确实是可以实现的。
+
+比如将字符串转成 []byte 类型。
+
+正常的转换方法是
+
+.. code:: go
+
+   // string to []byte
+   s1 := "hello"
+   b := []byte(s1)
+
+   // []byte to string
+   s2 := string(b)
+
+具体的代码如下
+
+.. code:: go
+
+   func main() {
+       msg1 :="hello"
+       sh := *(*reflect.StringHeader)(unsafe.Pointer(&msg1))
+       bh := reflect.SliceHeader{
+           Data: sh.Data,
+           Len:  sh.Len,
+           Cap:  sh.Len,
+       }
+       msg2 := *(*[]byte)(unsafe.Pointer(&bh))
+       fmt.Printf("%v", msg2)
+   }
+
+这段代码是不是看着有点晕啊，各种奇奇怪怪的写法，见都没见过。
+
+其实核心知识点有三个：
+
+1. 一种定义变量的怪异方法
+2. 字符串的底层数据结构
+3. 切片的底层数据结构
+
+正常我们所熟知的变量的声明定义方法是下面两种吧
+
+.. code:: go
+
+   // 第一种
+   var name string = "Go编程时光"
+
+   // 第二种
+   name := "Go编程时光"
+
+但还有一种方法，可能新手不知道，这种方法，我在之前的文章有提到过
+`详细图解：静态类型与动态类型 <https://golang.iswbm.com/c02/c02_09.html>`__
+
+还是用上面的等价例子，它还可以这么写
+
+.. code:: go
+
+   name := (string)("Go编程时光")
+
+再回过头来理解最上面那段怪异的代码
+
+-  第一个括号：肯定是某个类型对应的指针类型
+-  第二个括号：就是第一个括号里类型对应的值
+
+.. code:: go
+
+   tmp := *(*reflect.StringHeader)(unsafe.Pointer(&msg))
+
+由于第一个括号里是个指针类型，那么第二个括号里肯定要是指针的值。
+
+而通过 ``unsafe.Pointer`` 就可以将 ``&msg`` 指针的内存地址取出来。
+
+两个括号合起来就是，声明并定义了一个 ``*reflect.StringHeader``
+类型的指针变量，对应的指针值还是原来 msg1 的内存地址。
+
+那最前面的的那个那个 ``*``
+，大家应该都知道，是从\ ``*reflect.StringHeader``
+类型的指针变量中取出值。
+
+那么你肯定要问了，int 和 bool、string
+这些类型我都知道啊，这个reflect.StringHeader 是什么类型？？没见过啊
+
+其实他就是字符串的底层结构，是字符串最原始的样子。
+
+.. code:: go
+
+   type StringHeader struct {
+    Data uintptr
+    Len  int
+   }
+
+同样的， ``SliceHeader`` 则是切片的底层数据结构
+
+.. code:: go
+
+   type SliceHeader struct {
+    Data uintptr
+    Len  int
+    Cap  int
+   }
+
+是不是觉得他们很像？
+
+对咯，只要把 ``StringHeader`` 里的 Data 塞给 ``SliceHeader`` 里的
+Data，再把 ``SliceHeader`` 里的 Len 塞给 ``SliceHeader`` 里的 Len 和 Cap
+，就多费任何的空间创造出一个新的变量。
+
+.. code:: go
+
+   bh := reflect.SliceHeader{
+     Data: sh.Data,
+     Len:  sh.Len,
+     Cap:  sh.Len,
+   }
+
+最后再把 ``SliceHeader`` 通过上面的强制转换方法，再转成 ``[]byte``
+就可以了，中间就不会有任何的内存拷贝的过程。
+
+是不是真的有效果呢？来测试一下性能便知
+
+先准备 demo.go
+
+.. code:: go
+
+   package main
+
+   import (
+       "reflect"
+       "unsafe"
+   )
+
+   func String2Bytes(s string) []byte {
+       sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
+       bh := reflect.SliceHeader{
+           Data: sh.Data,
+           Len:  sh.Len,
+           Cap:  sh.Len,
+       }
+       return *(*[]byte)(unsafe.Pointer(&bh))
+   }
+
+再准备 ``demo_test.go``
+
+.. code:: go
+
+   package main
+
+   import (
+       "bytes"
+       "testing"
+   )
+
+   func TestString2Bytes(t *testing.T) {
+       x := "Hello Gopher!"
+       y := String2Bytes(x)
+       z := []byte(x)
+
+       if !bytes.Equal(y, z) {
+           t.Fail()
+       }
+   }
+
+
+   // 测试标准转换[]byte性能
+   func Benchmark_NormalString2Bytes(b *testing.B) {
+       x := "Hello Gopher! Hello Gopher! Hello Gopher!"
+       for i := 0; i < b.N; i++ {
+           _ = []byte(x)
+       }
+   }
+
+   // 测试强转换string到[]byte性能
+   func Benchmark_String2Bytes(b *testing.B) {
+       x := "Hello Gopher! Hello Gopher! Hello Gopher!"
+       for i := 0; i < b.N; i++ {
+           _ = String2Bytes(x)
+       }
+   }
+
+并在当前目录下执行
+
+.. code:: go
+
+   go mod init
+
+最后就可以执行如下命令进行测试，从输出的结果来看使用我们的黑魔法转换的效率要比普通的方法快太多了
+
+.. code:: shell
+
+   $ go test -bench="." -benchmem 
+   goos: darwin
+   goarch: amd64
+   pkg: demo
+   Benchmark_NormalString2Bytes-8          36596674                28.5 ns/op            48 B/op          1 allocs/op
+   Benchmark_String2Bytes-8                1000000000               0.253 ns/op           0 B/op          0 allocs/op
+
+延伸阅读
+--------
+
+-  `Golang中[]byte与string转换全解析 <https://juejin.cn/post/6889713026287534094>`__
