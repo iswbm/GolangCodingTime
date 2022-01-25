@@ -1,7 +1,7 @@
 2.7 学习反射：反射三定律
 ========================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 很多人都知道我是从 Python 转过来学习 Go 语言的，当我在使用 Python
 的时候，我甚至可以做到不需要知道什么是内省，什么是反射，就可以立即使用内省去做一些事情。
@@ -23,7 +23,7 @@ demo 代码，告诉你反射的基本内容。
 
 在反射的世界里，我们拥有了获取一个对象的类型，属性及方法的能力。
 
-|image1|
+.. image:: http://image.iswbm.com/20200614174556.png
 
 2. 两种类型：Type 和 Value
 --------------------------
@@ -328,7 +328,7 @@ TypeOf 和 ValueOf 两个函数接收的是 interface{} 空接口类型，而 Go
 
 至此，我们已经学习了反射的两大定律，对这两个定律的理解，我画了一张图，你可以用下面这张图来加强理解，方便记忆。
 
-|image2|
+.. image:: http://image.iswbm.com/image-20200614194727218.png
 
 第三定律
 ~~~~~~~~
@@ -409,7 +409,7 @@ TypeOf 和 ValueOf 两个函数接收的是 interface{} 空接口类型，而 Go
 
 反射对象，都会有如下几个以 ``Set`` 单词开头的方法
 
-|image3|
+.. image:: http://image.iswbm.com/image-20200614161613417.png
 
 这些方法就是我们修改值的入口。
 
@@ -449,11 +449,4 @@ TypeOf 和 ValueOf 两个函数接收的是 interface{} 空接口类型，而 Go
 
 --------------
 
-|image4|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200614174556.png
-.. |image2| image:: http://image.iswbm.com/image-20200614194727218.png
-.. |image3| image:: http://image.iswbm.com/image-20200614161613417.png
-.. |image4| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

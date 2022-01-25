@@ -1,7 +1,7 @@
 3.4 代码规范：Go语言中编码规范
 ==============================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 每个语言都有自己特色的编码规范，学习该语言的命名规范，能让你写出来的代码更加易读，更加不容易出现一些低级错误。
 
@@ -288,8 +288,4 @@
 
 --------------
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

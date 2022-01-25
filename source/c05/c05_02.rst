@@ -1,7 +1,7 @@
 5.2 os/exec 执行命令的五种姿势
 ==============================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 在 Golang 中用于执行命令的库是 ``os/exec``\ ，exec.Command 函数返回一个
 ``Cmd`` 对象，根据不同的需求，可以将命令的执行分为三种情况
@@ -301,8 +301,4 @@ exec 也能执行。
    output: wangbm
    output: 
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

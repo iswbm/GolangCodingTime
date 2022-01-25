@@ -1,7 +1,7 @@
 5.3 命令行参数的解析：flag 库详解
 =================================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 在 Golang 程序中有很多种方法来处理命令行参数。
 
@@ -432,8 +432,4 @@ Lookup
 
    m := flag.Lookup("members")
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

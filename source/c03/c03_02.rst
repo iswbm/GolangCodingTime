@@ -1,7 +1,7 @@
 3.2 依赖管理：超详细解读 Go Modules 应用
 ========================================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 在以前，Go
 语言的的包依赖管理一直都被大家所诟病，Go官方也在一直在努力为开发者提供更方便易用的包管理方案，从最初的
@@ -26,7 +26,7 @@ GOPATH 应该很多人都很眼熟了，之前在配置环境的时候，都配�
 
 你可以将其理解为工作目录，在这个工作目录下，通常有如下的目录结构
 
-|image1|
+.. image:: http://image.iswbm.com/image-20200311220825614.png
 
 每个目录存放的文件，都不相同
 
@@ -41,13 +41,13 @@ GOPATH 应该很多人都很眼熟了，之前在配置环境的时候，都配�
 在这个模式下，使用 go install 时，生成的可执行文件会放在 ``$GOPATH/bin``
 下
 
-|image2|
+.. image:: http://image.iswbm.com/image-20200312221011685.png
 
 如果你安装的是一个库，则会生成 ``.a`` 文件到 ``$GOPATH/pkg``
 下对应的平台目录中（由 GOOS 和 GOARCH 组合而成），生成 ``.a``
 为后缀的文件。
 
-|image3|
+.. image:: http://image.iswbm.com/image-20200312221141028.png
 
 GOOS，表示的是目标操作系统，有
 darwin（Mac），linux，windows，android，netbsd，openbsd，solaris，plan9
@@ -57,7 +57,7 @@ darwin（Mac），linux，windows，android，netbsd，openbsd，solaris，plan9
 
 这两个都是 go env 里的变量，你可以通过 ``go env 变量名`` 进行查看
 
-|image4|
+.. image:: http://image.iswbm.com/image-20200314132614248.png
 
 至此，你可能不会觉得上面的方案会产生什么样的问题，直到你开始真正使用
 GOPATH
@@ -143,22 +143,22 @@ go mod 不再依靠 $GOPATH，使得它可以脱离 GOPATH
 来创建项目，于是我们在家目录下创建一个 go_test
 的目录，用来创建我的项目，详细操作如下：
 
-|image5|
+.. image:: http://image.iswbm.com/image-20200314000227914.png
 
 接下来，进入项目目录，执行如下命令进行 go modules 的初始化
 
-|image6|
+.. image:: http://image.iswbm.com/image-20200314000940825.png
 
 接下来很重要的一点，我们要看看 go install 把下载的包安装到哪里了？
 
-|image7|
+.. image:: http://image.iswbm.com/image-20200314001426817.png
 
 上面我们观察到，在使用 go modules
 模式后，项目目录下会多生成两个文件也就是 ``go.mod`` 和 ``go.sum`` 。
 
 这两个文件是 go modules 的核心所在，这里不得不好好介绍一下。
 
-|image8|
+.. image:: http://image.iswbm.com/image-20200314001708640.png
 
 go.mod 文件
 ~~~~~~~~~~~
@@ -245,7 +245,7 @@ go.sum 文件都应该提交到你的 Git
 
 -  ``go mod graph``\ ： 打印项目的模块依赖结构
 
-|image9|
+.. image:: http://image.iswbm.com/image-20200314003442400.png
 
 -  ``go mod tidy`` ：添加缺少的包，且删除无用的包
 
@@ -255,18 +255,18 @@ go.sum 文件都应该提交到你的 Git
 
 -  ``go mod vendor`` ：导出项目所有依赖到vendor下
 
-|image10|
+.. image:: http://image.iswbm.com/image-20200314003913527.png
 
 -  ``go mod edit`` ：编辑go.mod文件，接 -fmt 参数格式化 go.mod 文件，接
    -require=golang.org/x/text 添加依赖，接
    -droprequire=golang.org/x/text 删除依赖，详情可参考
    ``go help mod edit``
 
-|image11|
+.. image:: http://image.iswbm.com/image-20200314004643487.png
 
 -  ``go list -m -json all``\ ：以 json 的方式打印依赖详情
 
-|image12|
+.. image:: http://image.iswbm.com/image-20200314005924877.png
 
 如何给项目添加依赖（写进 go.mod）呢？
 
@@ -276,7 +276,7 @@ go.sum 文件都应该提交到你的 Git
    就会自动下载并添加。
 -  自己手工使用 go get 下载安装后，会自动写入 go.mod 。
 
-|image13|
+.. image:: http://image.iswbm.com/image-20200314005217447.png
 
 7. 总结写在最后
 ---------------
@@ -308,21 +308,4 @@ go vender 械管理，除此之外，任何 Gopher 应该从此刻就投入 go m
 
 --------------
 
-|image14|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/image-20200311220825614.png
-.. |image2| image:: http://image.iswbm.com/image-20200312221011685.png
-.. |image3| image:: http://image.iswbm.com/image-20200312221141028.png
-.. |image4| image:: http://image.iswbm.com/image-20200314132614248.png
-.. |image5| image:: http://image.iswbm.com/image-20200314000227914.png
-.. |image6| image:: http://image.iswbm.com/image-20200314000940825.png
-.. |image7| image:: http://image.iswbm.com/image-20200314001426817.png
-.. |image8| image:: http://image.iswbm.com/image-20200314001708640.png
-.. |image9| image:: http://image.iswbm.com/image-20200314003442400.png
-.. |image10| image:: http://image.iswbm.com/image-20200314003913527.png
-.. |image11| image:: http://image.iswbm.com/image-20200314004643487.png
-.. |image12| image:: http://image.iswbm.com/image-20200314005924877.png
-.. |image13| image:: http://image.iswbm.com/image-20200314005217447.png
-.. |image14| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

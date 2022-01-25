@@ -1,7 +1,7 @@
 2.9 详细图解：静态类型与动态类型
 ================================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 1. 静态类型
 -----------
@@ -62,7 +62,7 @@ interface{}，它还是不会变，但是它的动态类型此时又变成了 st
 
 我们声明了一个 int 类型变量，变量名叫 age ，其值为 25
 
-|image1|
+.. image:: http://image.iswbm.com/20200610235106.png
 
 知道了接口的组成后，我们在定义一个变量时，除了使用常规的方法（可参考：\ `02.
 学习五种变量创建的方法 <http://mp.weixin.qq.com/s?__biz=MzU1NzU1MTM2NA==&mid=2247483669&idx=2&sn=e70a1400c094e981f15b8da552bd8fbf&chksm=fc355b7ecb42d26824985163a3ef0c3567134975637c4efc42161751f54ab10343b485b36e23&scene=21#wechat_redirect>`__\ ）
@@ -206,13 +206,13 @@ iface
 方法，所以 io.Reader 是 ``iface``\ ，此时 reader 对象的静态类型是
 io.Reader，暂无动态类型。
 
-|image2|
+.. image:: http://image.iswbm.com/image-20200610225323018.png
 
 最后一行代码：reader = tty，tty 是一个 ``*os.File``
 类型的实例，此时reader 对象的静态类型还是 io.Reader，而动态类型变成了
 ``*os.File``\ 。
 
-|image3|
+.. image:: http://image.iswbm.com/20200610230951.png
 
 .. _eface-1:
 
@@ -237,12 +237,12 @@ eface
 eface，其只有一个 ``_type`` 可以存放变量类型，此时 empty
 对象的（静态）类型是 nil。
 
-|image4|
+.. image:: http://image.iswbm.com/image-20200610230819030.png
 
 最后一行代码：empty = tty，tty 是一个 ``*os.File`` 类型的实例，此时
 ``_type`` 变成了 ``*os.File``\ 。
 
-|image5|
+.. image:: http://image.iswbm.com/image-20200610231015612.png
 
 6. 反射的必要性
 ---------------
@@ -259,13 +259,4 @@ eface，其只有一个 ``_type`` 可以存放变量类型，此时 empty
 
 -  `图解go反射实现原理 <https://i6448038.github.io/2020/02/15/golang-reflection/>`__
 
-|image6|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200610235106.png
-.. |image2| image:: http://image.iswbm.com/image-20200610225323018.png
-.. |image3| image:: http://image.iswbm.com/20200610230951.png
-.. |image4| image:: http://image.iswbm.com/image-20200610230819030.png
-.. |image5| image:: http://image.iswbm.com/image-20200610231015612.png
-.. |image6| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

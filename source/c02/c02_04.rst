@@ -1,7 +1,7 @@
 2.4 学习接口：详解类型断言
 ==========================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 Type Assertion
 --------------
@@ -194,7 +194,7 @@ Type Switch
 
 此外，还有两点需要你格外注意
 
-1. 类型断言，仅能对静态类型为空接口（interface{}）的对象进行断言，否则会抛出错误，具体内容可以参考：\ `关于接口的三个“潜规则” <http://golang.iswbm.com/c02/c02_07.html>`__
+1. 类型断言，仅能对静态类型为空接口（interface{}）的对象进行断言，否则会抛出错误，具体内容可以参考：\ `关于接口的三个”潜规则” <http://golang.iswbm.com/c02/c02_07.html>`__
 2. 类型断言完成后，实际上会返回静态类型为你断言的类型的对象，而要清楚原来的静态类型为空接口类型（interface{}），这是
    Go 的隐式转换。
 
@@ -208,8 +208,4 @@ Type Switch
 
 --------------
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

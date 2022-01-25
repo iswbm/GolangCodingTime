@@ -1,23 +1,23 @@
 1.1 一文搞定开发环境的搭建
 ==========================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 1. 下载安装 Go语言
 ------------------
 
 下载地址：https://golang.google.cn/dl/
 
-|image1|
+.. image:: http://image.iswbm.com/20200102220841.png
 
 下载完成后，直接双击 msi 文件进行安装，我习惯将软件安装在我的 E 盘下的
 ``Program Files`` 目录下
 
-|image2|
+.. image:: http://image.iswbm.com/20200102221555.png
 
 后面就是一路点击 ``Next`` 即可，直到出现如下界面，安装完成。
 
-|image3|
+.. image:: http://image.iswbm.com/20200102221840.png
 
 2. 配置 Goland 环境
 -------------------
@@ -32,34 +32,34 @@ Goland 没有像 PyCharm 那样搞一个免费社区版，它是需要付费的�
 
 网上的PJ教程几乎都不能用了，幸好我这里有绿色免安装的版本，对，就是那种连安装都不用安装，下载解压后就能使用的专业版本。
 
-|image4|
+.. image:: http://image.iswbm.com/20201117193515.png
 
 当你的可以正常使用 Goland
 后，通过点击设置进入如下界面，创建我的项目目录，顺便设置好 GOROOT 。
 
-|image5|
+.. image:: http://image.iswbm.com/20200102223946.png
 
 创建好Project后，再点击
 Files->Settings->GOPATH，添加我们的项目目录\ ``F:\Go-Player``
 
-|image6|
+.. image:: http://image.iswbm.com/20200102224643.png
 
 随便点击一个go文件，就能在下图箭头处看到配置入口，点击进入配置一下
 Go运行器。
 
-|image7|
+.. image:: http://image.iswbm.com/20200102225750.png
 
 按照如下指示进行配置。
 
-|image8|
+.. image:: http://image.iswbm.com/20200102225349.png
 
 去掉参数提示
 
-|image9|
+.. image:: http://image.iswbm.com/20200127192147.png
 
 设置 goproxy
 
-|image10|
+.. image:: http://image.iswbm.com/20200127192512.png
 
 可先的代理有如下（注意后面的 direct 不要删除）
 
@@ -70,18 +70,18 @@ Go运行器。
 设置 goimports（自动格式化插件），如果 你之前 没有安装 ，会提示你点击
 ``yes`` 下载安装 。
 
-|image11|
+.. image:: http://image.iswbm.com/20200127192748.png
 
 至此，环境配置完成。
 
 在项目根目录下，创建如下三个文件夹，并在 src 目录下创建一个hello.go
 的文件。
 
-|image12|
+.. image:: http://image.iswbm.com/20200102224417.png
 
 点击运行按钮，在控制台我们看到了熟悉的 ``Hello, World!``
 
-|image13|
+.. image:: http://image.iswbm.com/20200102225550.png
 
 3. 配置 VS Code 环境
 --------------------
@@ -129,23 +129,23 @@ Go语言编译、工具、标准库等的安装路径，通过它可以告诉系
 
 右键 ``我的电脑`` ，点击属性
 
-|image14|
+.. image:: http://image.iswbm.com/20210405094512.png
 
 再点击 ``高级系统设置``
 
-|image15|
+.. image:: http://image.iswbm.com/20210405094719.png
 
 在弹出来的窗口点击 ``环境变量``
 
-|image16|
+.. image:: http://image.iswbm.com/20210405094742.png
 
 点击系统环境变量点的 PATH，再点击编辑
 
-|image17|
+.. image:: http://image.iswbm.com/20210405094931.png
 
 在弹出来的窗口中，新增一条 item，内容如下，这个目录是 go.exe 所在的目录
 
-|image18|
+.. image:: http://image.iswbm.com/20210405095053.png
 
 设置完成后，可以在 cmd 窗口中，运行
 ``go version``\ ，如果可以正常运行说明，环境变量正确配置且已经生效。
@@ -160,7 +160,7 @@ Go语言编译、工具、标准库等的安装路径，通过它可以告诉系
 这个环境变量，你可以像 GOROOT
 一样通过电脑系统的环境变量来设置，在那里设置一个默认的工作目录（这个目录你可以自己定）。
 
-|image19|
+.. image:: http://image.iswbm.com/20210405095326.png
 
 不过这种方法极不推荐，因为你不可能只有一个项目，我们每个项目都有自己的
 GOPATH。习惯的做法是可以使用 ``go env`` 命令来设置
@@ -188,12 +188,12 @@ Go 语言的扩展插件，提供了代码运行、导航、调试等最基本�
 
 这是是一年多前（2020年初）的截图，当时的开发者还是 Microsoft
 
-|image20|
+.. image:: http://image.iswbm.com/20200108202934.png
 
 现在（2021年初）再去搜索一看，发现开发者已经变成了 Google 的 Go
 开发团队了。
 
-|image21|
+.. image:: http://image.iswbm.com/20210405113213.png
 
 Code Runner
 ^^^^^^^^^^^
@@ -201,33 +201,33 @@ Code Runner
 编写完代码后，想运行这个 go 文件，通常情况下你得通过下面 VSCODE
 提供的入口去运行，是比较麻烦的。
 
-|image22|
+.. image:: http://image.iswbm.com/20210405113905.png
 
 点击 ``create a launch.json file`` 就会在项目根目录下创建一个 json
 文件，创建完成后，运行的边栏就变成如下模样，再点击
 那个三角运行按钮，就可以运行它了。
 
-|image23|
+.. image:: http://image.iswbm.com/20210405114834.png
 
 使用这种方法，需要安装一个 ``dlv``\ ，VS Code
 会提示你安装它，安装完成后你会在 bin 目录下发现 ``dlv.exe``\ 。
 
-|image24|
+.. image:: http://image.iswbm.com/20210405125424.png
 
 这种运行方法，虽然可行，但是操作路径还是有点长。
 
 最符合用户使用习惯的应该是，直接有一个 ``运行`` 的按钮的，例如这样
 
-|image25|
+.. image:: http://image.iswbm.com/20210405124543.png
 
 或者通常快捷键，或者右键就有运行的选择项。
 
-|image26|
+.. image:: http://image.iswbm.com/20210405114049.png
 
 VS Code 本身不提供这样的功能，你需要安装一个叫 ``Code Runner``
 的扩展，安装后不需要重启 VS Code 就会失效。
 
-|image27|
+.. image:: http://image.iswbm.com/20210405124219.png
 
 运行 Hello World
 ~~~~~~~~~~~~~~~~
@@ -249,7 +249,7 @@ VS Code 本身不提供这样的功能，你需要安装一个叫 ``Code Runner`
 
 使用 Ctrl + Alt + N ，或者右键选择 ``Run Code`` 就可以执行该 go 文件。
 
-|image28|
+.. image:: http://image.iswbm.com/20210405110854.png
 
 设置环境变量：GOPROXY
 ~~~~~~~~~~~~~~~~~~~~~
@@ -295,23 +295,23 @@ VS Code 本身不提供这样的功能，你需要安装一个叫 ``Code Runner`
 
 然后再点击 ``Install All``
 
-|image29|
+.. image:: http://image.iswbm.com/20200109210654.png
 
 然后你在 OUTPUT 就能看到安装进度
 
-|image30|
+.. image:: http://image.iswbm.com/20200109211543.png
 
 安装的 exe 文件会放在 %GOPATH%/bin 下，也就是 ``F:\Go-Player\bin``
 
-|image31|
+.. image:: http://image.iswbm.com/20200109213056.png
 
 而此的 src 目录结构是这样的
 
-|image32|
+.. image:: http://image.iswbm.com/20200109214117.png
 
 到这时环境配置完成，编写 HelloWorld，并运行查看输出，一切完成。
 
-|image33|
+.. image:: http://image.iswbm.com/20200109154657.png
 
 -  gopkgs：
 
@@ -382,41 +382,4 @@ VS Code 本身不提供这样的功能，你需要安装一个叫 ``Code Runner`
 
 --------------
 
-|image34|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200102220841.png
-.. |image2| image:: http://image.iswbm.com/20200102221555.png
-.. |image3| image:: http://image.iswbm.com/20200102221840.png
-.. |image4| image:: http://image.iswbm.com/20201117193515.png
-.. |image5| image:: http://image.iswbm.com/20200102223946.png
-.. |image6| image:: http://image.iswbm.com/20200102224643.png
-.. |image7| image:: http://image.iswbm.com/20200102225750.png
-.. |image8| image:: http://image.iswbm.com/20200102225349.png
-.. |image9| image:: http://image.iswbm.com/20200127192147.png
-.. |image10| image:: http://image.iswbm.com/20200127192512.png
-.. |image11| image:: http://image.iswbm.com/20200127192748.png
-.. |image12| image:: http://image.iswbm.com/20200102224417.png
-.. |image13| image:: http://image.iswbm.com/20200102225550.png
-.. |image14| image:: http://image.iswbm.com/20210405094512.png
-.. |image15| image:: http://image.iswbm.com/20210405094719.png
-.. |image16| image:: http://image.iswbm.com/20210405094742.png
-.. |image17| image:: http://image.iswbm.com/20210405094931.png
-.. |image18| image:: http://image.iswbm.com/20210405095053.png
-.. |image19| image:: http://image.iswbm.com/20210405095326.png
-.. |image20| image:: http://image.iswbm.com/20200108202934.png
-.. |image21| image:: http://image.iswbm.com/20210405113213.png
-.. |image22| image:: http://image.iswbm.com/20210405113905.png
-.. |image23| image:: http://image.iswbm.com/20210405114834.png
-.. |image24| image:: http://image.iswbm.com/20210405125424.png
-.. |image25| image:: http://image.iswbm.com/20210405124543.png
-.. |image26| image:: http://image.iswbm.com/20210405114049.png
-.. |image27| image:: http://image.iswbm.com/20210405124219.png
-.. |image28| image:: http://image.iswbm.com/20210405110854.png
-.. |image29| image:: http://image.iswbm.com/20200109210654.png
-.. |image30| image:: http://image.iswbm.com/20200109211543.png
-.. |image31| image:: http://image.iswbm.com/20200109213056.png
-.. |image32| image:: http://image.iswbm.com/20200109214117.png
-.. |image33| image:: http://image.iswbm.com/20200109154657.png
-.. |image34| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

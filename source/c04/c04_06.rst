@@ -1,185 +1,234 @@
-4.7 学习 Go 协程： 信道死锁经典错误案例
-=======================================
+4.6 学习 Go 协程：互斥锁和读写锁
+================================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
-刚接触 Go
-语言的信道的时候，经常会遇到死锁的错误，而导致这个错误的原因有很多种，这里整理了几种常见的。
+在 「\ `4.3 学习 Go
+协程：详解信道/通道 <http://golang.iswbm.com/c04/c04_03.html>`__\ 」这一节里我详细地介绍信道的一些用法，要知道的是在
+Go 语言中，信道的地位非常高，它是 first class
+级别的，面对并发问题，我们始终应该优先考虑使用信道，如果通过信道解决不了的，不得不使用共享内存来实现并发编程的，那
+Golang 中的锁机制，就是你绕不过的知识点了。
+
+今天就来讲一讲 Golang 中的锁机制。
+
+在 Golang 里有专门的方法来实现锁，还是上一节里介绍的 sync 包。
+
+这个包有两个很重要的锁类型
+
+一个叫 ``Mutex``\ ， 利用它可以实现互斥锁。
+
+一个叫 ``RWMutex``\ ，利用它可以实现读写锁。
+
+1. 互斥锁 ：Mutex
+-----------------
+
+使用互斥锁（Mutex，全称 mutual
+exclusion）是为了来保护一个资源不会因为并发操作而引起冲突导致数据不准确。
+
+举个例子，就像下面这段代码，我开启了三个协程，每个协程分别往 count
+这个变量加1000次 1，理论上看，最终的 count 值应试为 3000
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "sync"
+   )
+
+   func add(count *int, wg *sync.WaitGroup) {
+       for i := 0; i < 1000; i++ {
+           *count = *count + 1
+       }
+       wg.Done()
+   }
+
+   func main() {
+       var wg sync.WaitGroup
+       count := 0
+       wg.Add(3)
+       go add(&count, &wg)
+       go add(&count, &wg)
+       go add(&count, &wg)
+
+       wg.Wait()
+       fmt.Println("count 的值为：", count)
+   }
+
+可运行多次的结果，都不相同
+
+.. code:: go
+
+   // 第一次
+   count 的值为： 2854
+
+   // 第二次
+   count 的值为： 2673
+
+   // 第三次
+   count 的值为： 2840
+
+原因就在于这三个协程在执行时，先读取 count 再更新 count
+的值，而这个过程并不具备原子性，所以导致了数据的不准确。
+
+解决这个问题的方法，就是给 add 这个函数加上 Mutex
+互斥锁，要求同一时刻，仅能有一个协程能对 count 操作。
+
+在写代码前，先了解一下 Mutex 锁的两种定义方法
+
+.. code:: go
+
+   // 第一种
+   var lock *sync.Mutex
+   lock = new(sync.Mutex)
+
+   // 第二种
+   lock := &sync.Mutex{}
+
+然后就可以修改你上面的代码，如下所示
+
+.. code:: go
+
+   import (
+       "fmt"
+       "sync"
+   )
+
+   func add(count *int, wg *sync.WaitGroup, lock *sync.Mutex) {
+       for i := 0; i < 1000; i++ {
+           lock.Lock()
+           *count = *count + 1
+           lock.Unlock()
+       }
+       wg.Done()
+   }
+
+   func main() {
+       var wg sync.WaitGroup
+       lock := &sync.Mutex{}
+       count := 0
+       wg.Add(3)
+       go add(&count, &wg, lock)
+       go add(&count, &wg, lock)
+       go add(&count, &wg, lock)
+
+       wg.Wait()
+       fmt.Println("count 的值为：", count)
+   }
+
+此时，不管你执行多少次，输出都只有一个结果
+
+.. code:: go
+
+   count 的值为： 3000
+
+使用 Mutext 锁虽然很简单，但仍然有几点需要注意：
+
+-  同一协程里，不要在尚未解锁时再次使加锁
+-  同一协程里，不要对已解锁的锁再次解锁
+-  加了锁后，别忘了解锁，必要时使用 defer 语句
+
+2. 读写锁：RWMutex
+------------------
+
+Mutex
+是最简单的一种锁类型，他提供了一个傻瓜式的操作，加锁解锁加锁解锁，让你不需要再考虑其他的。
+
+**简单**\ 同时意味着在某些特殊情况下有可能会造成时间上的浪费，导致程序性能低下。
+
+举个例子，我们平时去图书馆，要嘛是去借书，要嘛去还书，借书的流程繁锁，没有办卡的还要让管理员给你办卡，因此借书通常都要排老长的队，假设图书馆里只有一个管理员，按照
+Mutex（互斥锁）的思想，
+这个管理员同一时刻只能服务一个人，这就意味着，还书的也要跟借书的一起排队。
+
+可还书的步骤非常简单，可能就把书给管理员扫下码就可以走了。
+
+如果让还书的人，跟借书的人一起排队，那估计有很多人都不乐意了。
+
+因此，图书馆为了提高整个流程的效率，就允许还书的人，不需要排队，可以直接自助还书。
+
+图书管将馆里的人分得更细了，对于读者的不同需求提供了不同的方案。提高了效率。
+
+RWMutex，也是如此，它将程序对资源的访问分为读操作和写操作
+
+-  为了保证数据的安全，它规定了当有人还在读取数据（即读锁占用）时，不允计有人更新这个数据（即写锁会阻塞）
+-  为了保证程序的效率，多个人（线程）读取数据（拥有读锁）时，互不影响不会造成阻塞，它不会像
+   Mutex 那样只允许有一个人（线程）读取同一个数据。
+
+理解了这个后，再来看看，如何使用 RWMutex？
+
+定义一个 RWMuteux 锁，有两种方法
+
+.. code:: go
+
+   // 第一种
+   var lock *sync.RWMutex
+   lock = new(sync.RWMutex)
+
+   // 第二种
+   lock := &sync.RWMutex{}
+
+RWMutex
+里提供了两种锁，每种锁分别对应两个方法，为了避免死锁，两个方法应成对出现，必要时请使用
+defer。
+
+-  读锁：调用 RLock 方法开启锁，调用 RUnlock 释放锁
+-  写锁：调用 Lock 方法开启锁，调用 Unlock 释放锁（和 Mutex类似）
+
+接下来，直接看一下例子吧
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "sync"
+       "time"
+   )
+
+   func main() {
+       lock := &sync.RWMutex{}
+       lock.Lock()
+
+       for i := 0; i < 4; i++ {
+           go func(i int) {
+               fmt.Printf("第 %d 个协程准备开始... \n", i)
+               lock.RLock()
+               fmt.Printf("第 %d 个协程获得读锁, sleep 1s 后，释放锁\n", i)
+               time.Sleep(time.Second)
+               lock.RUnlock()
+           }(i)
+       }
+
+       time.Sleep(time.Second * 2)
+
+       fmt.Println("准备释放写锁，读锁不再阻塞")
+       // 写锁一释放，读锁就自由了
+       lock.Unlock()
+
+       // 由于会等到读锁全部释放，才能获得写锁
+       // 因为这里一定会在上面 4 个协程全部完成才能往下走
+       lock.Lock()
+       fmt.Println("程序退出...")
+       lock.Unlock()
+   }
+
+输出如下
 
 ::
 
-   fatal error: all goroutines are asleep - deadlock!
-
-错误示例一
-----------
-
-看下面这段代码
-
-.. code:: go
-
-   package main
-
-   import "fmt"
-
-   func main() {
-       pipline := make(chan string)
-       pipline <- "hello world"
-       fmt.Println(<-pipline)
-   } 
-
-运行会抛出错误，如下
-
-::
-
-   fatal error: all goroutines are asleep - deadlock!
-
-看起来好像没有什么问题？先往信道中存入数据，再从信道中读取数据。
-
-回顾前面的基础，我们知道使用 make
-创建信道的时候，若不传递第二个参数，则你定义的是无缓冲信道，而对于无缓冲信道，在接收者未准备好之前，发送操作是阻塞的.
-
-因此，对于解决此问题有两种方法：
-
-1. 使接收者代码在发送者之前执行
-2. 使用缓冲信道，而不使用无缓冲信道
-
-**第一种方法**\ ：
-
-若要程序正常执行，需要保证接收者程序在发送数据到信道前就进行阻塞状态，修改代码如下
-
-.. code:: go
-
-   package main
-
-   import "fmt"
-
-   func main() {
-       pipline := make(chan string)
-       fmt.Println(<-pipline)
-       pipline <- "hello world"
-   } 
-
-运行的时候还是报同样的错误。问题出在哪里呢？
-
-原来我们将发送者和接收者写在了同一协程中，虽然保证了接收者代码在发送者之前执行，但是由于前面接收者一直在等待数据
-而处于阻塞状态，所以无法执行到后面的发送数据。还是一样造成了死锁。
-
-有了前面的经验，我们将接收者代码写在另一个协程里，并保证在发送者之前执行，就像这样的代码
-
-.. code:: go
-
-   package main
-
-   func hello(pipline chan string)  {
-       <-pipline
-   }
-
-   func main()  {
-       pipline := make(chan string)
-       go hello(pipline)
-       pipline <- "hello world"
-   }
-
-运行之后 ，一切正常。
-
-**第二种方法**\ ：
-
-接收者代码必须在发送者代码之前 执行，这是针对无缓冲信道才有的约束。
-
-既然这样，我们改使用可缓冲信道不就OK了吗？
-
-.. code:: go
-
-   package main
-
-   import "fmt"
-
-   func main() {
-       pipline := make(chan string, 1)
-       pipline <- "hello world"
-       fmt.Println(<-pipline)
-   } 
-
-运行之后，一切正常。
-
-错误示例二
-----------
-
-每个缓冲信道，都有容量，当信道里的数据量等于信道的容量后，此时再往信道里发送数据，就失造成阻塞，必须等到有人从信道中消费数据后，程序才会往下进行。
-
-比如这段代码，信道容量为
-1，但是往信道中写入两条数据，对于一个协程来说就会造成死锁。
-
-.. code:: go
-
-   package main
-
-   import "fmt"
-
-   func main() {
-       ch1 := make(chan string, 1)
-
-       ch1 <- "hello world"
-       ch1 <- "hello China"
-
-       fmt.Println(<-ch1)
-   }
-
-错误示例三
-----------
-
-当程序一直在等待从信道里读取数据，而此时并没有人会往信道中写入数据。此时程序就会陷入死循环，造成死锁。
-
-比如这段代码，for 循环接收了两次消息（“hello world”和“hello
-China”）后，再也没有人发送数据了，接收者就会处于一个等待永远接收不到数据的囧境。陷入死循环，造成死锁。
-
-.. code:: go
-
-   package main
-
-   import "fmt"
-
-   func main() {
-       pipline := make(chan string)
-       go func() {
-           pipline <- "hello world"
-           pipline <- "hello China"
-           // close(pipline)
-       }()
-       for data := range pipline{
-           fmt.Println(data)
-       }
-   }
-
-包子铺里的包子已经卖完了，可还有人在排队等着买，如果不再做包子，就要告诉排队的人：不用等了，今天的包子已经卖完了，明日请早呀。
-
-不能让人家死等呀，不跟客人说明一下，人家还以为你们店后面还在蒸包子呢。
-
-所以这个问题，解决方法很简单，只要在发送完数据后，手动关闭信道，告诉
-range 信道已经关闭，无需等待就行。
-
-.. code:: go
-
-   package main
-
-   import "fmt"
-
-   func main() {
-       pipline := make(chan string)
-       go func() {
-           pipline <- "hello world"
-           pipline <- "hello China"
-           close(pipline)
-       }()
-       for data := range pipline{
-           fmt.Println(data)
-       }
-   }
+   第 1 个协程准备开始... 
+   第 0 个协程准备开始... 
+   第 3 个协程准备开始... 
+   第 2 个协程准备开始... 
+   准备释放写锁，读锁不再阻塞
+   第 2 个协程获得读锁, sleep 1s 后，释放锁
+   第 3 个协程获得读锁, sleep 1s 后，释放锁
+   第 1 个协程获得读锁, sleep 1s 后，释放锁
+   第 0 个协程获得读锁, sleep 1s 后，释放锁
+   程序退出...
 
 --------------
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

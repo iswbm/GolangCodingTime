@@ -1,7 +1,7 @@
 1.15 语法规则：理解语句块与作用域
 =================================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 由于 Go
 使用的是词法作用域，而词法作用域依赖于语句块。所以在讲作用域时，需要先了解一下
@@ -157,8 +157,4 @@ name
 
 --------------
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

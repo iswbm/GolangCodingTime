@@ -1,28 +1,15 @@
 # coding:utf-8
 import os
-# import commands
 import subprocess
 import platform
-
-from git import Repo
 
 
 osName = platform.system()
 repo_path ='.'
-if (osName == 'Windows'):
-    repo_path = 'E:\\MING-Git\\GolangCodingTime'
-    blog_path = 'E:\\MING-Git\GolangCodingTime\\source'
-    index_path = 'E:\\MING-Git\\GolangCodingTime\\README.md'
-elif (osName == 'Darwin'):
-    repo_path = '/Users/MING/Github/GolangCodingTime/'
-    blog_path = '/Users/MING/Github/GolangCodingTime/source'
-    index_path = '/Users/MING/Github/GolangCodingTime/README.md'
+repo_path = '/Users/iswbm/Documents/Github/GolangCodingTime/'
+blog_path = '/Users/iswbm/Documents/Github/GolangCodingTime/source'
+index_path = '/Users/iswbm/Documents/Github/GolangCodingTime/README.md'
 
-
-#repo = Repo.init(path=repo_path)
-#if not repo.is_dirty():
-#    # 没有文件变更
-#    os._exit(0)
 
 base_link = "http://golang.iswbm.com/en/latest/"
 readme_header = '''

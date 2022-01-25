@@ -1,7 +1,7 @@
 1.5 数据类型：数组与切片
 ========================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 1. 数组
 -------
@@ -323,8 +323,4 @@ int 类型的零值，即0。
 
 --------------
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

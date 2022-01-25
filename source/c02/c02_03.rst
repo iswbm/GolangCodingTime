@@ -1,7 +1,7 @@
 2.3 面向对象：结构体里的 Tag 用法
 =================================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 1. 抛砖引玉：什么是 Tag？
 -------------------------
@@ -248,8 +248,4 @@ label 属性，而 Gender 多了一个 default 属性，意在指定默认值。
 
 到此，我们就把 Tag 的用法介绍完了。
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

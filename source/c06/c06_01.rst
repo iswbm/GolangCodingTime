@@ -1,7 +1,7 @@
 6.1 Go 命令：go test 工具详解
 =============================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 接下来几篇文章，我将介绍 下 Golang 中有关测试相关的一些文章。
 
@@ -98,8 +98,4 @@ TestAdd，如果还有一个测试函数为 TestAdd02，那么它也会被运行
    # 这里没有输出 
    $ go test -i 
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

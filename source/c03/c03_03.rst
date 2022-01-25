@@ -1,7 +1,7 @@
 3.3 开源发布：如何开源自己写的包给别人用?
 =========================================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 通常之前的学习，我们知道了在 Go 的项目中，可以 import
 一个托管在远程仓库的模块，这个模块在我们使用 go get
@@ -16,7 +16,7 @@
 
 先在你的 Github 上新建一个仓库，记得选 Public（默认）
 
-|image1|
+.. image:: http://image.iswbm.com/image-20200317202948177.png
 
 然后你会得到一个仓库地址，在你的电脑上 使用 ``git clone`` 命令克隆下来
 
@@ -31,7 +31,7 @@
    $ git clone https://github.com/BingmingWong/goutils.git
    $ go mod init github.com/BingmingWong/goutils
 
-|image2|
+.. image:: http://image.iswbm.com/image-20200317211914020.png
 
 然后新建一个 hash 文件夹，存放编写的一个计算 md5 值工具包，编辑
 ``md5.go``
@@ -87,17 +87,17 @@ push 到 git 仓库。
 一切完成后，刷新我们的仓库，就可以看到我们的刚刚上传的项目代码了，点击
 release 发布一个版本
 
-|image3|
+.. image:: http://image.iswbm.com/image-20200317212645500.png
 
-|image4|
+.. image:: http://image.iswbm.com/image-20200317212816613.png
 
 然后像下图一样，添加一些版本说明
 
-|image5|
+.. image:: http://image.iswbm.com/image-20200317213121828.png
 
 最后点击一个 ``Publish release``\ ，就发布了一个版本
 
-|image6|
+.. image:: http://image.iswbm.com/image-20200317213331606.png
 
 4. 如何使用？
 -------------
@@ -108,7 +108,7 @@ release 发布一个版本
 
    $ go get github.com/BingmingWong/goutils
 
-|image7|
+.. image:: http://image.iswbm.com/image-20200321130405670.png
 
 再使用 tree 命令，查看一下我们下载的包已经放入了 ``$GOPATH/pkg/mod``
 下。
@@ -117,12 +117,12 @@ release 发布一个版本
 用户名（BingmingWong）是有大写字母的，下载下来后，在目录中\ ``大写字母``\ 会对应变成
 ``!小写字母``\ ，如下所示
 
-|image8|
+.. image:: http://image.iswbm.com/image-20200321130456438.png
 
 这个用户名看起来有点非主流，你要想改的话，也是可以的。如果你有其他的开源项目，github
 并不会为你做重定向，你需要自己评估这个风险。
 
-|image9|
+.. image:: http://image.iswbm.com/image-20200321132052173.png
 
 回过头来，我还是继续讲如何使用吧。
 
@@ -133,24 +133,10 @@ release 发布一个版本
 
 整个过程如下所示，供你参考：
 
-|image10|
+.. image:: http://image.iswbm.com/image-20200321133247067.png
 
 本文参考学习自：https://studygolang.com/articles/22851
 
 --------------
 
-|image11|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/image-20200317202948177.png
-.. |image2| image:: http://image.iswbm.com/image-20200317211914020.png
-.. |image3| image:: http://image.iswbm.com/image-20200317212645500.png
-.. |image4| image:: http://image.iswbm.com/image-20200317212816613.png
-.. |image5| image:: http://image.iswbm.com/image-20200317213121828.png
-.. |image6| image:: http://image.iswbm.com/image-20200317213331606.png
-.. |image7| image:: http://image.iswbm.com/image-20200321130405670.png
-.. |image8| image:: http://image.iswbm.com/image-20200321130456438.png
-.. |image9| image:: http://image.iswbm.com/image-20200321132052173.png
-.. |image10| image:: http://image.iswbm.com/image-20200321133247067.png
-.. |image11| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png

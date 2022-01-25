@@ -1,7 +1,7 @@
 1.8 流程控制：if-else
 =====================
 
-|image0|
+.. image:: http://image.iswbm.com/20200607145423.png
 
 1. 条件语句模型
 ---------------
@@ -125,8 +125,4 @@ if - else if - else
 
 --------------
 
-|image1|
-
-.. |image0| image:: http://image.iswbm.com/20200607145423.png
-.. |image1| image:: http://image.iswbm.com/20200607174235.png
-
+.. image:: http://image.iswbm.com/20200607174235.png
