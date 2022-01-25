@@ -1,4 +1,4 @@
-![](http://image.iswbm.com/image-20201117200227395.png)
+
 
 <p align="center">
     <img src='https://img.shields.io/badge/language-Golang-blue.svg' alt="Build Status">
@@ -47,44 +47,31 @@
    * [3.4 代码规范：Go语言中编码规范](https://golang.iswbm.com/c03/c03_04.html)
 - **第四章：并发编程**
    * [4.1 学习 Go 函数：理解 Go 里的函数](https://golang.iswbm.com/c04/c04_01.html)
-   * [4.2 学习 Go 协程：goroutine](https://golang.iswbm.com/c04/c04_02.html)
-   * [4.3 学习 Go 协程：详解信道/通道](https://golang.iswbm.com/c04/c04_03.html)
-   * [4.4 学习 Go 协程：WaitGroup](https://golang.iswbm.com/c04/c04_04.html)
-   * [4.5 学习 Go 协程：互斥锁和读写锁](https://golang.iswbm.com/c04/c04_05.html)
-   * [4.7 学习 Go 协程： 信道死锁经典错误案例](https://golang.iswbm.com/c04/c04_06.html)
-   * [4.7 学习 Go 协程：如何实现一个协程池？](https://golang.iswbm.com/c04/c04_07.html)
-   * [4.8 理解 Go 语言中的 Context](https://golang.iswbm.com/c04/c04_08.html)
-   * [4.9 学习一些常见的并发模型](https://golang.iswbm.com/c04/c04_09.html)
-   * [4.10 学习 Go 函数：函数类型是什么？](https://golang.iswbm.com/c04/c04_10.html)
+   * [4.2 学习 Go 函数：函数类型是什么？](https://golang.iswbm.com/c04/c04_02.html)
+   * [4.3 学习 Go 协程：goroutine](https://golang.iswbm.com/c04/c04_03.html)
+   * [4.4 学习 Go 协程：详解信道/通道](https://golang.iswbm.com/c04/c04_04.html)
+   * [4.5 学习 Go 协程：WaitGroup](https://golang.iswbm.com/c04/c04_05.html)
+   * [4.6 学习 Go 协程：互斥锁和读写锁](https://golang.iswbm.com/c04/c04_06.html)
+   * [4.7 学习 Go 协程： 信道死锁经典错误案例](https://golang.iswbm.com/c04/c04_07.html)
+   * [4.8 学习 Go 协程：如何实现一个协程池？](https://golang.iswbm.com/c04/c04_08.html)
+   * [4.9 学习 Go 协程：巧妙利用 Context](https://golang.iswbm.com/c04/c04_09.html)
+   * [4.10 学习 Go 协程：万能的通道模型(公式)](https://golang.iswbm.com/c04/c04_10.html)
+   * [4.11 学习 Go 协程：常见的并发模型](https://golang.iswbm.com/c04/c04_11.html)
 - **第五章：学标准库**
    * [5.1 fmt.Printf 方法速查指南](https://golang.iswbm.com/c05/c05_01.html)
    * [5.2 os/exec 执行命令的五种姿势](https://golang.iswbm.com/c05/c05_02.html)
    * [5.3 命令行参数的解析：flag 库详解](https://golang.iswbm.com/c05/c05_03.html)
+   * [5.4  总结 Go 读文件的 10 种方法](https://golang.iswbm.com/c05/c05_04.html)
 - **第六章：开发技能**
    * [6.1 Go 命令：go test 工具详解](https://golang.iswbm.com/c06/c06_01.html)
    * [6.2 单元测试：如何进行单元测试？](https://golang.iswbm.com/c06/c06_02.html)
    * [6.3 调试技巧：使用 GDB 调试 Go 程序](https://golang.iswbm.com/c06/c06_03.html)
    * [6.4 Go 命令： Go 命令指南](https://golang.iswbm.com/c06/c06_04.html)
-- **第七章：Go面试题**
-   * [7.1 Go 中的 = 和 := 有什么区别？](https://golang.iswbm.com/c07/c07_01.html)
-   * [7.2 Go 中的指针有什么作用？](https://golang.iswbm.com/c07/c07_02.html)
-   * [7.3 Go 允许多个返回值吗？](https://golang.iswbm.com/c07/c07_03.html)
-   * [7.4 Go 有异常类型吗？](https://golang.iswbm.com/c07/c07_04.html)
-   * [7.5 Go 中的 rune 类型是什么？](https://golang.iswbm.com/c07/c07_05.html)
-   * [7.6 Go 语言中的深拷贝和浅拷贝？](https://golang.iswbm.com/c07/c07_06.html)
-   * [7.7 局部变量分配在栈上还是堆上？](https://golang.iswbm.com/c07/c07_07.html)
-   * [7.8 什么叫字面量和组合字面量？](https://golang.iswbm.com/c07/c07_08.html)
-   * [7.9 为什么常量、字符串和字典不可寻址？](https://golang.iswbm.com/c07/c07_09.html)
-   * [7.10 为什么 slice 元素是可寻址的？](https://golang.iswbm.com/c07/c07_10.html)
-   * [7.11 对象选择器自动解引用怎么用？](https://golang.iswbm.com/c07/c07_11.html)
-   * [7.12 slice 扩容后容量及内存如何计算？](https://golang.iswbm.com/c07/c07_12.html)
-   * [7.13 goroutine 存在的意义是什么？](https://golang.iswbm.com/c07/c07_13.html)
-   * [7.14 说说 Go 中闭包的底层原理？](https://golang.iswbm.com/c07/c07_14.html)
-- **第八章：暂未分类**
-   * [8.1 20 个学习 Go 语言的精品网站](https://golang.iswbm.com/c08/c08_01.html)
-   * [8.2 Go 语言中边界检查](https://golang.iswbm.com/c08/c08_02.html)
-   * [8.3 Go 语言中的内存分配规律及逃逸分析](https://golang.iswbm.com/c08/c08_03.html)
-   * [8.4 Go 中晦涩难懂的寻址问题](https://golang.iswbm.com/c08/c08_04.html)
+   * [6.5 性能分析: pprof 工具的简单使用](https://golang.iswbm.com/c06/c06_05.html)
+- **第七章：进阶内容**
+   * [7.1 理清 Go 中晦涩难懂的寻址问题](https://golang.iswbm.com/c07/c07_01.html)
+   * [7.2  学习 Go 语言中边界检查](https://golang.iswbm.com/c07/c07_02.html)
+   * [7.3 Go 语言中的内存分配规律及逃逸分析](https://golang.iswbm.com/c07/c07_03.html)
 
 ## 欢迎交流
 
