@@ -175,7 +175,3 @@ range 信道已经关闭，无需等待就行。
            fmt.Println(data)
        }
    }
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

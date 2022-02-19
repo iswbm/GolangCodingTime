@@ -403,7 +403,3 @@ range关键字，在range时，要确保信道是处于关闭状态，否则循�
    都会收到消息
 7. channel 在 Golang
    中是一等公民，它是线程安全的，面对并发问题，应首先想到 channel。
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

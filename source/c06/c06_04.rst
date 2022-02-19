@@ -245,5 +245,3 @@ https://studygolang.com/articles/25658
 https://juejin.im/post/5d0b865c6fb9a07f050a6f45
 
 --------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

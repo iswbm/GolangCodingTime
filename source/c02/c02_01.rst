@@ -419,7 +419,3 @@ staff 中，做为 staff 的一个匿名字段，staff 就直接拥有了 compan
        p1 := &Profile{"iswbm"}
        fmt.Println(p1.Name)  // output: iswbm
    }
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

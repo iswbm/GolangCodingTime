@@ -304,5 +304,3 @@ pkg，由于这个包是我随便指定的，当然会找不到，找不到就�
    module导入本地包 <https://mp.weixin.qq.com/s/jvqjIzfBlGh3vty_qHl50w>`__
 
 --------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

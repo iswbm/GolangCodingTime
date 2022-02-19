@@ -309,5 +309,3 @@ select 与 switch
 3. select 要注意避免出现死锁，同时也可以自行实现超时机制；
 4. select 里没有类似 switch 里的 fallthrough 的用法；
 5. select 不能像 switch 一样接函数或其他表达式。
-
-.. image:: http://image.iswbm.com/20200607174235.png

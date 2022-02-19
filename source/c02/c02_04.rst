@@ -205,7 +205,3 @@ Type Switch
    Go <https://stackoverflow.com/questions/38816843/explain-type-assertions-in-go>`__
 -  `Go interface 详解 (四)
    ：类型断言 <https://sanyuesha.com/2017/12/01/go-interface-4/>`__
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

@@ -122,7 +122,3 @@ if - else if - else
            fmt.Println("已经成年了")
        }
    }
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

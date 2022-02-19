@@ -211,7 +211,3 @@ int，而 b 的静态类型为 interface{}）
 立马就会提示我们新对象 b 不是一个接口类型的对象，不允许进行类型断言。
 
 .. image:: http://image.iswbm.com/image-20200614154343406.png
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

@@ -183,7 +183,3 @@ https://blog.csdn.net/snoweaglelord/article/details/99681179
 https://www.jianshu.com/p/dfd940e7fca2
 
 https://studygolang.com/articles/13344
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

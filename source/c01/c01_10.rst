@@ -191,7 +191,3 @@ range 后可接数组、切片，字符串等
    hello, 0
    hello, 1
    hello, 2
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png
