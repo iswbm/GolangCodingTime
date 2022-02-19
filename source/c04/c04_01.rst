@@ -256,7 +256,3 @@ Go语言中的函数，在你定义的时候，就规定了此函数
            fmt.Println(v)
        })
    }
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

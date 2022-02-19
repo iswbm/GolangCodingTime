@@ -379,7 +379,3 @@ VS Code 本身不提供这样的功能，你需要安装一个叫 ``Code Runner`
 .. code:: shell
 
    $ go env -w GOPROXY=https://goproxy.cn,direct
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

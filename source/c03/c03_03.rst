@@ -138,5 +138,3 @@ release 发布一个版本
 本文参考学习自：https://studygolang.com/articles/22851
 
 --------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

@@ -147,5 +147,3 @@ Add(1, 2) 是一次单元测试的场景，而 Add(2, 4) ，Add(3, 6)
    --- PASS: TestAdd (0.00s)
    PASS
    ok      _/home/wangbm/golang/math   0.002s
-
-.. image:: http://image.iswbm.com/20200607174235.png

@@ -58,7 +58,5 @@
 
 
 
----
 
-![](http://image.iswbm.com/20200607174235.png)
 

@@ -247,5 +247,3 @@ label 属性，而 Gender 多了一个 default 属性，意在指定默认值。
    Gender is: unknown
 
 到此，我们就把 Tag 的用法介绍完了。
-
-.. image:: http://image.iswbm.com/20200607174235.png

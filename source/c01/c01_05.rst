@@ -320,7 +320,3 @@ int 类型的零值，即0。
 
    myslice为 [5 6], 其长度为: 2
    myslice的第四个元素为: 8
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

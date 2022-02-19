@@ -154,7 +154,3 @@ name
 因此你在执行这段代码时，会报错，提示在func01中的name还未定义。
 
 参考文章：https://studygolang.com/articles/12632
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

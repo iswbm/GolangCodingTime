@@ -228,5 +228,3 @@ interface{}，但动态类型（是 int，string
 
    参数的类型是 int
    参数的类型是 string
-
-.. image:: http://image.iswbm.com/20200607174235.png

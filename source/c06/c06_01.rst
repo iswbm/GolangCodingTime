@@ -97,5 +97,3 @@ TestAdd，如果还有一个测试函数为 TestAdd02，那么它也会被运行
 
    # 这里没有输出 
    $ go test -i 
-
-.. image:: http://image.iswbm.com/20200607174235.png

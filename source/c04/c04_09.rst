@@ -566,5 +566,3 @@ WithDeadline 传入的第二个参数是 time.Time
 -----------
 
 -  `飞雪无情的博客 <https://www.flysnow.org/2017/05/12/go-in-action-go-context.html>`__
-
-.. image:: http://image.iswbm.com/20200607174235.png

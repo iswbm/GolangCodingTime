@@ -258,5 +258,3 @@ eface，其只有一个 ``_type`` 可以存放变量类型，此时 empty
 --------
 
 -  `图解go反射实现原理 <https://i6448038.github.io/2020/02/15/golang-reflection/>`__
-
-.. image:: http://image.iswbm.com/20200607174235.png

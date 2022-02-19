@@ -113,7 +113,3 @@ WaitGroup 你只要实例化了就能使用
 
 以上就是我们在 Go 语言中实现一主多子的协程协作方式，推荐使用
 sync.WaitGroup。。
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

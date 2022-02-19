@@ -300,5 +300,3 @@ exec 也能执行。
    $ go run demo.go 
    output: wangbm
    output: 
-
-.. image:: http://image.iswbm.com/20200607174235.png

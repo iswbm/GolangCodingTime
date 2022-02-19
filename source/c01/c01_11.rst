@@ -172,7 +172,3 @@ goto语句与标签之间不能有变量声明，否则编译错误。
 ::
 
    .\main.go:7:7: goto flag jumps over declaration of say at .\main.go:8:6
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

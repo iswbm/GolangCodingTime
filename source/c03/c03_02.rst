@@ -307,5 +307,3 @@ go vender 械管理，除此之外，任何 Gopher 应该从此刻就投入 go m
    代码 <https://liujiacai.net/blog/2019/10/24/go-modules/>`__
 
 --------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

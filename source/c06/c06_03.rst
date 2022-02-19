@@ -218,5 +218,3 @@
 -  `go 官方对于 gdb 的使用说明 <https://golang.org/doc/gdb>`__
 -  `Mac 调试 golang
    程序 <%5Bhttps://www.do1618.com/archives/771/mac-gdb-%E8%B0%83%E8%AF%95-golang-%E7%A8%8B%E5%BA%8F/%5D(https://www.do1618.com/archives/771/mac-gdb-调试-golang-程序/)>`__
-
-.. image:: http://image.iswbm.com/20200607174235.png

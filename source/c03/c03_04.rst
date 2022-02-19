@@ -285,7 +285,3 @@
 参考文章：
 
 -  `Go语言(Golang)编码规范 <https://www.bookstack.cn/books/go-code-convention>`__
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

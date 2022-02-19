@@ -446,7 +446,3 @@ TypeOf 和 ValueOf 两个函数接收的是 interface{} 空接口类型，而 Go
 
 -  `思否：Go
    语言反射三定律 <https://segmentfault.com/a/1190000006190038>`__
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png

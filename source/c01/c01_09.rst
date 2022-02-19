@@ -254,7 +254,3 @@ default 的代码块。
 
    hello
    xxxx
-
---------------
-
-.. image:: http://image.iswbm.com/20200607174235.png
