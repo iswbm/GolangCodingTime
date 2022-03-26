@@ -46,6 +46,7 @@
    * [3.3 开源发布：如何开源自己写的包给别人用?](https://golang.iswbm.com/c03/c03_03.html)
    * [3.4 代码规范：Go语言中编码规范](https://golang.iswbm.com/c03/c03_04.html)
    * [3.5 编译流程：结合 Makefile 简化编译过程](https://golang.iswbm.com/c03/c03_05.html)
+   * [3.6 依赖管理：好用的工作区模式](https://golang.iswbm.com/c03/c03_06.html)
 - **第四章：并发编程**
    * [4.1 学习 Go 函数：理解 Go 里的函数](https://golang.iswbm.com/c04/c04_01.html)
    * [4.2 学习 Go 函数：函数类型是什么？](https://golang.iswbm.com/c04/c04_02.html)
