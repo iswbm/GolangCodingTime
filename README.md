@@ -45,6 +45,7 @@
    * [3.2 依赖管理：超详细解读 Go Modules 应用](https://golang.iswbm.com/c03/c03_02.html)
    * [3.3 开源发布：如何开源自己写的包给别人用?](https://golang.iswbm.com/c03/c03_03.html)
    * [3.4 代码规范：Go语言中编码规范](https://golang.iswbm.com/c03/c03_04.html)
+   * [3.5 编译流程：结合 Makefile 简化编译过程](https://golang.iswbm.com/c03/c03_05.html)
 - **第四章：并发编程**
    * [4.1 学习 Go 函数：理解 Go 里的函数](https://golang.iswbm.com/c04/c04_01.html)
    * [4.2 学习 Go 函数：函数类型是什么？](https://golang.iswbm.com/c04/c04_02.html)
@@ -68,10 +69,17 @@
    * [6.3 调试技巧：使用 GDB 调试 Go 程序](https://golang.iswbm.com/c06/c06_03.html)
    * [6.4 Go 命令： Go 命令指南](https://golang.iswbm.com/c06/c06_04.html)
    * [6.5 性能分析: pprof 工具的简单使用](https://golang.iswbm.com/c06/c06_05.html)
+   * [6.6 使用 -ldflags 实现动态信息注入](https://golang.iswbm.com/c06/c06_06.html)
 - **第七章：进阶内容**
    * [7.1 理清 Go 中晦涩难懂的寻址问题](https://golang.iswbm.com/c07/c07_01.html)
    * [7.2  学习 Go 语言中边界检查](https://golang.iswbm.com/c07/c07_02.html)
    * [7.3 Go 语言中的内存分配规律及逃逸分析](https://golang.iswbm.com/c07/c07_03.html)
+   * [7.4 一文掌握 Go 泛型的使用](https://golang.iswbm.com/c07/c07_04.html)
+- **第八章：测试技巧**
+   * [8.1 测试技巧：单元测试（Unit Test）](https://golang.iswbm.com/c08/c08_01.html)
+   * [8.2 测试技巧：模糊测试（Fuzzing）](https://golang.iswbm.com/c08/c08_02.html)
+   * [8.3 测试技巧：网络测试](https://golang.iswbm.com/c08/c08_03.html)
+   * [8.4 测试技巧：性能测试](https://golang.iswbm.com/c08/c08_04.html)
 
 ## 欢迎交流
 
