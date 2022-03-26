@@ -1,0 +1,241 @@
+6.6 使用 -ldflags 实现动态信息注入
+==================================
+
+.. image:: http://image.iswbm.com/20200607145423.png
+
+在查看一些工具的版本时，我们时常能看到版本信息非常多，连 git 的 commit
+id 都有
+
+.. code:: bash
+
+   ~ ➤ docker version
+   Client:
+    Cloud integration: v1.0.22
+    Version:           20.10.11
+    API version:       1.41
+    Go version:        go1.16.10
+    Git commit:        dea9396
+    Built:             Thu Nov 18 00:36:09 2021
+    OS/Arch:           darwin/arm64
+    Context:           default
+    Experimental:      true
+
+最值得关注的是很多信息在每次构建时都会发生变化，如果这些信息是写死在代码中的变量里的，那意味着每次构建都要修改代码，一般情况下都不允许随意代码，构建时的代码应与
+git 版本分支上保持一致。
+
+1. 实现动态信息注入
+-------------------
+
+那 Go 程序又是如何实现这种个性化信息的动态注入呢？
+
+在 go build 命令里有一个 ``-ldflags`` 参数，该参数可以接收
+``-X importpath.name=value``
+形式的值，该值就是实现信息动态注入的核心入口。
+
+以下面一段例子来演示
+
+-  先定义 version，buildTime，osArch 三个变量
+-  然后将这三个变量的值打印出来
+
+.. code:: go
+
+   package main
+
+   import "fmt"
+
+   var (
+       version   string
+       buildTime string
+       osArch    string
+   )
+
+   func main() {
+       fmt.Printf("Version: %s\nBuilt: %s\nOS/Arch: %s\n", version, buildTime, osArch)
+   }
+
+由于我们只是声明了变量，但没有对其赋值，因为三个变量的值都是零值，也就是空字符串。
+
+.. code:: bash
+
+   ~ ➤ go run main.go
+   Version:
+   Built:
+   OS/Arch:
+
+此时，我给 run 或者 build 加上如下的 -ldflags 参数，Go
+的编译器就能接收到并赋值给我们指定的变量
+
+::
+
+   ~ ➤ go run  -ldflags "-X 'main.version=0.1' -X 'main.buildTime=2022-03-25' -X 'main.osArch=darwin/amd64'" main.go
+   Version: 0.1
+   Built: 2022-03-25
+   OS/Arch: darwin/amd64
+
+我们只要编译一次，后续执行二进制文件就不用再指定这么长的一长参数了
+
+::
+
+   ~ ➤ go build  -ldflags "-X 'main.version=0.1' -X 'main.buildTime=2022-03-25' -X 'main.osArch=darwin/amd64'" main.go
+   ~ ➤
+   ~ ➤ ./main
+   Version: 0.1
+   Built: 2022-03-25
+   OS/Arch: darwin/amd64
+
+2. 实际开发项目
+---------------
+
+上面为了方便学习，主程序直接将版本信息直接打印出来了，实际上应该指定
+version 参数再打印。
+
+有了前面的基础知识，下边就演示一下正常开发中如何来注入版本信息
+
+首先，初始化项目
+
+.. code:: go
+
+   go mod init github.com/iswbm/demo
+
+然后创建 main.go
+
+.. code:: go
+
+   package main
+
+   import (
+       "fmt"
+       "os"
+           "github.com/iswbm/demo/utils"
+   )
+
+   func main() {
+
+       args := os.Args
+       if len(args) >= 2 && args[1] == "version" {
+           v := utils.GetVersion()
+           fmt.Printf("Version: %s\nGitBranch: %s\nCommitId: %s\nBuild Date: %s\nGo Version: %s\nOS/Arch: %s\n", v.Version, v.GitBranch, v.GitCommit, v.BuildDate, v.GoVersion, v.Platform)
+       } else {
+           fmt.Printf("Version(hard code): %s\n", "0.1")
+       }
+   }
+
+再创建 utils/version.go
+
+.. code:: go
+
+   package utils
+
+   import (
+       "fmt"
+       "runtime"
+   )
+
+   var (
+       version      string
+       gitBranch    string
+       gitTag       string
+       gitCommit    string
+       gitTreeState string
+       buildDate    string
+   )
+
+   type Info struct {
+       Version      string `json:"version"`
+       GitBranch    string `json:"gitBranch"`
+       GitTag       string `json:"gitTag"`
+       GitCommit    string `json:"gitCommit"`
+       GitTreeState string `json:"gitTreeState"`
+       BuildDate    string `json:"buildDate"`
+       GoVersion    string `json:"goVersion"`
+       Compiler     string `json:"compiler"`
+       Platform     string `json:"platform"`
+   }
+
+   func (info Info) String() string {
+       return info.GitCommit
+   }
+
+   func GetVersion() Info {
+       return Info{
+           Version:      version,
+           GitBranch:    gitBranch,
+           GitTag:       gitTag,
+           GitCommit:    gitCommit,
+           GitTreeState: gitTreeState,
+           BuildDate:    buildDate,
+           GoVersion:    runtime.Version(),
+           Compiler:     runtime.Compiler,
+           Platform:     fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
+       }
+   }
+
+最后，使用如下命令去编译
+
+.. code:: bash
+
+   go build -ldflags "-X 'github.com/iswbm/demo/utils.version=0.1' -X 'github.com/iswbm/demo/utils.gitBranch=test' -X 'github.com/iswbm/demo/utils.gitTag=test' -X 'github.com/iswbm/demo/utils.gitCommit=test' -X 'github.com/iswbm/demo/utils.buildDate=2022-03-25' -X 'github.com/iswbm/demo/utils.osArch=darwin/amd64'"
+
+编译好后，可以运行一下看效果
+
+.. image:: https://image.iswbm.com/image-20220324224811637.png
+
+3. 使用 Makekfile
+-----------------
+
+上面在编译的时候，需要指定一大串的参数，相信你已经崩溃了吧？
+
+更合理的做法，是将这些参数 Makefile 来管理维护，在 Makefile 中可以用
+shell 命令去获取一些 git 的信息，比如下面这样子
+
+::
+
+   # gitTag
+   gitTag=$(git log --pretty=format:'%h' -n 1)
+
+   # commitID
+   gitCommit=$(git rev-parse --short HEAD)
+
+   # gitBranch
+   gitBranch=$(git rev-parse --abbrev-ref HEAD)
+
+我先在该项目下初始化 Git 仓库
+
+.. code:: bash
+
+   # 初始化
+   git init .
+
+   # 添加所有文件到暂存区
+   git add -A
+
+   # 提交 commit
+   git commit -m "init repo" 
+
+然后编写出如下的 Makefile 到项目的根目录
+
+.. code:: makefile
+
+   BINARY="demo"
+   VERSION=0.0.1
+   BUILD=`date +%F`
+   SHELL := /bin/bash
+
+   versionDir="github.com/iswbm/demo/utils"
+   gitTag=$(shell git log --pretty=format:'%h' -n 1)
+   gitBranch=$(shell git rev-parse --abbrev-ref HEAD)
+   buildDate=$(shell TZ=Asia/Shanghai date +%FT%T%z)
+   gitCommit=$(shell git rev-parse --short HEAD)
+
+   ldflags="-s -w -X ${versionDir}.version=${VERSION} -X ${versionDir}.gitBranch=${gitBranch} -X '${versionDir}.gitTag=${gitTag}' -X '${versionDir}.gitCommit=${gitCommit}' -X '${versionDir}.buildDate=${buildDate}'"
+
+   default:
+       @echo "build the ${BINARY}"
+       @GOOS=linux GOARCH=amd64 go build -ldflags ${ldflags} -o  build/${BINARY}.linux  -tags=jsoniter
+       @go build -ldflags ${ldflags} -o  build/${BINARY}.mac  -tags=jsoniter
+       @echo "build done."
+
+接下来就可以直接使用 make 命令，编译出 mac 和 linux
+两个版本的二进制执行文件
+
+.. image:: https://image.iswbm.com/20220325225943.png

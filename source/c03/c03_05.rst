@@ -1,0 +1,64 @@
+3.5 编译流程：结合 Makefile 简化编译过程
+========================================
+
+.. image:: http://image.iswbm.com/20200607145423.png
+
+在另一篇文章中（\ `使用 -ldflags
+实现动态信息注入 <https://golang.iswbm.com/c06/c06_06.html>`__\ ）
+我详细介绍了如何利用 -ldflags
+动态往程序中注入信息，但这种技巧需要指定一大串的参数，相信你已经崩溃了吧？
+
+更合理的做法，是将这些参数 Makefile 来管理维护，在 Makefile 中可以用
+shell 命令去获取一些 git 的信息，比如下面这样子
+
+.. code::  bash
+
+   # gitTag
+   gitTag=$(git log --pretty=format:'%h' -n 1)
+
+   # commitID
+   gitCommit=$(git rev-parse --short HEAD)
+
+   # gitBranch
+   gitBranch=$(git rev-parse --abbrev-ref HEAD)
+
+我先在该项目下初始化 Git 仓库
+
+.. code:: bash
+
+   # 初始化
+   git init .
+
+   # 添加所有文件到暂存区
+   git add -A
+
+   # 提交 commit
+   git commit -m "init repo" 
+
+然后编写出如下的 Makefile 到项目的根目录
+
+.. code:: makefile
+
+   BINARY="demo"
+   VERSION=0.0.1
+   BUILD=`date +%F`
+   SHELL := /bin/bash
+
+   versionDir="github.com/iswbm/demo/utils"
+   gitTag=$(shell git log --pretty=format:'%h' -n 1)
+   gitBranch=$(shell git rev-parse --abbrev-ref HEAD)
+   buildDate=$(shell TZ=Asia/Shanghai date +%FT%T%z)
+   gitCommit=$(shell git rev-parse --short HEAD)
+
+   ldflags="-s -w -X ${versionDir}.version=${VERSION} -X ${versionDir}.gitBranch=${gitBranch} -X '${versionDir}.gitTag=${gitTag}' -X '${versionDir}.gitCommit=${gitCommit}' -X '${versionDir}.buildDate=${buildDate}'"
+
+   default:
+       @echo "build the ${BINARY}"
+       @GOOS=linux GOARCH=amd64 go build -ldflags ${ldflags} -o  build/${BINARY}.linux  -tags=jsoniter
+       @go build -ldflags ${ldflags} -o  build/${BINARY}.mac  -tags=jsoniter
+       @echo "build done."
+
+接下来就可以直接使用 make 命令，编译出 mac 和 linux
+两个版本的二进制执行文件
+
+.. image:: https://image.iswbm.com/20220325225943.png
