@@ -127,7 +127,7 @@ pprof <https://darjun.github.io/2021/06/09/youdontknowgo/pprof/>`__\ ，写得�
 -  本地电脑，就访问：http://localhost:9999
 -  服务器，就访问：http://host-ip:9999
 
-然后就可以看到像下面这样的可视化界面，一下子就可能牛二以 main.concat
+然后就可以看到像下面这样的可视化界面，一下子就可以看出 main.concat
 的区域最大
 
 .. image:: http://image.iswbm.com/20220119150344.png
